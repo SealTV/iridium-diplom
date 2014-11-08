@@ -1,0 +1,11 @@
+
+
+message SearchRequest {
+  required string query = 1;
+  optional int32 page_number = 2;
+  optional int32 result_per_page = 3;
+}
+message Loggin{
+	required int32 id = 1; // Unique ID number for this person.
+	
+}
