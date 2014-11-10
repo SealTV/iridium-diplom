@@ -49,6 +49,9 @@
   <ItemGroup>
     <Compile Include="Client.cs" />
     <Compile Include="IridiumGameMasterServer.cs" />
+    <Compile Include="PacketHandlers\FromClient\PingPacketHandler.cs" />
+    <Compile Include="PacketHandlers\PacketsHandler.cs" />
+    <Compile Include="PacketRouter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -61,6 +64,15 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Iridiun.Utils\Iridiun.Utils.csproj">
+      <Project>{fa1c1613-fdd3-415b-b2be-3c84dd3700cb}</Project>
+      <Name>Iridiun.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
