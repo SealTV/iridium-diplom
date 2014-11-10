@@ -47,11 +47,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Client.cs" />
-    <Compile Include="IridiumGameMasterServer.cs" />
+    <Compile Include="Enums.cs" />
+    <Compile Include="Protocol\Client.cs" />
+    <Compile Include="Protocol\Destination.cs" />
+    <Compile Include="Protocol\IridiumGameMasterServer.cs" />
     <Compile Include="PacketHandlers\FromClient\PingPacketHandler.cs" />
     <Compile Include="PacketHandlers\PacketsHandler.cs" />
-    <Compile Include="PacketRouter.cs" />
+    <Compile Include="Protocol\IridiumMasterClientProtocol.cs" />
+    <Compile Include="Protocol\IridiumMasterRouter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
