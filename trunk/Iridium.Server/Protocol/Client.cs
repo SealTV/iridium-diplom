@@ -1,39 +1,51 @@
-﻿using System.Net.Sockets;
-using System.Text;
+﻿using System;
+using System.IO;
+using System.Net.Sockets;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading.Tasks;
 
 using Iridiun.Utils.Data;
 
 namespace Iridium.Server
 {
-    public class Client
+    public class Client : IDisposable
     {
         // Client  socket.
-        private Socket socket;        
-        // Size of receive buffer.
-        public const int BufferSize = 1024;
-        // Receive buffer.
-        public byte[] buffer = new byte[BufferSize];
-        // Received data string.
-        public StringBuilder sb = new StringBuilder();  
+        private Socket socket;
+
+        readonly BinaryFormatter formater = new BinaryFormatter();
+
+        private readonly NetworkStream inputStream;
+        private readonly NetworkStream outputStream;
 
         public Client(Socket socket)
         {
             this.socket = socket;
+            this.inputStream = new NetworkStream(socket);
+            this.outputStream = new NetworkStream(socket);
         }
 
-        public bool TryBeginOperation()
+        public void SendPacket(Packet packet)
         {
-            return false;
+            this.formater.Serialize(this.outputStream, packet);
         }
 
-        public void PushSendPacket(Packet packet)
+        public Task<Packet> ReceiveNextPacket()
         {
-
+            return Task<Packet>.Factory.StartNew(() => this.formater.Deserialize(this.inputStream) as Packet);
         }
 
-        public void EndOperation()
+        public void Disconnect()
         {
-            throw new System.NotImplementedException();
+            this.socket.Shutdown(SocketShutdown.Both);
+            this.socket.Dispose();
+        }
+
+        public void Dispose()
+        {
+            this.socket.Dispose();
+            this.inputStream.Dispose();
+            this.outputStream.Dispose();
         }
     }
 }

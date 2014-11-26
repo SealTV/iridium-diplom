@@ -31,6 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Iridium.Server.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="MongoDB.Driver">
       <HintPath>..\packages\MongoDB.Driver.1.0.3744.30075\lib\net40\MongoDB.Driver.dll</HintPath>
@@ -54,7 +57,6 @@
     <Compile Include="PacketHandlers\FromClient\PingPacketHandler.cs" />
     <Compile Include="PacketHandlers\PacketsHandler.cs" />
     <Compile Include="Protocol\IridiumMasterClientProtocol.cs" />
-    <Compile Include="Protocol\IridiumMasterRouter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
