@@ -9,23 +9,23 @@ namespace Iridium.Server
 {
     public class IridiumGameMasterServer
     {
-        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         private bool isBegin;
-        private Socket listener;
-        private IPEndPoint ipEndPoint;
+        private readonly Socket listener;
+        private readonly IPEndPoint ipEndPoint;
         private Task task;
 
-        private BlockingCollection<Client> clients; 
+        private readonly ConcurrentQueue<Client> clients; 
         // Thread signal.
-        public static ManualResetEvent allDone;
+        private static ManualResetEvent allDone;
 
         public IridiumGameMasterServer()
         {
             this.ipEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 27001);
             this.listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             allDone = new ManualResetEvent(false);
-            clients = new BlockingCollection<Client>();
+            clients = new ConcurrentQueue<Client>();
         }
 
         public void Start()
@@ -78,14 +78,19 @@ namespace Iridium.Server
             if (socket != null)
             {
                 var client = new Client(socket.EndAccept(ar));
-                this.clients.Add(client);
+                this.clients.Enqueue(client);
                 Logger.Trace("End accept new tcp Client.");
             }
         }
-
-        private void Disconnect(Client client)
+        
+        public void SetClient(Client client)
         {
+            this.clients.Enqueue(client);
+        }
 
+        public void Disconnect(Client client)
+        {
+            client.Disconnect();
         }
     }
 }

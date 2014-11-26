@@ -6,6 +6,7 @@ namespace Iridiun.Utils.Data
     public abstract class Packet
     {
         public readonly PacketType PacketType;
+
         protected Packet(PacketType packetType)
         {
             this.PacketType = packetType;

@@ -1,5 +1,7 @@
 ﻿using System;
 
+using Iridium.Server.Protocol;
+
 namespace Iridium.Server
 {
     class Program
@@ -9,6 +11,8 @@ namespace Iridium.Server
         static void Main(string[] args)
         {
             IridiumGameMasterServer masterServer = new IridiumGameMasterServer();
+            IridiumMasterClientProtocol.Init(masterServer);
+
             masterServer.Start();
 
             Console.ReadKey();
