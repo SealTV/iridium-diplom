@@ -1,18 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iridium.Server", "Iridium.Server\Iridium.Server.csproj", "{E468FB39-DD55-490B-87AC-E8C651F82C10}"
-	ProjectSection(ProjectDependencies) = postProject
-		{FA1C1613-FDD3-415B-B2BE-3C84DD3700CB} = {FA1C1613-FDD3-415B-B2BE-3C84DD3700CB}
-	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iridium.Client", "Iridium.Client\Iridium.Client.csproj", "{5BB5875F-BBDA-15CF-0E61-699BCFA99BCC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iridium.Utils", "Iridium.Utils\Iridium.Utils.csproj", "{23B844BD-9137-46E6-B683-8060F3E28924}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iridium.DewelopClient", "DewelopClient\Iridium.DewelopClient.csproj", "{4DFD0E98-FF1B-43BE-9840-F2A58D4F63A7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iridiun.Utils", "Iridiun.Utils\Iridiun.Utils.csproj", "{FA1C1613-FDD3-415B-B2BE-3C84DD3700CB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iridium.DevelopClient", "Iridium.DevelopClient\Iridium.DevelopClient.csproj", "{B1DF9043-D67A-48DF-A732-21B94C6F1CB1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,18 +17,14 @@ Global
 		{E468FB39-DD55-490B-87AC-E8C651F82C10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E468FB39-DD55-490B-87AC-E8C651F82C10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E468FB39-DD55-490B-87AC-E8C651F82C10}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5BB5875F-BBDA-15CF-0E61-699BCFA99BCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5BB5875F-BBDA-15CF-0E61-699BCFA99BCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5BB5875F-BBDA-15CF-0E61-699BCFA99BCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5BB5875F-BBDA-15CF-0E61-699BCFA99BCC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4DFD0E98-FF1B-43BE-9840-F2A58D4F63A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4DFD0E98-FF1B-43BE-9840-F2A58D4F63A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4DFD0E98-FF1B-43BE-9840-F2A58D4F63A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4DFD0E98-FF1B-43BE-9840-F2A58D4F63A7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FA1C1613-FDD3-415B-B2BE-3C84DD3700CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FA1C1613-FDD3-415B-B2BE-3C84DD3700CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FA1C1613-FDD3-415B-B2BE-3C84DD3700CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FA1C1613-FDD3-415B-B2BE-3C84DD3700CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23B844BD-9137-46E6-B683-8060F3E28924}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23B844BD-9137-46E6-B683-8060F3E28924}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23B844BD-9137-46E6-B683-8060F3E28924}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23B844BD-9137-46E6-B683-8060F3E28924}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1DF9043-D67A-48DF-A732-21B94C6F1CB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1DF9043-D67A-48DF-A732-21B94C6F1CB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1DF9043-D67A-48DF-A732-21B94C6F1CB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1DF9043-D67A-48DF-A732-21B94C6F1CB1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
