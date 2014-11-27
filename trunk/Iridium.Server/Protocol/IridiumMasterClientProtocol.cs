@@ -8,20 +8,20 @@
     public class IridiumMasterClientProtocol
     {
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
-        private static IridiumMasterClientProtocol iridiumMasterClientProtocol;
+        private readonly IridiumGameMasterServer IridiumGameMasterServer;
 
+        public static IridiumMasterClientProtocol ClientProtocolHandler { get; private set; }
 
         public static void Init(IridiumGameMasterServer iridiumGameMasterServer)
         {
-            iridiumMasterClientProtocol = new IridiumMasterClientProtocol(iridiumGameMasterServer);
+            ClientProtocolHandler = new IridiumMasterClientProtocol(iridiumGameMasterServer);
         }
 
         public static void Stop()
         {
-            iridiumMasterClientProtocol = null;
+            ClientProtocolHandler = null;
         }
 
-        private readonly IridiumGameMasterServer IridiumGameMasterServer;
 
         private IridiumMasterClientProtocol(IridiumGameMasterServer iridiumGameMasterServer)
         {

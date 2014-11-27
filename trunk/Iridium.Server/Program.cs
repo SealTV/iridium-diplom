@@ -8,7 +8,7 @@ namespace Iridium.Server
     {
         private static NLog.Logger s_logger = NLog.LogManager.GetCurrentClassLogger();
         
-        static void Main(string[] args)
+        static void Main()
         {
             IridiumGameMasterServer masterServer = new IridiumGameMasterServer();
             IridiumMasterClientProtocol.Init(masterServer);

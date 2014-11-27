@@ -4,7 +4,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 using Iridium.Utils.Data;
 
-namespace Iridium.Server
+namespace Iridium.Server.Protocol
 {
     public class Client : IDisposable
     {
@@ -46,6 +46,9 @@ namespace Iridium.Server
 
         public void Disconnect()
         {
+            this.socket.Shutdown(SocketShutdown.Both);
+            this.socket.Disconnect(false);
+
             this.Dispose();
         }
 
