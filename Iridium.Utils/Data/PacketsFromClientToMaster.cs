@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Iridiun.Utils.Data
+namespace Iridium.Utils.Data
 {
     [Serializable]
     public class Ping : Packet

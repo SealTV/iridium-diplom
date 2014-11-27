@@ -1,51 +1,58 @@
 ﻿using System;
-using System.IO;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
-
-using Iridiun.Utils.Data;
+using Iridium.Utils.Data;
 
 namespace Iridium.Server
 {
     public class Client : IDisposable
     {
         // Client  socket.
-        private Socket socket;
+        private readonly Socket socket;
 
         readonly BinaryFormatter formater = new BinaryFormatter();
 
-        private readonly NetworkStream inputStream;
-        private readonly NetworkStream outputStream;
+        public bool isLogin;
+
+        private readonly NetworkStream workStream;
 
         public Client(Socket socket)
         {
             this.socket = socket;
-            this.inputStream = new NetworkStream(socket);
-            this.outputStream = new NetworkStream(socket);
+            this.workStream = new NetworkStream(socket);
         }
 
         public void SendPacket(Packet packet)
         {
-            this.formater.Serialize(this.outputStream, packet);
+            this.formater.Serialize(this.workStream, packet);
+        }
+
+        public bool TryGetPacket(out Packet packet)
+        {
+            if (workStream.DataAvailable)
+            {
+                packet = this.formater.Deserialize(this.workStream) as Packet;
+                return true;
+            }
+            packet = null;
+            return false;
         }
 
         public Task<Packet> ReceiveNextPacket()
         {
-            return Task<Packet>.Factory.StartNew(() => this.formater.Deserialize(this.inputStream) as Packet);
+            return Task<Packet>.Factory.StartNew(() => this.formater.Deserialize(this.workStream) as Packet);
         }
 
         public void Disconnect()
         {
-            this.socket.Shutdown(SocketShutdown.Both);
-            this.socket.Dispose();
+            this.Dispose();
         }
 
         public void Dispose()
         {
+            this.workStream.Dispose();
             this.socket.Dispose();
-            this.inputStream.Dispose();
-            this.outputStream.Dispose();
         }
     }
 }

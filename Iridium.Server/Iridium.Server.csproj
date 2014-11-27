@@ -74,9 +74,9 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Iridiun.Utils\Iridiun.Utils.csproj">
-      <Project>{fa1c1613-fdd3-415b-b2be-3c84dd3700cb}</Project>
-      <Name>Iridiun.Utils</Name>
+    <ProjectReference Include="..\Iridium.Utils\Iridium.Utils.csproj">
+      <Project>{23B844BD-9137-46E6-B683-8060F3E28924}</Project>
+      <Name>Iridium.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

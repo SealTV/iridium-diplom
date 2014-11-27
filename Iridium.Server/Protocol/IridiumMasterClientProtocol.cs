@@ -1,11 +1,10 @@
-﻿using System;
-
-using Iridiun.Utils.Data;
-
-using Iridium.Server.PacketHandlers;
-using Iridium.Server.PacketHandlers.FromClient;
-namespace Iridium.Server.Protocol
+﻿namespace Iridium.Server.Protocol
 {
+    using System;
+    using Utils.Data;
+    using PacketHandlers;
+    using PacketHandlers.FromClient;
+
     public class IridiumMasterClientProtocol
     {
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
@@ -37,14 +36,14 @@ namespace Iridium.Server.Protocol
                 if (packet == null)
                 {
                     logger.Warn("Received packet is null! Error!!!");
-                    IridiumGameMasterServer.SetClient(client);
+                    IridiumGameMasterServer.AddClient(client);
                     return;
                 }
                 var packetHandler = GetPacketHandlerFor(packet);
                 if (packetHandler == null)
                 {
                     logger.Warn("Packet handler for packet type {0} not found! 404 O_o", packet.PacketType.ToString());
-                    IridiumGameMasterServer.SetClient(client);
+                    IridiumGameMasterServer.AddClient(client);
                     return;                    
                 }
                 packetHandler.ProcessPacket(packet);
@@ -54,7 +53,7 @@ namespace Iridium.Server.Protocol
                 logger.Error(e);
                 IridiumGameMasterServer.Disconnect(client);
             }
-            IridiumGameMasterServer.SetClient(client);
+            IridiumGameMasterServer.AddClient(client);
         }
 
 

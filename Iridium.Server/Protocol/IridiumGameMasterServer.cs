@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
+using Iridium.Utils.Data;
 
 namespace Iridium.Server
 {
@@ -11,10 +12,11 @@ namespace Iridium.Server
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private bool isBegin;
+        private bool isWorking;
         private readonly Socket listener;
         private readonly IPEndPoint ipEndPoint;
-        private Task task;
+        private Task waitClientTask;
+        private Task clientWorkerTask;
 
         private readonly ConcurrentQueue<Client> clients; 
         // Thread signal.
@@ -22,6 +24,7 @@ namespace Iridium.Server
 
         public IridiumGameMasterServer()
         {
+            this.clients = new ConcurrentQueue<Client>();
             this.ipEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 27001);
             this.listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             allDone = new ManualResetEvent(false);
@@ -30,31 +33,32 @@ namespace Iridium.Server
 
         public void Start()
         {
-            this.isBegin = true;
+            this.isWorking = true;
             Logger.Trace("Sever started. Wait new connections.");
-            task = new Task(Begin);
-            task.Start();
+
+            this.clientWorkerTask = Task.Factory.StartNew(this.ClientWorker);
+            this.waitClientTask   = Task.Factory.StartNew(this.WaitClient);
         }
 
         public void Stop()
         {
             Logger.Trace("Sever stoped.");
-            this.isBegin = false;
-            Logger.Trace(task.Status);
+            this.isWorking = false;
+            Logger.Trace(this.waitClientTask.Status);
         }
 
-        private void Begin()
+        private void WaitClient()
         {
             try
             {
                 this.listener.Bind(this.ipEndPoint);
                 this.listener.Listen(200);
 
-                while (this.isBegin)
+                while (this.isWorking)
                 {
                     // Set the event to nonsignaled state.
                     allDone.Reset();
-                    this.listener.BeginAccept(AcceptCallback, this.listener);
+                    this.listener.BeginAccept(new AsyncCallback(AcceptCallback), this.listener);
 
                     // Wait until a connection is made before continuing.
                     allDone.WaitOne();
@@ -82,8 +86,27 @@ namespace Iridium.Server
                 Logger.Trace("End accept new tcp Client.");
             }
         }
-        
-        public void SetClient(Client client)
+
+        private void ClientWorker()
+        {
+            while (this.isWorking)
+            {
+                Client workClient;
+                Packet workPacket;
+                if (clients.TryDequeue(out workClient))
+                {
+                    if (workClient.TryGetPacket(out workPacket))
+                    {
+                        
+                    }
+                    else
+                    {
+                        this.AddClient(workClient);
+                    }
+                }
+            }
+        }
+        public void AddClient(Client client)
         {
             this.clients.Enqueue(client);
         }

@@ -1,4 +1,4 @@
-﻿using Iridiun.Utils.Data;
+﻿using Iridium.Utils.Data;
 
 using NLog;
 
