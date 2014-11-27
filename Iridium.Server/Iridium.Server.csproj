@@ -50,8 +50,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enums.cs" />
     <Compile Include="Protocol\Client.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="Protocol\Destination.cs" />
     <Compile Include="Protocol\IridiumGameMasterServer.cs" />
     <Compile Include="PacketHandlers\FromClient\PingPacketHandler.cs" />
