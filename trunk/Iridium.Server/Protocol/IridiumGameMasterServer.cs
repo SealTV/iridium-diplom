@@ -21,15 +21,12 @@ namespace Iridium.Server.Protocol
         private Task clientsManagerTask;
 
         private readonly ConcurrentQueue<Client> clients; 
-        // Thread signal.
-        private static ManualResetEvent allDone;
 
         public IridiumGameMasterServer()
         {
             this.clients = new ConcurrentQueue<Client>();
             this.ipEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 27001);
             this.listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            allDone = new ManualResetEvent(false);
             clients = new ConcurrentQueue<Client>();
         }
 
@@ -43,6 +40,76 @@ namespace Iridium.Server.Protocol
 
             BeginAcceptNewclient();
             this.clientsManagerTask = Task.Factory.StartNew(this.ManagedClientsPackets);
+        }
+
+        private void BeginAcceptNewclient()
+        {
+            if(!this.isWorking)
+                return;
+            this.listener.BeginAccept(EndAcceptCallback, this.listener);
+        }
+
+        private void EndAcceptCallback(IAsyncResult ar)
+        {
+            Logger.Trace("Accept new tcp Client.");
+            var socket = (Socket) ar.AsyncState;
+            try
+            {
+                var clientSocket = socket.EndAccept(ar);
+                BeginAcceptNewclient();
+
+                var client = new Client(clientSocket);
+
+                HandleNewClient(client);
+
+                Logger.Trace("End accept new tcp Client.");
+            }
+            catch (SocketException e)
+            {
+                Logger.Info(e);
+            }
+        }
+
+        private void HandleNewClient(Client client)
+        {
+            client.SendPacket(new ServerInfo
+            {
+               ClientId = client.SessionId,
+            });
+            this.clients.Enqueue(client);
+        }
+
+        private void ManagedClientsPackets()
+        {
+            while (this.isWorking)
+            {
+                Thread.Sleep(1000);
+
+                Client client;
+                Logger.Info("{0} Connected!");
+                if (!clients.TryDequeue(out client)) 
+                    continue;
+                Packet receivedPacket;
+                if (client.TryGetPacket(out receivedPacket))
+                {
+                    IridiumMasterClientProtocol.ClientProtocolHandler.HandleNextClient(client, receivedPacket);
+                }
+                else
+                {
+                    this.clients.Enqueue(client);
+                }
+
+            }
+        }
+
+        public void AddClient(Client client)
+        {
+            this.clients.Enqueue(client);
+        }
+
+        public void Disconnect(Client client)
+        {
+            client.Disconnect();
         }
 
         public void Stop()
@@ -69,103 +136,5 @@ namespace Iridium.Server.Protocol
             }
         }
 
-        private void BeginAcceptNewclient()
-        {
-            if(!this.isWorking)
-                return;
-            this.listener.BeginAccept(AcceptNewClientCallback, this.listener);
-        }
-
-        private void AcceptNewClientCallback(IAsyncResult ar)
-        {
-            Logger.Trace("Accept new tcp Client.");
-            var socket = (Socket) ar.AsyncState;
-            try
-            {
-                Socket clientSocket = socket.EndAccept(ar);
-                BeginAcceptNewclient();
-
-                var client = new Client(clientSocket);
-                this.clients.Enqueue(client);
-                Logger.Trace("End accept new tcp Client.");
-            }
-            catch (SocketException e)
-            {
-                Logger.Info(e);
-            }
-        }
-
-        // TODO test async callback.... remove next two methods.
-        #region Methods for cleaning
-        private void WaitClient()
-        {
-            try
-            {
-                this.listener.Bind(this.ipEndPoint);
-                this.listener.Listen(200);
-
-                while (this.isWorking)
-                {
-                    // Set the event to nonsignaled state.
-                    allDone.Reset();
-                    this.listener.BeginAccept(AcceptCallback, this.listener);
-
-                    // Wait until a connection is made before continuing.
-                    allDone.WaitOne();
-                }
-                this.listener.Close(100);
-            }
-            catch (SocketException e)
-            {
-                Logger.Error("{0}", e);
-            }
-        }
-        private void AcceptCallback(IAsyncResult ar)
-        {
-            // Signal the main thread to continue.
-            allDone.Set();
-            
-            Logger.Trace("Accept new tcp Client.");
-            var socket = ar.AsyncState as Socket;
-
-            if (socket == null) 
-                return;
-            var client = new Client(socket.EndAccept(ar));
-            this.clients.Enqueue(client);
-            Logger.Trace("End accept new tcp Client.");
-        }
-        #endregion
-
-        private void ManagedClientsPackets()
-        {
-            while (this.isWorking)
-            {
-                Thread.Sleep(1000);
-
-                Client client;
-                Logger.Info("{0} Connected!");
-                if (!clients.TryDequeue(out client)) 
-                    continue;
-                Packet receivedPacket;
-                if (client.TryGetPacket(out receivedPacket))
-                {
-                    IridiumMasterClientProtocol.ClientProtocolHandler.HandleNextClient(client, receivedPacket);
-                }
-                else
-                {
-                    this.clients.Enqueue(client);
-                }
-
-            }
-        }
-        public void AddClient(Client client)
-        {
-            this.clients.Enqueue(client);
-        }
-
-        public void Disconnect(Client client)
-        {
-            client.Disconnect();
-        }
     }
 }

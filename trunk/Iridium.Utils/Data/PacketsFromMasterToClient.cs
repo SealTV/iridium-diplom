@@ -18,12 +18,11 @@ namespace Iridium.Utils.Data
     {
         public int ServerVersion { get; private set; }
 
-        public Guid ClientId { get; private set; }
+        public Guid ClientId { get; set; }
 
         public ServerInfo() : base(PacketType.ServerInfo)
         {
             ServerVersion = 1;
-            ClientId = Guid.NewGuid();
         }
     }
 }
