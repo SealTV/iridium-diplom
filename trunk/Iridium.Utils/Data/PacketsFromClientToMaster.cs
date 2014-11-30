@@ -7,9 +7,14 @@ namespace Iridium.Utils.Data
     {
         private readonly int ping;
 
-        public Ping(PacketType packetType, Ping ping) : base(packetType)
+        public int Value
         {
-            this.ping = ping.ping;
+            get { return this.ping; }
+        }
+
+        public Ping(int value) : base(PacketType.Ping)
+        {
+            this.ping = value;
         }
     }
 }

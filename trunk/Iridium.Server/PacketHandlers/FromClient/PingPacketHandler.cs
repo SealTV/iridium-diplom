@@ -14,6 +14,8 @@ namespace Iridium.Server.PacketHandlers.FromClient
             {
                 logger.Error("Cannot cast packet to Ping packet type.");
             }
+
+            logger.Info("Ping value = {0}", ping.Value);
         }
     }
 }

@@ -28,11 +28,11 @@
             this.IridiumGameMasterServer = iridiumGameMasterServer;
         }
 
-        public async void HandleNextClient(Client client)
+        public async void HandleNextClient(Client client, Packet packet)
         {
             try
             {
-                Packet packet = await client.ReceiveNextPacket();
+                //Packet packet = await client.ReceiveNextPacket();
                 if (packet == null)
                 {
                     logger.Warn("Received packet is null! Error!!!");

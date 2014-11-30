@@ -18,6 +18,7 @@ namespace Iridium.Utils.Data
         ClientPacket,
         MasterPacket,
         Ping,
-        Pong
+        Pong,
+        ServerInfo
     }
 }

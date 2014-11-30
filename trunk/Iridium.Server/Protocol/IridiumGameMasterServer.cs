@@ -38,7 +38,9 @@ namespace Iridium.Server.Protocol
             this.isWorking = true;
             Logger.Trace("Sever started. Wait new connections.");
 
-            //this.acceptNewClientsTask = Task.Factory.StartNew(this.WaitClient);
+            this.listener.Bind(this.ipEndPoint);
+            this.listener.Listen(200);
+
             BeginAcceptNewclient();
             this.clientsManagerTask = Task.Factory.StartNew(this.ManagedClientsPackets);
         }
@@ -47,19 +49,15 @@ namespace Iridium.Server.Protocol
         {
             Logger.Trace("Sever stoped.");
             this.isWorking = false;
-            this.listener.Shutdown(SocketShutdown.Both);
-
-            this.listener.Close(10);
-
-            //Logger.Trace(this.acceptNewClientsTask.Status);
-            //try
-            //{
-            //    this.acceptNewClientsTask.Wait(new TimeSpan(0, 0, 10));
-            //}
-            //catch (Exception e)
-            //{
-            //    Logger.Warn(e);
-            //}
+            try
+            {
+                this.listener.Shutdown(SocketShutdown.Both);
+                this.listener.Close(10);
+            }
+            catch (SocketException e)
+            {
+                Logger.Warn(e);
+            }
             Logger.Trace(this.clientsManagerTask.Status);
             try
             {
@@ -82,12 +80,19 @@ namespace Iridium.Server.Protocol
         {
             Logger.Trace("Accept new tcp Client.");
             var socket = (Socket) ar.AsyncState;
-            var clientSocket = socket.EndAccept(ar);
-            BeginAcceptNewclient();
+            try
+            {
+                Socket clientSocket = socket.EndAccept(ar);
+                BeginAcceptNewclient();
 
-            var client = new Client(clientSocket);
-            this.clients.Enqueue(client);
-            Logger.Trace("End accept new tcp Client.");
+                var client = new Client(clientSocket);
+                this.clients.Enqueue(client);
+                Logger.Trace("End accept new tcp Client.");
+            }
+            catch (SocketException e)
+            {
+                Logger.Info(e);
+            }
         }
 
         // TODO test async callback.... remove next two methods.
@@ -135,18 +140,22 @@ namespace Iridium.Server.Protocol
         {
             while (this.isWorking)
             {
+                Thread.Sleep(1000);
+
                 Client client;
+                Logger.Info("{0} Connected!");
                 if (!clients.TryDequeue(out client)) 
                     continue;
                 Packet receivedPacket;
                 if (client.TryGetPacket(out receivedPacket))
                 {
-                    IridiumMasterClientProtocol.ClientProtocolHandler.HandleNextClient(client);
+                    IridiumMasterClientProtocol.ClientProtocolHandler.HandleNextClient(client, receivedPacket);
                 }
                 else
                 {
                     this.clients.Enqueue(client);
                 }
+
             }
         }
         public void AddClient(Client client)
