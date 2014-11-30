@@ -1,6 +1,7 @@
 ﻿using System;
 
 using Iridium.Server.Protocol;
+using IridiumDatabase;
 
 namespace Iridium.Server
 {
@@ -10,6 +11,13 @@ namespace Iridium.Server
         
         static void Main()
         {
+
+
+            using (var db = new iridium_master_serverDB())
+            {
+                
+            }
+            
             IridiumGameMasterServer masterServer = new IridiumGameMasterServer();
             IridiumMasterClientProtocol.Init(masterServer);
 

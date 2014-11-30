@@ -35,8 +35,12 @@
     <StartupObject>Iridium.Server.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MongoDB.Driver">
-      <HintPath>..\packages\MongoDB.Driver.1.0.3744.30075\lib\net40\MongoDB.Driver.dll</HintPath>
+    <Reference Include="linq2db">
+      <HintPath>..\packages\linq2db.1.0.6\lib\net45\linq2db.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.9.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MySql.Data.6.9.5\lib\net45\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
@@ -50,6 +54,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LinqToDB.Templates\MySql.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MySql.tt</DependentUpon>
+    </Compile>
     <Compile Include="Protocol\Client.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Protocol\Destination.cs" />
@@ -62,9 +71,36 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Content Include="LinqToDB.Templates\CopyMe.MySql.tt.txt" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="LinqToDB.Templates\!ReadMe.LinqToDB.md" />
+    <None Include="LinqToDB.Templates\DataAnnotations.ttinclude" />
+    <None Include="LinqToDB.Templates\DataModel.ttinclude" />
+    <None Include="LinqToDB.Templates\EditableObject.ttinclude" />
+    <None Include="LinqToDB.Templates\LinqToDB.Access.ttinclude" />
+    <None Include="LinqToDB.Templates\LinqToDB.DB2.ttinclude" />
+    <None Include="LinqToDB.Templates\LinqToDB.Firebird.ttinclude" />
+    <None Include="LinqToDB.Templates\LinqToDB.Informix.ttinclude" />
+    <None Include="LinqToDB.Templates\LinqToDB.MySql.Tools.ttinclude" />
+    <None Include="LinqToDB.Templates\LinqToDB.MySql.ttinclude" />
+    <None Include="LinqToDB.Templates\LinqToDB.Oracle.ttinclude" />
+    <None Include="LinqToDB.Templates\LinqToDB.PostgreSQL.ttinclude" />
+    <None Include="LinqToDB.Templates\LinqToDB.SqlCe.ttinclude" />
+    <None Include="LinqToDB.Templates\LinqToDB.SQLite.ttinclude" />
+    <None Include="LinqToDB.Templates\LinqToDB.SqlServer.ttinclude" />
+    <None Include="LinqToDB.Templates\LinqToDB.Sybase.ttinclude" />
+    <None Include="LinqToDB.Templates\LinqToDB.Tools.ttinclude" />
+    <None Include="LinqToDB.Templates\LinqToDB.ttinclude" />
+    <None Include="LinqToDB.Templates\MySql.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MySql.generated.cs</LastGenOutput>
+    </None>
+    <None Include="LinqToDB.Templates\NotifyPropertyChanged.ttinclude" />
+    <None Include="LinqToDB.Templates\PluralizationService.ttinclude" />
+    <None Include="LinqToDB.Templates\T4Model.ttinclude" />
+    <None Include="LinqToDB.Templates\Validation.ttinclude" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -78,6 +114,9 @@
       <Project>{23B844BD-9137-46E6-B683-8060F3E28924}</Project>
       <Name>Iridium.Utils</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

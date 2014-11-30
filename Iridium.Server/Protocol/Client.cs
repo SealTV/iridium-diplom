@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
@@ -11,28 +12,32 @@ namespace Iridium.Server.Protocol
         // Client  socket.
         private readonly Socket socket;
 
-        readonly BinaryFormatter formater = new BinaryFormatter();
+        readonly BinaryFormatter formatter = new BinaryFormatter();
 
-        public bool isLogin;
+        private readonly NetworkStream inputStream;
+        private readonly NetworkStream outputStream;
 
-        private readonly NetworkStream workStream;
+        public Guid SessionId { get; private set; }
 
         public Client(Socket socket)
         {
             this.socket = socket;
-            this.workStream = new NetworkStream(socket);
+            this.inputStream = new NetworkStream(socket, FileAccess.Read);
+            this.outputStream = new NetworkStream(socket, FileAccess.Write);
+
+            this.SessionId = Guid.NewGuid();
         }
 
         public void SendPacket(Packet packet)
         {
-            this.formater.Serialize(this.workStream, packet);
+            this.formatter.Serialize(this.outputStream, packet);
         }
 
         public bool TryGetPacket(out Packet packet)
         {
-            if (workStream.DataAvailable)
+            if (this.inputStream.DataAvailable)
             {
-                packet = this.formater.Deserialize(this.workStream) as Packet;
+                packet = this.formatter.Deserialize(this.inputStream) as Packet;
                 return true;
             }
             packet = null;
@@ -41,7 +46,7 @@ namespace Iridium.Server.Protocol
 
         public Task<Packet> ReceiveNextPacket()
         {
-            return Task<Packet>.Factory.StartNew(() => this.formater.Deserialize(this.workStream) as Packet);
+            return Task<Packet>.Factory.StartNew(() => this.formatter.Deserialize(this.inputStream) as Packet);
         }
 
         public void Disconnect()
@@ -54,7 +59,8 @@ namespace Iridium.Server.Protocol
 
         public void Dispose()
         {
-            this.workStream.Dispose();
+            this.inputStream.Dispose();
+            this.outputStream.Dispose();
             this.socket.Dispose();
         }
     }
