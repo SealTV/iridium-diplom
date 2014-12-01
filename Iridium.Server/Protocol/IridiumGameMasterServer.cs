@@ -51,23 +51,29 @@ namespace Iridium.Server.Protocol
 
         private void EndAcceptCallback(IAsyncResult ar)
         {
-            Logger.Trace("Accept new tcp Client.");
             var socket = (Socket) ar.AsyncState;
+            Socket clientSocket = null;
             try
             {
-                var clientSocket = socket.EndAccept(ar);
-                BeginAcceptNewclient();
-
-                var client = new Client(clientSocket);
-
-                HandleNewClient(client);
-
-                Logger.Trace("End accept new tcp Client.");
+                clientSocket = socket.EndAccept(ar);
+                Logger.Trace("Accept new tcp Client.");
             }
-            catch (SocketException e)
+            catch (Exception e)
             {
-                Logger.Info(e);
+                //Logger.Info(e);
             }
+
+            if(clientSocket == null)
+                return;
+
+            BeginAcceptNewclient();
+
+            var client = new Client(clientSocket);
+
+            HandleNewClient(client);
+
+            Logger.Trace("End accept new tcp Client.");
+
         }
 
         private void HandleNewClient(Client client)
@@ -114,11 +120,10 @@ namespace Iridium.Server.Protocol
 
         public void Stop()
         {
-            Logger.Trace("Sever stoped.");
+            Logger.Trace("Stat stoping server.");
             this.isWorking = false;
             try
             {
-                this.listener.Shutdown(SocketShutdown.Both);
                 this.listener.Close(10);
             }
             catch (SocketException e)
@@ -134,6 +139,7 @@ namespace Iridium.Server.Protocol
             {
                 Logger.Warn(e);
             }
+            Logger.Trace("Sever stoped.");
         }
 
     }
