@@ -44,9 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsyncClient.cs" />
     <Compile Include="Data\Packet.cs" />
     <Compile Include="Data\PacketsFromClientToMaster.cs" />
     <Compile Include="Data\PacketsFromMasterToClient.cs" />
+    <Compile Include="NetworkClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

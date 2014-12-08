@@ -59,12 +59,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MySql.tt</DependentUpon>
     </Compile>
-    <Compile Include="Protocol\Client.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Protocol\Destination.cs" />
     <Compile Include="Protocol\IridiumGameMasterServer.cs" />
     <Compile Include="PacketHandlers\FromClient\PingPacketHandler.cs" />
-    <Compile Include="PacketHandlers\PacketsHandler.cs" />
+    <Compile Include="PacketHandlers\PacketHandler.cs" />
     <Compile Include="Protocol\IridiumMasterClientProtocol.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
