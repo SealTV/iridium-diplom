@@ -1,14 +1,22 @@
-﻿using Iridium.Utils.Data;
-
-using NLog;
-
-namespace Iridium.Server.PacketHandlers.FromClient
+﻿namespace Iridium.Server.PacketHandlers.FromClient
 {
-    public class PingPacketHandler : PacketsHandler
+    using NLog;
+    using Protocol;
+    using Utils;
+    using Utils.Data;
+
+    public class PingPacketHandler : PacketHandler
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
-        public override void ProcessPacket(Packet packet)
+
+        public PingPacketHandler(IridiumGameMasterServer masterServer) : base()
+        {}
+
+        public override bool ProcessPacket(NetworkClient client, Packet packet)
         {
+            this.Client = client;
+
+
             Ping ping = packet as Ping;
             if (packet == null)
             {
@@ -16,6 +24,8 @@ namespace Iridium.Server.PacketHandlers.FromClient
             }
 
             logger.Info("Ping value = {0}", ping.Value);
+
+            return true;
         }
     }
 }

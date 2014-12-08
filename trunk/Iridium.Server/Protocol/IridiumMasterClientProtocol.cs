@@ -1,6 +1,7 @@
 ﻿namespace Iridium.Server.Protocol
 {
     using System;
+    using Utils;
     using Utils.Data;
     using PacketHandlers;
     using PacketHandlers.FromClient;
@@ -28,11 +29,11 @@
             this.IridiumGameMasterServer = iridiumGameMasterServer;
         }
 
-        public async void HandleNextClient(Client client, Packet packet)
+        public async void HandleNextClient(NetworkClient client)
         {
             try
             {
-                //Packet packet = await client.ReceiveNextPacket();
+                Packet packet = await client.ReadNextPacketAsync();
                 if (packet == null)
                 {
                     logger.Warn("Received packet is null! Error!!!");
@@ -46,22 +47,24 @@
                     IridiumGameMasterServer.AddClient(client);
                     return;                    
                 }
-                packetHandler.ProcessPacket(packet);
+                if (packetHandler.ProcessPacket(client, packet))
+                    IridiumGameMasterServer.AddClient(client);
+                else
+                    client.Disconnect();
             }
             catch (Exception e)
             {
                 logger.Error(e);
                 IridiumGameMasterServer.Disconnect(client);
             }
-            IridiumGameMasterServer.AddClient(client);
         }
 
 
-        private PacketsHandler GetPacketHandlerFor(Packet packet)
+        private PacketHandler GetPacketHandlerFor(Packet packet)
         {
             switch (packet.PacketType)
             {
-                case PacketType.Ping: return new PingPacketHandler();
+                case PacketType.Ping: return new PingPacketHandler(this.IridiumGameMasterServer);
                 default: return null;
             }
         }

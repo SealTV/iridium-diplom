@@ -1,15 +1,15 @@
-﻿using System;
-using System.Net;
-using System.Net.Sockets;
-
-using System.Threading;
-using System.Threading.Tasks;
-using System.Collections.Concurrent;
-
-using Iridium.Utils.Data;
-
-namespace Iridium.Server.Protocol
+﻿namespace Iridium.Server.Protocol
 {
+    using System;
+    using System.Net;
+    using System.Net.Sockets;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Collections.Concurrent;
+
+    using Utils;
+    using Utils.Data;
+
     public class IridiumGameMasterServer
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
@@ -20,14 +20,14 @@ namespace Iridium.Server.Protocol
         //private Task acceptNewClientsTask;
         private Task clientsManagerTask;
 
-        private readonly ConcurrentQueue<Client> clients; 
+        private readonly ConcurrentQueue<NetworkClient> clients; 
 
         public IridiumGameMasterServer()
         {
-            this.clients = new ConcurrentQueue<Client>();
+            this.clients = new ConcurrentQueue<NetworkClient>();
             this.ipEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 27001);
             this.listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            clients = new ConcurrentQueue<Client>();
+            clients = new ConcurrentQueue<NetworkClient>();
         }
 
         public void Start()
@@ -68,7 +68,7 @@ namespace Iridium.Server.Protocol
 
             BeginAcceptNewclient();
 
-            var client = new Client(clientSocket);
+            var client = new NetworkClient(clientSocket);
 
             HandleNewClient(client);
 
@@ -76,7 +76,7 @@ namespace Iridium.Server.Protocol
 
         }
 
-        private void HandleNewClient(Client client)
+        private void HandleNewClient(NetworkClient client)
         {
             client.SendPacket(new ServerInfo
             {
@@ -91,29 +91,20 @@ namespace Iridium.Server.Protocol
             {
                 Thread.Sleep(1000);
 
-                Client client;
+                NetworkClient client;
                 Logger.Info("{0} Connected!");
                 if (!clients.TryDequeue(out client)) 
                     continue;
-                Packet receivedPacket;
-                if (client.TryGetPacket(out receivedPacket))
-                {
-                    IridiumMasterClientProtocol.ClientProtocolHandler.HandleNextClient(client, receivedPacket);
-                }
-                else
-                {
-                    this.clients.Enqueue(client);
-                }
-
+                IridiumMasterClientProtocol.ClientProtocolHandler.HandleNextClient(client);
             }
         }
 
-        public void AddClient(Client client)
+        public void AddClient(NetworkClient client)
         {
             this.clients.Enqueue(client);
         }
 
-        public void Disconnect(Client client)
+        public void Disconnect(NetworkClient client)
         {
             client.Disconnect();
         }

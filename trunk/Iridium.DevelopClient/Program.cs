@@ -4,6 +4,8 @@ using Iridium.Utils.Data;
 
 namespace Iridium.DevelopClient
 {
+    using Utils;
+
     class Program
     {
         static void Main(string[] args)
@@ -17,13 +19,13 @@ namespace Iridium.DevelopClient
                 {
 
                     Thread.Sleep(random.Next(100, 150));
-                    Client client = new Client(27001, "127.0.0.1");
-                    client.Connect();
-                    client.SendPacket(new Ping(10));
+                    NetworkClient networkClient = new NetworkClient(27001, "127.0.0.1");
+                    networkClient.Connect();
+                    networkClient.SendPacket(new Ping(10));
 
                     Thread.Sleep(1000);
 
-                    client.Disconnect();
+                    networkClient.Disconnect();
                 });
             }
 
