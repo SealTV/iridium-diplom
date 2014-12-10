@@ -60,6 +60,7 @@
       <DependentUpon>MySql.tt</DependentUpon>
     </Compile>
     <Compile Include="Enums.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Protocol\Destination.cs" />
     <Compile Include="Protocol\IridiumGameMasterServer.cs" />
     <Compile Include="PacketHandlers\FromClient\PingPacketHandler.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="Protocol\IridiumMasterClientProtocol.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\TestBuilderService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
