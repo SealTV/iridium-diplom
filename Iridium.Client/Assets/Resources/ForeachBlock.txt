@@ -1,0 +1,175 @@
+{
+	"up_field" : 
+	{
+		"height" : "1",
+		"width" : "2",
+		"pos_x" : "0",
+		"pos_y" : "0",
+		"name"  : "up",
+		"blocks" :
+		[
+			{
+				"position" : "0.0; 0.0",
+				"width" : "1",
+				"height" : "1",
+				"object" : "HighLeftUp",
+			},
+			{
+				"position" : "2.0; 0.0",
+				"width" : "1",
+				"height" : "1",
+				"object" : "HighMiddleUp",
+				"width_stretch" : "true"
+			},
+			{
+				"position" : "3.0; 0.0",
+				"width" : "1",
+				"height" : "1",
+				"object" : "HighRightUp",
+				"width_shift" : "true"
+			},
+			{
+				"position" : "0.0; 1.0",
+				"width" : "1",
+				"height" : "1",
+				"object" : "HighLeftCenter",
+				"height_stretch" : "true"
+			},
+			{
+				"position" : "2.0; 1.0",
+				"width" : "1",
+				"height" : "1",
+				"object" : "HighMiddleCenter",
+				"height_stretch" : "true",
+				"width_stretch" : "true"
+			},
+			{
+				"position" : "3.0; 1.0",
+				"width" : "1",
+				"height" : "1",
+				"object" : "HighRightCenter",
+				"height_stretch" : "true",
+				"width_shift" : "true"
+			},
+			{
+				"position" : "0.0; 2.0",
+				"width" : "1",
+				"height" : "1",
+				"object" : "HighLeftDown",
+				"height_shift" : "true"
+			},
+			{
+				"position" : "2.0; 2.0",
+				"width" : "1",
+				"height" : "1",
+				"object" : "HighMiddleDown",
+				"width_stretch" : "true",
+				"height_shift" : "true"
+			},
+			{
+				"position" : "3.0; 2.0",
+				"width" : "1",
+				"height" : "1",
+				"object" : "HighRightDown",
+				"height_shift" : "true",
+				"width_shift" : "true"
+			}		
+		]
+	}
+	"middle_field" : 
+	{
+		"height" : "1",
+		"width" : "0",
+		"pos_x" : "0",
+		"pos_y" : "-4",
+		"name" : "middle",
+		"blocks" :
+		[
+			{
+				"position" : "0.0; 0.0",
+				"width" : "1",
+				"height" : "1",
+				"object" : "Middle",
+				"height_stretch" : "true",
+				"width_stretch" : "true"
+			}
+		]
+	}
+	"down_field" : 
+	{
+		"height" : "2",
+		"width" : "1",
+		"pos_x" : "0",
+		"pos_y" : "-4",
+		"name"  : "down",
+		"blocks" :
+		[
+			{
+				"position" : "0.0; 0.0",
+				"width" : "1",
+				"height" : "1",
+				"object" : "HighLeftUp",
+			},
+			{
+				"position" : "2.0; 0.0",
+				"width" : "1",
+				"height" : "1",
+				"object" : "HighMiddleUp",
+				"width_stretch" : "true"
+			},
+			{
+				"position" : "3.0; 0.0",
+				"width" : "1",
+				"height" : "1",
+				"object" : "HighRightUp",
+				"width_shift" : "true"
+			},
+			{
+				"position" : "0.0; 1.0",
+				"width" : "1",
+				"height" : "1",
+				"object" : "HighLeftCenter",
+				"height_stretch" : "true"
+			},
+			{
+				"position" : "2.0; 1.0",
+				"width" : "1",
+				"height" : "1",
+				"object" : "HighMiddleCenter",
+				"height_stretch" : "true",
+				"width_stretch" : "true"
+			},
+			{
+				"position" : "3.0; 1.0",
+				"width" : "1",
+				"height" : "1",
+				"object" : "HighRightCenter",
+				"height_stretch" : "true",
+				"width_shift" : "true"
+			},
+			{
+				"position" : "0.0; 2.0",
+				"width" : "1",
+				"height" : "1",
+				"object" : "HighLeftDown",
+				"height_shift" : "true"
+			},
+			{
+				"position" : "2.0; 2.0",
+				"width" : "1",
+				"height" : "1",
+				"object" : "HighMiddleDown",
+				"width_stretch" : "true",
+				"height_shift" : "true"
+			},
+			{
+				"position" : "3.0; 2.0",
+				"width" : "1",
+				"height" : "1",
+				"object" : "HighRightDown",
+				"height_shift" : "true",
+				"width_shift" : "true"
+			}		
+		]
+	}
+}
