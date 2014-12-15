@@ -5,24 +5,127 @@ namespace Iridium.Utils.Data
     [Serializable]
     public class Pong : Packet
     {
-        public int Value { get; private set; }
+        private readonly int value;
+        public int Value { get { return this.value; }}
 
         public Pong(int value) : base(PacketType.Pong)
         {
-            this.Value = value;
+            this.value = value;
         }
     }
 
     [Serializable]
     public class ServerInfo : Packet
     {
-        public int ServerVersion { get; private set; }
+        private readonly int serverVersion;
+        public int ServerVersion { get { return this.serverVersion; } }
 
-        public Guid ClientId { get; set; }
+        private readonly Guid clientId;
+        public Guid ClientId { get { return this.clientId; } }
 
-        public ServerInfo() : base(PacketType.ServerInfo)
+        public ServerInfo(Guid clientId) : base(PacketType.ServerInfo)
         {
-            ServerVersion = 1;
+            this.serverVersion = 1;
+            this.clientId = clientId;
+        }
+    }
+
+
+    [Serializable]
+    public class GameList : Packet
+    {
+        private readonly int[] gamesId;
+        private int[] GamesId
+        {
+            get { return this.gamesId; }
+        }
+
+        public GameList(int[] gamesId) : base(PacketType.GameList)
+        {
+            this.gamesId = gamesId;
+        }
+    }
+
+    [Serializable]
+    public class GameLevels : Packet
+    {
+        private readonly int gameId;
+        public int GameId
+        {
+            get { return this.gameId; }
+        }
+
+        private readonly int[] levelsIds;
+        private int[] LevelsIds
+        {
+            get { return this.levelsIds; }
+        }
+
+        public GameLevels(int gameId, int[] levelsIds) : base(PacketType.GameLevels)
+        {
+            this.gameId = gameId;
+            this.levelsIds = levelsIds;
+        }
+    }
+
+    [Serializable]
+    public class LevelData : Packet
+    {
+        private readonly int gameId;
+        public int GameId
+        {
+            get { return this.gameId; }
+        }
+        
+        private readonly int levelId;
+        public int LevelId
+        {
+            get { return this.levelId; }
+        }
+
+        private readonly byte[] data;
+        public byte[] Data
+        {
+            get { return this.data; }
+        }
+
+
+
+        public LevelData(int gameId, int levelId, byte[] data) : base(PacketType.LevelData)
+        {
+            this.gameId = gameId;
+            this.levelId = levelId;
+            this.data = data;
+        }
+    }
+
+
+    [Serializable]
+    public class AlgorithmResult : Packet
+    {
+        private readonly int gameId;
+        public int GameId
+        {
+            get { return this.gameId; }
+        }
+
+        private readonly int levelId;
+        public int LevelId
+        {
+            get { return this.levelId; }
+        }
+
+        private readonly string message;
+        public string Message
+        {
+            get { return this.message; }
+        }
+
+        public AlgorithmResult(int gameId, int levelId, string message) : base(PacketType.AlgorithmResult)
+        {
+            this.gameId = gameId;
+            this.levelId = levelId;
+            this.message = message;
         }
     }
 }

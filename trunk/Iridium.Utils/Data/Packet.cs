@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace Iridium.Utils.Data
+﻿namespace Iridium.Utils.Data
 {
+    using System;
+
     [Serializable]
     public abstract class Packet
     {
@@ -15,10 +15,18 @@ namespace Iridium.Utils.Data
 
     public enum PacketType
     {
-        ClientPacket,
-        MasterPacket,
+        //From client packet types
         Ping,
+        ServerInfo,
+        GameAlgorithm,
+        GetGames,
+        GetLevels,
+        GetLevelData,
+      //From server packet types
         Pong,
-        ServerInfo
+        GameList,
+        GameLevels,
+        LevelData,
+        AlgorithmResult
     }
 }
