@@ -47,10 +47,7 @@
                     IridiumGameMasterServer.AddClient(client);
                     return;                    
                 }
-                if (packetHandler.ProcessPacket(client, packet))
-                    IridiumGameMasterServer.AddClient(client);
-                else
-                    client.Disconnect();
+                packetHandler.ProcessPacket();
             }
             catch (Exception e)
             {
@@ -70,15 +67,15 @@
             switch ((ClientPacketType) packet.PacketType)
             {
                 case ClientPacketType.Ping:
-                    return new PingPacketHandler(this.IridiumGameMasterServer);
+                    return new PingPacketHandler(this.IridiumGameMasterServer, packet);
                 case ClientPacketType.GetGames:
-                    return new GetGamesPacketHandler(this.IridiumGameMasterServer);
+                    return new GetGamesPacketHandler(this.IridiumGameMasterServer, packet);
                 case ClientPacketType.GetLevels:
-                    return new GetLevelsPacketHandler(this.IridiumGameMasterServer);
+                    return new GetLevelsPacketHandler(this.IridiumGameMasterServer, packet);
                 case ClientPacketType.GetLevelData:
-                    return new GetLevelDataPacketHandler(this.IridiumGameMasterServer);
+                    return new GetLevelDataPacketHandler(this.IridiumGameMasterServer, packet);
                 case ClientPacketType.GameAlgorithm:
-                    return new GameAlgorithmPacketHandler(this.IridiumGameMasterServer);
+                    return new GameAlgorithmPacketHandler(this.IridiumGameMasterServer, packet);
                 default:
                     return null;
             }

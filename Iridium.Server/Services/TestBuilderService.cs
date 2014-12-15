@@ -1,6 +1,13 @@
-﻿namespace Iridium.Server.Services
+﻿
+
+namespace Iridium.Server.Services
 {
     using System.Collections.Concurrent;
+    using System.Collections.Generic;
+
+    using Microsoft.Build.Evaluation;
+    using Microsoft.Build.Execution;
+
     using Protocol;
     using Utils;
 
@@ -34,6 +41,23 @@
         public static void SetNewClientInQueue(NetworkClient client)
         {
             TestBuilder.networkClients.Enqueue(client);
+        }
+
+        public void Run()
+        {
+            string projectFileName = @"...\ConsoleApplication3\ConsoleApplication3.sln";
+            ProjectCollection pc = new ProjectCollection();
+            Dictionary<string, string> GlobalProperty = new Dictionary<string, string>
+            {
+                { "Configuration", "Debug" },
+                { "Platform", "x86" }
+            };
+
+            BuildRequestData BuildRequest = new BuildRequestData(projectFileName, GlobalProperty, null, new string[] { "Build" }, null);
+
+            BuildResult buildResult = BuildManager.DefaultBuildManager.Build(new BuildParameters(pc), BuildRequest);
+
+            
         }
     }
 }

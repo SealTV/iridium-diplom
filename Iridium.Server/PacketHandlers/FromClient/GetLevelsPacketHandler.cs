@@ -1,15 +1,16 @@
-﻿using Iridium.Server.Protocol;
-using Iridium.Utils;
-using Iridium.Utils.Data;
-
-namespace Iridium.Server.PacketHandlers.FromClient
+﻿namespace Iridium.Server.PacketHandlers.FromClient
 {
+    using Iridium.Server.Protocol;
+    using Iridium.Utils.Data;
+
     public class GetLevelsPacketHandler : PacketHandler
     {
-        public GetLevelsPacketHandler(IridiumGameMasterServer masterServer) : base(masterServer)
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
+        public GetLevelsPacketHandler(IridiumGameMasterServer masterServer, Packet packet) : base(masterServer, packet)
         {}
 
-        public override bool ProcessPacket(NetworkClient client, Packet packet)
+        public override void ProcessPacket()
         {
             throw new System.NotImplementedException();
         }
