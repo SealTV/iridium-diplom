@@ -9,7 +9,7 @@
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        public PingPacketHandler(IridiumGameMasterServer masterServer) : base()
+        public PingPacketHandler(IridiumGameMasterServer masterServer) : base(masterServer)
         {}
 
         public override bool ProcessPacket(NetworkClient client, Packet packet)

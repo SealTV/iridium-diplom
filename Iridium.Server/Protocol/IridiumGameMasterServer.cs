@@ -78,10 +78,7 @@
 
         private void HandleNewClient(NetworkClient client)
         {
-            client.SendPacket(new ServerInfo
-            {
-               ClientId = client.SessionId,
-            });
+            client.SendPacket(new ServerInfo(client.SessionId));
             this.clients.Enqueue(client);
         }
 
