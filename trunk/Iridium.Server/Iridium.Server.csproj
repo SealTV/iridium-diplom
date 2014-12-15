@@ -60,10 +60,10 @@
       <DependentUpon>MySql.tt</DependentUpon>
     </Compile>
     <Compile Include="Enums.cs" />
-    <Compile Include="PacketHandlers\FromClient\GameAlgorithm.cs" />
-    <Compile Include="PacketHandlers\FromClient\GetGames.cs" />
-    <Compile Include="PacketHandlers\FromClient\GetLevelData.cs" />
-    <Compile Include="PacketHandlers\FromClient\GetLevels.cs" />
+    <Compile Include="PacketHandlers\FromClient\GameAlgorithmPacketHandler.cs" />
+    <Compile Include="PacketHandlers\FromClient\GetGamesPacketHandler.cs" />
+    <Compile Include="PacketHandlers\FromClient\GetLevelDataPacketHandler.cs" />
+    <Compile Include="PacketHandlers\FromClient\GetLevelsPacketHandler.cs" />
     <Compile Include="Protocol\Destination.cs" />
     <Compile Include="Protocol\IridiumGameMasterServer.cs" />
     <Compile Include="PacketHandlers\FromClient\PingPacketHandler.cs" />

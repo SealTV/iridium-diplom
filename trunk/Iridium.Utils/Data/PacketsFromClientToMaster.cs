@@ -11,7 +11,8 @@
             get { return this.value; }
         }
 
-        public Ping(int value) : base(PacketType.Ping)
+        public Ping(int value)
+            : base(ClientPacketType.Ping)
         {
             this.value = value;
         }
@@ -20,7 +21,8 @@
     [Serializable]
     public class GetGames : Packet
     {
-        public GetGames() : base(PacketType.GetGames)
+        public GetGames()
+            : base(ClientPacketType.GetGames)
         {}
     }
 
@@ -33,7 +35,8 @@
             get { return this.gameId; }
         }
 
-        public GetLevels(int gameId) : base(PacketType.GetLevels)
+        public GetLevels(int gameId)
+            : base(ClientPacketType.GetLevels)
         {
             this.gameId = gameId;
         }
@@ -54,7 +57,8 @@
             get { return this.levelId; }
         }
 
-        public GetLevelData(int gameId, int levelId) : base(PacketType.GetLevelData)
+        public GetLevelData(int gameId, int levelId)
+            : base(ClientPacketType.GetLevelData)
         {
             this.gameId = gameId;
             this.levelId = levelId;
@@ -82,7 +86,8 @@
             get { return this.message; }
         }
 
-        public GameAlgorithm(int gameId, int levelId, string message) : base(PacketType.GameAlgorithm)
+        public GameAlgorithm(int gameId, int levelId, string message)
+            : base(ClientPacketType.GameAlgorithm)
         {
             this.gameId = gameId;
             this.levelId = levelId;

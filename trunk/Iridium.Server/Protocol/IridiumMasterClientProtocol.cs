@@ -62,10 +62,25 @@
 
         private PacketHandler GetPacketHandlerFor(Packet packet)
         {
-            switch (packet.PacketType)
+            if (!(packet.PacketType is ClientPacketType))
             {
-                case PacketType.Ping: return new PingPacketHandler(this.IridiumGameMasterServer);
-                default: return null;
+                return null;
+            }
+
+            switch ((ClientPacketType) packet.PacketType)
+            {
+                case ClientPacketType.Ping:
+                    return new PingPacketHandler(this.IridiumGameMasterServer);
+                case ClientPacketType.GetGames:
+                    return new GetGamesPacketHandler(this.IridiumGameMasterServer);
+                case ClientPacketType.GetLevels:
+                    return new GetLevelsPacketHandler(this.IridiumGameMasterServer);
+                case ClientPacketType.GetLevelData:
+                    return new GetLevelDataPacketHandler(this.IridiumGameMasterServer);
+                case ClientPacketType.GameAlgorithm:
+                    return new GameAlgorithmPacketHandler(this.IridiumGameMasterServer);
+                default:
+                    return null;
             }
         }
     }
