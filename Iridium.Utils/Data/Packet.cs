@@ -5,25 +5,29 @@
     [Serializable]
     public abstract class Packet
     {
-        public readonly PacketType PacketType;
+        public readonly Enum PacketType;
 
-        protected Packet(PacketType packetType)
+        protected Packet(Enum packetType)
         {
             this.PacketType = packetType;
         }
     }
-
-    public enum PacketType
+    
+    //From client packet types
+    public enum ClientPacketType
     {
-        //From client packet types
         Ping,
-        ServerInfo,
-        GameAlgorithm,
         GetGames,
         GetLevels,
         GetLevelData,
-      //From server packet types
+        GameAlgorithm
+    }
+
+    //From server packet types
+    public enum MasterServerPacketType
+    {
         Pong,
+        ServerInfo,
         GameList,
         GameLevels,
         LevelData,

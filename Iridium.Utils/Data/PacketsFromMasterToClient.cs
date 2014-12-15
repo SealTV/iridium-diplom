@@ -8,7 +8,8 @@ namespace Iridium.Utils.Data
         private readonly int value;
         public int Value { get { return this.value; }}
 
-        public Pong(int value) : base(PacketType.Pong)
+        public Pong(int value)
+            : base(MasterServerPacketType.Pong)
         {
             this.value = value;
         }
@@ -23,7 +24,8 @@ namespace Iridium.Utils.Data
         private readonly Guid clientId;
         public Guid ClientId { get { return this.clientId; } }
 
-        public ServerInfo(Guid clientId) : base(PacketType.ServerInfo)
+        public ServerInfo(Guid clientId)
+            : base(MasterServerPacketType.ServerInfo)
         {
             this.serverVersion = 1;
             this.clientId = clientId;
@@ -40,7 +42,8 @@ namespace Iridium.Utils.Data
             get { return this.gamesId; }
         }
 
-        public GameList(int[] gamesId) : base(PacketType.GameList)
+        public GameList(int[] gamesId)
+            : base(MasterServerPacketType.GameList)
         {
             this.gamesId = gamesId;
         }
@@ -61,7 +64,8 @@ namespace Iridium.Utils.Data
             get { return this.levelsIds; }
         }
 
-        public GameLevels(int gameId, int[] levelsIds) : base(PacketType.GameLevels)
+        public GameLevels(int gameId, int[] levelsIds)
+            : base(MasterServerPacketType.GameLevels)
         {
             this.gameId = gameId;
             this.levelsIds = levelsIds;
@@ -91,7 +95,8 @@ namespace Iridium.Utils.Data
 
 
 
-        public LevelData(int gameId, int levelId, byte[] data) : base(PacketType.LevelData)
+        public LevelData(int gameId, int levelId, byte[] data)
+            : base(MasterServerPacketType.LevelData)
         {
             this.gameId = gameId;
             this.levelId = levelId;
@@ -121,7 +126,8 @@ namespace Iridium.Utils.Data
             get { return this.message; }
         }
 
-        public AlgorithmResult(int gameId, int levelId, string message) : base(PacketType.AlgorithmResult)
+        public AlgorithmResult(int gameId, int levelId, string message)
+            : base(MasterServerPacketType.AlgorithmResult)
         {
             this.gameId = gameId;
             this.levelId = levelId;
