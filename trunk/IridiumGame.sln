@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iridium.Utils", "Iridium.Ut
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iridium.DevelopClient", "Iridium.DevelopClient\Iridium.DevelopClient.csproj", "{B1DF9043-D67A-48DF-A732-21B94C6F1CB1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScryptsRun", "ScryptsRun\ScryptsRun.csproj", "{74F12E7B-6661-428F-9259-04CF3C3E06EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{B1DF9043-D67A-48DF-A732-21B94C6F1CB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1DF9043-D67A-48DF-A732-21B94C6F1CB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1DF9043-D67A-48DF-A732-21B94C6F1CB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74F12E7B-6661-428F-9259-04CF3C3E06EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74F12E7B-6661-428F-9259-04CF3C3E06EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74F12E7B-6661-428F-9259-04CF3C3E06EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74F12E7B-6661-428F-9259-04CF3C3E06EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

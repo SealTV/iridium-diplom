@@ -7,14 +7,39 @@ namespace Iridium.Server.PacketHandlers
 
     public abstract class PacketHandler
     {
-        protected NetworkClient Client;
-        protected IridiumGameMasterServer masterServer;
+        protected NetworkClient client;
+        private readonly IridiumGameMasterServer masterServer;
+        protected readonly Packet packet;
 
-        protected PacketHandler(IridiumGameMasterServer masterServer)
+        protected PacketHandler(IridiumGameMasterServer masterServer, Packet packet)
         {
             this.masterServer = masterServer;
+            this.packet = packet;
         }
 
-        public abstract bool ProcessPacket(NetworkClient client, Packet packet);
+        public void Run(NetworkClient client)
+        {
+            this.client = client;
+            ProcessPacket();
+        }
+
+        public void Run()
+        {
+            this.ProcessPacket();
+
+            this.EndProcessPacket();
+        }
+
+        public abstract void ProcessPacket();
+
+        private void EndProcessPacket()
+        {
+            this.masterServer.AddClient(this.client);
+        }
+
+        protected void Disconnect()
+        {
+            this.client.Disconnect();
+        }
     }
 }
