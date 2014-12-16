@@ -1,7 +1,5 @@
 ﻿namespace Assets
 {
-    using System;
-    using System.Globalization;
     using UnityEngine;
     using SimpleJSON;
 
