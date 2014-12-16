@@ -46,7 +46,18 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\ServerConnector.cs" />
+     <Compile Include="Assets\Level.cs" />
+     <Compile Include="Assets\Scripts\ForeachBlock.cs" />
+     <Compile Include="Assets\Scripts\IBlock.cs" />
+     <Compile Include="Assets\Scripts\JsonExtension.cs" />
+     <Compile Include="Assets\Scripts\ScriptCreator.cs" />
+     <Compile Include="Assets\Scripts\ServerConnector.cs" />
+     <Compile Include="Assets\Scripts\SimpleBlock.cs" />
+     <Compile Include="Assets\Scripts\SimpleJSON.cs" />
+     <Compile Include="Assets\Scripts\SubBlock.cs" />
+     <Compile Include="Assets\Scripts\SubBlocksField.cs" />
+     <Compile Include="Assets\demo.cs" />
+     <None Include="Assets\Resources\ForeachBlock.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.0/UnityEngine.UI.dll</HintPath>
  </Reference>
