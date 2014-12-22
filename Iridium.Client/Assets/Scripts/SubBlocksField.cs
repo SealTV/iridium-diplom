@@ -49,10 +49,11 @@ namespace Assets.Scripts
 
         }
 
-        public void Stretch(float width, float height)
+        public void Stretch(float height, float width)
         {
-            if (WidthStretch < 0) WidthStretch = 0;
-            if (HeightStretch < 0) HeightStretch = 0;
+            this.HeightStretch = Mathf.Max(0, height);
+            this.WidthStretch = Mathf.Max(0, width);
+
             foreach (var block in HeightStretchBlocks) { block.localScale = new Vector3(block.localScale.x, HeightStretch); }
             foreach (var block in WidthStretchBlocks) { block.localScale = new Vector3(WidthStretch, block.localScale.y); }
             foreach (var block in HeightShiftBlocks) { block.localPosition = new Vector3(block.localPosition.x, -BaseHeight - HeightStretch); }
@@ -61,7 +62,7 @@ namespace Assets.Scripts
 
         public void Update()
         {
-            this.Stretch(1,1);
+
         }
 
         public float GetHeight()
