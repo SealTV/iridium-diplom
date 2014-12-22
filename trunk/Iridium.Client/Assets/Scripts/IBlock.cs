@@ -4,6 +4,7 @@
     {
         void OnChangeBlock(IBlock[] subBlocks);
         float GetHeight();
+        float GetWidth();
         void Streach();
     }
 }
