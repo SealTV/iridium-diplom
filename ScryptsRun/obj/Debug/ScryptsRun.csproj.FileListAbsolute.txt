@@ -1,0 +1,9 @@
+Z:\Diplom\ScryptsRun\bin\Debug\ScryptsRun.exe.config
+Z:\Diplom\ScryptsRun\bin\Debug\ScryptsRun.exe
+Z:\Diplom\ScryptsRun\bin\Debug\ScryptsRun.pdb
+Z:\Diplom\ScryptsRun\bin\Debug\CSScriptLibrary.dll
+Z:\Diplom\ScryptsRun\bin\Debug\Mono.CSharp.dll
+Z:\Diplom\ScryptsRun\bin\Debug\CSScriptLibrary.xml
+Z:\Diplom\ScryptsRun\obj\Debug\ScryptsRun.csprojResolveAssemblyReference.cache
+Z:\Diplom\ScryptsRun\obj\Debug\ScryptsRun.exe
+Z:\Diplom\ScryptsRun\obj\Debug\ScryptsRun.pdb
