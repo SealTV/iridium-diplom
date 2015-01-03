@@ -1,7 +1,7 @@
-﻿namespace Assets
+﻿namespace Assets.Scripts
 {
-    using UnityEngine;
     using SimpleJSON;
+    using UnityEngine;
 
     public static class JsonExtension
     {

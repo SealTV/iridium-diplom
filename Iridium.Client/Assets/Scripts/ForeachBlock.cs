@@ -1,66 +1,72 @@
-﻿namespace Assets
+﻿namespace Assets.Scripts
 {
-    using System.Collections.Generic;
-    using Scripts;
     using UnityEngine;
-    using SimpleJSON;
 
-    public class ForeachBlock : MonoBehaviour,
-                                IBlock
+    [ExecuteInEditMode]
+    public class ForeachBlock : Block
     {
-
-        public SubBlocksField UpField;
+        public SubBlocksField HighField;
         public SubBlocksField MiddleField;
-        public SubBlocksField DownField;
+        public SubBlocksField LowField;
 
-        public float HeadHeightStretch = 1;
-        public float HeadWidthStretch = 1;
-
-        public float BodyHeightStretch = 1;
-        public float BodyWidthStretch = 1;
-
-        public float MiddleHeightStretch = 1;
-
-        public void OnChangeBlock(IBlock[] subBlocks)
+        void Start()
         {
-            this.Streach();
+            int layer = Random.Range(0, 10000);
+            foreach (var block in HighField.Blocks)
+            {
+                block.GetComponent<SpriteRenderer>().sortingOrder = layer;
+            }
+            foreach (var block in MiddleField.Blocks)
+            {
+                block.GetComponent<SpriteRenderer>().sortingOrder = layer;
+            }
+            foreach (var block in LowField.Blocks)
+            {
+                block.GetComponent<SpriteRenderer>().sortingOrder = layer;
+            }
         }
 
-        public float GetHeight()
+        public override float GetHeight()
         {
             float value = 0;
-            value += this.UpField.X;
-            value += this.MiddleField.X;
-            value += this.DownField.X;
+            value += this.HighField.GetHeight();
+            value += this.LowField.GetHeight();
+            Block block;
+            if (this.Connectors.TryGetValue("InnerConnector", out block)) value += block.GetHeight();
+            else value += this.MiddleField.GetHeight();
+
+            if (this.Connectors.TryGetValue("OutputConnector", out block)) value += block.GetHeight();
+
             return value;
         }
 
-        public float GetWidth()
+        public override float GetWidth()
         {
             return 0;
         }
 
-        public void Streach()
+        public override void Streach()
         {
-            UpField.Stretch(HeadHeightStretch,HeadWidthStretch);
-            MiddleField.transform.position = new Vector3(0, -UpField.GetHeight());
-            MiddleField.Stretch(BodyHeightStretch, BodyWidthStretch);
+            float BodyHeightStretch = 0;
+            Block block;
+            if (this.Connectors.TryGetValue("InnerConnector", out block)) BodyHeightStretch = block.GetHeight();
+            if (this.Parent != null)
+            {
+                this.transform.position = this.Parent.Connectors[this.ParentConnector].transform.position;
+            }
+
+            this.HighField.Stretch(this.HeadWidthStretch, this.HeadHeightStretch);
+
+            this.MiddleField.transform.localPosition = new Vector3(0, -this.HighField.GetHeight());
+            this.MiddleField.Stretch(1, BodyHeightStretch-2);
+
+            this.LowField.transform.localPosition = new Vector3(0, -this.HighField.GetHeight() - this.MiddleField.GetHeight());
+            this.LowField.Stretch(this.HeadWidthStretch-2, 0);
         }
 
-        private void Start()
-        {
-
-        }
-
-        // Update is called once per frame
         private void Update()
-        {
+        { 
             this.Streach();
-        }
-
-        private void OnMouseDown()
-        {
-            Debug.Log("MouseDown");
         }
     }
 }
