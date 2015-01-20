@@ -35,8 +35,55 @@
 	*/
 	NamespaceName = "IridiumDatabase";
 
-	LoadMySqlMetadata("127.0.0.1", "iridium_master_server", "root", "admin");
+//	LoadMySqlMetadata("127.0.0.1", "iridium_master_server", "root", "admin");
+
+	LoadMySqlMetadata("176.103.146.173", "iridium", "seal", "iridiumMatob");
+
 //	LoadMySqlMetadata("Server="127.0.0.1";Port=3306;Database=iridium_master_server;Uid=root;Pwd=admin;charset=utf8;" );
+ // Add additional constructor with parameter connectionString
+    DataContextObject.Members.Add(
+        new Method(null, DataContextObject.Name, new[] { "LinqToDB.DataProvider.IDataProvider dataProvider", "string connectionString" }) 
+        { AfterSignature = { ": base(dataProvider, connectionString)" } }
+    );
+
+    // Override method ToString() for database models
+    foreach (var t in Tables.Values.OrderBy(tbl => tbl.TypeName))
+    {
+        Model.Usings.Add("System.Text");
+
+        var tClass = new Class(t.TypeName);
+
+        var sb = new System.Text.StringBuilder();
+        sb.Append("StringBuilder sb = new StringBuilder();\n");
+        sb.Append("\t\t\t").AppendFormat("sb.Append(\"{0}{{\");\n", t.TypeName);
+            
+        int i = 0;
+        foreach (var col in t.Columns.Values)
+        {
+            sb.Append("\t\t\t").AppendFormat
+            (
+                "sb.AppendFormat(\"{0}={{0}}{1}\", this.{0});\n"
+                , col.MemberName
+                ,(i < (t.Columns.Values.Count - 1)) ? ", " : string.Empty
+            );
+            i++;
+        }
+
+        sb.Append("\t\t\t").Append("sb.Append(\"}\");\n");
+        sb.Append("\t\t\t").Append("return sb.ToString();");
+        tClass.Members.Add
+        (
+            new Method
+            (
+                "string", 
+                "ToString",
+                null,
+                new[] { sb.ToString() }
+            )
+            { IsOverride = true }
+        );
+        Model.Types.Add(tClass);
+    }
 
 	GenerateModel();
 #>
