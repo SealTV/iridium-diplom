@@ -6,6 +6,7 @@
 //---------------------------------------------------------------------------------------------------
 using System;
 using System.Linq;
+using System.Text;
 
 using LinqToDB;
 using LinqToDB.Mapping;
@@ -13,20 +14,25 @@ using LinqToDB.Mapping;
 namespace IridiumDatabase
 {
 	/// <summary>
-	/// Database       : iridium_master_server
-	/// Data Source    : 127.0.0.1
-	/// Server Version : 5.6.21-log
+	/// Database       : iridium
+	/// Data Source    : 176.103.146.173
+	/// Server Version : 5.5.40-0+wheezy1
 	/// </summary>
-	public partial class iridium_master_serverDB : LinqToDB.Data.DataConnection
+	public partial class iridiumDB : LinqToDB.Data.DataConnection
 	{
 		public ITable<account> accounts { get { return this.GetTable<account>(); } }
 
-		public iridium_master_serverDB()
+		public iridiumDB(LinqToDB.DataProvider.IDataProvider dataProvider, string connectionString)
+			: base(dataProvider, connectionString)
+		{
+		}
+
+		public iridiumDB()
 		{
 			InitDataContext();
 		}
 
-		public iridium_master_serverDB(string configuration)
+		public iridiumDB(string configuration)
 			: base(configuration)
 		{
 			InitDataContext();
@@ -35,22 +41,36 @@ namespace IridiumDatabase
 		partial void InitDataContext();
 	}
 
+	public partial class account
+	{
+		public override string ToString()
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.Append("account{");
+			sb.AppendFormat("id={0}, ", this.id);
+			sb.AppendFormat("login={0}, ", this.login);
+			sb.AppendFormat("password={0}, ", this.password);
+			sb.AppendFormat("date={0}", this.date);
+			sb.Append("}");
+			return sb.ToString();
+		}
+	}
+
 	[Table("accounts")]
 	public partial class account
 	{
-		[PrimaryKey(1), Identity   ] public uint      id          { get; set; } // int(10) unsigned
-		[PrimaryKey(2), NotNull    ] public string    login       { get; set; } // varchar(45)
-		[Column,        NotNull    ] public byte[]    password    { get; set; } // binary(64)
-		[Column,           Nullable] public DateTime? create_date { get; set; } // datetime
+		[PrimaryKey, Identity] public uint     id       { get; set; } // int(10) unsigned
+		[Column,     NotNull ] public string   login    { get; set; } // varchar(45)
+		[Column,     NotNull ] public byte[]   password { get; set; } // varbinary(256)
+		[Column,     NotNull ] public DateTime date     { get; set; } // datetime
 	}
 
 	public static partial class TableExtensions
 	{
-		public static account Find(this ITable<account> table, uint id, string login)
+		public static account Find(this ITable<account> table, uint id)
 		{
 			return table.FirstOrDefault(t =>
-				t.id    == id &&
-				t.login == login);
+				t.id == id);
 		}
 	}
 }
