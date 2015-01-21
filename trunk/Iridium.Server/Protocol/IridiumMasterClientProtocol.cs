@@ -29,7 +29,8 @@
             this.IridiumGameMasterServer = iridiumGameMasterServer;
         }
 
-        public async void HandleNextClient(NetworkClient client)
+        public async void 
+            HandleNextClient(NetworkClient client)
         {
             try
             {
@@ -37,7 +38,8 @@
                 if (packet == null)
                 {
                     logger.Warn("Received packet is null! Error!!!");
-                    IridiumGameMasterServer.AddClient(client);
+                    client.Disconnect();
+                    //IridiumGameMasterServer.AddClient(client);
                     return;
                 }
                 var packetHandler = GetPacketHandlerFor(packet);

@@ -1,8 +1,9 @@
 ﻿namespace Iridium.Utils
 {
     using System.IO;
-    using System.Runtime.Serialization.Formatters.Binary;
     using System.Threading.Tasks;
+    using System.Runtime.Serialization.Formatters.Binary;
+
     using Utils.Data;
 
     /// <summary>
@@ -34,18 +35,16 @@
             Packet packet = null;
             if (!this.inputStream.DataAvailable)
                 return null;
-
             byte[] buffer = new byte[1024];
-            int readedData = await this.inputStream.ReadAsync(buffer, 0, 4);
+            int readedData = await this.inputStream.ReadAsync(buffer, 0, buffer.Length);
 
-            using (var memStream = new MemoryStream(buffer))
+            using (var memStream = new MemoryStream(buffer, 0, readedData))
             using (var reader = new BinaryReader(memStream))
             {
                 int packetSize = reader.ReadInt32();
-                memStream.Seek(0, SeekOrigin.Current);
+
                 var formatter = new BinaryFormatter();
-                Task<Packet> result = new Task<Packet>(() => formatter.Deserialize(memStream) as Packet);
-                return await result;
+                return formatter.Deserialize(memStream) as Packet;
             }
         }
     }
