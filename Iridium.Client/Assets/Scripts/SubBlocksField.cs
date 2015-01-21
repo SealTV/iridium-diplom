@@ -1,17 +1,16 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-
-namespace Assets.Scripts
+﻿namespace Scripts
 {
+    using System.Collections.Generic;
+    using Blocks;
+    using UnityEngine;
+
     public class SubBlocksField : MonoBehaviour
     {
         public Block Parent;
         public float HeightStretch = 1;
         public float WidthStretch = 1;
 
-        public GameObject Field;
-        public Transform FieldTransform;
-        public List<Transform> Blocks;
+        public List<SpriteRenderer> Blocks;
 
         public List<Transform> HeightStretchBlocks;
         public List<Transform> WidthStretchBlocks;

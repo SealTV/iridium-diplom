@@ -1,19 +1,12 @@
-﻿using UnityEngine;
-
-namespace Assets.Scripts
+﻿namespace Scripts
 {
+    using Blocks;
+    using UnityEngine;
+
     public class Connector : MonoBehaviour
     {
 
         public Block Parent;
-        // Use this for initialization
-        void Start () {
-	
-        }
-	
-        // Update is called once per frame
-        void Update () {
-	
-        }
+        public ConnectorType ConnectorType;
     }
 }
