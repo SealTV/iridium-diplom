@@ -11,47 +11,60 @@ namespace Iridium.Server
 {
     public class Program
     {
+        public static IridiumConfig Configuration;
+        public static string ConnectionString;
+
         private static NLog.Logger s_logger = NLog.LogManager.GetCurrentClassLogger();
 
         private const string ConfigurationSectionName = "IridiumServer";
-        private readonly IridiumConfig config;
-        private string connectionString;
-
+        private IridiumGameMasterServer masterServer;
+       
         public Program()
         {
             ConfigurationManager.RefreshSection(ConfigurationSectionName);
-            this.config = ConfigurationManager.GetSection(ConfigurationSectionName) as IridiumConfig;
-            IridiumConfig.Database pushDatabase = this.config.MysqlIridium;
+            Program.Configuration = ConfigurationManager.GetSection(ConfigurationSectionName) as IridiumConfig;
+            IridiumConfig.Database pushDatabase = Program.Configuration.MysqlIridium;
 
-            this.connectionString = string.Format("Server={0};Port={1};Database={2};User Id={3};Password={4};",
+            Program.ConnectionString = string.Format("Server={0};Port={1};Database={2};User Id={3};Password={4};",
                                                  pushDatabase.Host,
                                                  pushDatabase.Port,
                                                  pushDatabase.Schema,
                                                  pushDatabase.User,
                                                  pushDatabase.Password);
 
-            DataConnection.AddConfiguration(this.connectionString, this.connectionString, new MySqlDataProvider());
+            DataConnection.AddConfiguration(Program.ConnectionString, Program.ConnectionString, new MySqlDataProvider());
 
-            using (var db = new iridiumDB(this.connectionString))
+            using (var db = new iridiumDB(Program.ConnectionString))
             { }
 
-            IridiumGameMasterServer masterServer = new IridiumGameMasterServer();
+            masterServer = new IridiumGameMasterServer();
+        }
+        
+        private void Start()
+        {
             IridiumMasterClientProtocol.Init(masterServer);
-
             masterServer.Start();
-
-            Console.ReadKey();
-
-            masterServer.Stop();
-
-            Console.WriteLine("Server already stoped! Press any key to close.");
-            Console.ReadKey();
         }
 
-        static void Main()
+        private void Stop()
         {
-           
+            masterServer.Stop();
+        }
+
+        private static void Main()
+        {
             var p = new Program();
+            p.Start();
+            Console.ReadKey();
+            //Console.WriteLine("Write STOP!");
+            //string str = Console.ReadLine();
+            //while (str!="STOP")
+            //{
+            //    str = Console.ReadLine();
+            //}
+            Console.WriteLine("Server already stoped! Press any key to close.");
+
+            p.Stop();
         }
     }
 }

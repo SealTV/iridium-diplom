@@ -25,7 +25,7 @@
         public IridiumGameMasterServer()
         {
             this.clients = new ConcurrentQueue<NetworkClient>();
-            this.ipEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 27001);
+            this.ipEndPoint = new IPEndPoint(IPAddress.Parse(Program.Configuration.ServerProperties.Host), Program.Configuration.ServerProperties.Port);
             this.listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             clients = new ConcurrentQueue<NetworkClient>();
         }
@@ -33,16 +33,16 @@
         public void Start()
         {
             this.isWorking = true;
-            Logger.Trace("Sever started. Wait new connections.");
+            Logger.Info("Sever started. Wait new connections.");
 
             this.listener.Bind(this.ipEndPoint);
             this.listener.Listen(200);
 
-            BeginAcceptNewclient();
+            BeginAcceptNewClient();
             this.clientsManagerTask = Task.Factory.StartNew(this.ManagedClientsPackets);
         }
 
-        private void BeginAcceptNewclient()
+        private void BeginAcceptNewClient()
         {
             if(!this.isWorking)
                 return;
@@ -60,13 +60,13 @@
             }
             catch (Exception e)
             {
-                //Logger.Info(e);
+                Logger.Info("Clietn disconnected!");
             }
 
             if(clientSocket == null)
                 return;
 
-            BeginAcceptNewclient();
+            BeginAcceptNewClient();
 
             var client = new NetworkClient(clientSocket);
 
@@ -78,20 +78,22 @@
 
         private void HandleNewClient(NetworkClient client)
         {
+            IridiumMasterClientProtocol.ClientProtocolHandler.HandleNextClient(client);
             client.SendPacket(new ServerInfo(client.SessionId));
-            this.clients.Enqueue(client);
+            //this.clients.Enqueue(client);
         }
 
         private void ManagedClientsPackets()
         {
             while (this.isWorking)
             {
-                Thread.Sleep(1000);
+                Thread.Sleep(100);
 
                 NetworkClient client;
-                Logger.Info("{0} Connected!");
+                Logger.Trace("{0} Connected!", clients.Count);
                 if (!clients.TryDequeue(out client)) 
                     continue;
+                Logger.Debug("{0} Connected!", clients.Count);
                 IridiumMasterClientProtocol.ClientProtocolHandler.HandleNextClient(client);
             }
         }

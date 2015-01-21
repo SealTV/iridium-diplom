@@ -37,32 +37,42 @@
 
         public void Connect()
         {
-            if(socket != null && socket.Connected)
+            if (socket != null && socket.Connected)
                 return;
             this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
             this.socket.Connect(this.ipEndPoint);
-            this.inputStream = new NetworkStream(this.socket, FileAccess.Read);
-            this.outputStream = new NetworkStream(this.socket, FileAccess.Write);
+            if (this.socket.Connected)
+            {
+                this.inputStream = new NetworkStream(this.socket, FileAccess.Read);
+                this.outputStream = new NetworkStream(this.socket, FileAccess.Write);
+            }
         }
 
         public void SendPacket(Packet packet)
         {
             if(packet == null)
                 return;
-            using (var stream = new MemoryStream())
-            using (var writer = new BinaryWriter(stream))
+            try
             {
-                using (var dataStream = new MemoryStream())
+                using (var stream = new MemoryStream())
+                using (var writer = new BinaryWriter(stream))
                 {
-                    var formatter = new BinaryFormatter();
-                    formatter.Serialize(dataStream, packet);
-                    int packetSize = (int) dataStream.Length;
+                    using (var dataStream = new MemoryStream())
+                    {
+                        var formatter = new BinaryFormatter();
+                        formatter.Serialize(dataStream, packet);
+                        int packetSize = (int) dataStream.Length;
 
-                    writer.Write(packetSize);
-                    writer.Write(dataStream.GetBuffer(), 0, packetSize);
+                        writer.Write(packetSize);
+                        writer.Write(dataStream.GetBuffer(), 0, packetSize);
 
-                    this.outputStream.Write(stream.GetBuffer(), 0, (int)stream.Length);
+                        this.outputStream.Write(stream.GetBuffer(), 0, (int) stream.Length);
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
         }
 
