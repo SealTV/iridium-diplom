@@ -29,27 +29,18 @@
             this.IridiumGameMasterServer = iridiumGameMasterServer;
         }
 
-        public async void 
-            HandleNextClient(NetworkClient client)
+        public async void HandleNextClient(NetworkClient client)
         {
             try
             {
                 Packet packet = await client.ReadNextPacketAsync();
                 if (packet == null)
                 {
-                    logger.Warn("Received packet is null! Error!!!");
-                    client.Disconnect();
-                    //IridiumGameMasterServer.AddClient(client);
+                    IridiumGameMasterServer.AddClient(client);
                     return;
                 }
                 var packetHandler = GetPacketHandlerFor(packet);
-                if (packetHandler == null)
-                {
-                    logger.Warn("Packet handler for packet type {0} not found! 404 O_o", packet.PacketType.ToString());
-                    IridiumGameMasterServer.AddClient(client);
-                    return;                    
-                }
-                packetHandler.ProcessPacket();
+                packetHandler.Handle(client);
             }
             catch (Exception e)
             {
@@ -79,7 +70,7 @@
                 case ClientPacketType.GameAlgorithm:
                     return new GameAlgorithmPacketHandler(this.IridiumGameMasterServer, packet);
                 default:
-                    return null;
+                    throw new Exception("Unknown packet type");
             }
         }
     }

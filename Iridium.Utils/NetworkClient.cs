@@ -17,6 +17,7 @@
         private NetworkStream outputStream;
 
         public Guid SessionId { get; set; }
+        public bool Connected { get { return socket.Connected; } }
 
         public NetworkClient(int port, string ipAddress)
         {
@@ -40,11 +41,18 @@
             if (socket != null && socket.Connected)
                 return;
             this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
-            this.socket.Connect(this.ipEndPoint);
-            if (this.socket.Connected)
+            try
             {
-                this.inputStream = new NetworkStream(this.socket, FileAccess.Read);
-                this.outputStream = new NetworkStream(this.socket, FileAccess.Write);
+                this.socket.Connect(this.ipEndPoint);
+                if (this.socket.Connected)
+                {
+                    this.inputStream = new NetworkStream(this.socket, FileAccess.Read);
+                    this.outputStream = new NetworkStream(this.socket, FileAccess.Write);
+                }
+            }
+            catch (Exception e)
+            {
+                this.Connect();
             }
         }
 
@@ -134,6 +142,7 @@
         {
             this.socket.Shutdown(SocketShutdown.Both);
             this.socket.Close();
+            socket.Dispose();
         }
     }
 }

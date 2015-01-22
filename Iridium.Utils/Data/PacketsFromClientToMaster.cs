@@ -19,15 +19,17 @@
     }
 
     [Serializable]
-    public class GetGames : Packet
+    public class GetGamesPacket : Packet
     {
-        public GetGames()
+        public GetGamesPacket()
             : base(ClientPacketType.GetGames)
-        {}
+        {
+
+        }
     }
 
     [Serializable]
-    public class GetLevels : Packet
+    public class GetGameDataPacket : Packet
     {
         private readonly int gameId;
         public int GameId
@@ -35,7 +37,7 @@
             get { return this.gameId; }
         }
 
-        public GetLevels(int gameId)
+        public GetGameDataPacket(int gameId)
             : base(ClientPacketType.GetLevels)
         {
             this.gameId = gameId;
@@ -43,7 +45,7 @@
     }
 
     [Serializable]
-    public class GetLevelData : Packet
+    public class GetLevelDataPacket : Packet
     {
         private readonly int gameId;
         public int GameId
@@ -57,7 +59,7 @@
             get { return this.levelId; }
         }
 
-        public GetLevelData(int gameId, int levelId)
+        public GetLevelDataPacket(int gameId, int levelId)
             : base(ClientPacketType.GetLevelData)
         {
             this.gameId = gameId;
@@ -65,9 +67,8 @@
         }
     }
 
-
     [Serializable]
-    public class GameAlgorithm : Packet
+    public class GameAlgorithmPacket : Packet
     {
         private readonly int gameId;
         public int GameId
@@ -80,18 +81,18 @@
         {
             get { return this.levelId; }
         }
-        private readonly string message;
-        public string Message
+        private readonly string algoritm;
+        public string Algoritm
         {
-            get { return this.message; }
+            get { return this.algoritm; }
         }
 
-        public GameAlgorithm(int gameId, int levelId, string message)
+        public GameAlgorithmPacket(int gameId, int levelId, string algoritm)
             : base(ClientPacketType.GameAlgorithm)
         {
             this.gameId = gameId;
             this.levelId = levelId;
-            this.message = message;
+            this.algoritm = algoritm;
         }
     }
 }

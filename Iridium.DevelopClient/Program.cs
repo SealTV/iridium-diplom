@@ -32,7 +32,6 @@ namespace Iridium.DevelopClient
                 networkClient.SendPacket(new Ping(10));
                 Console.WriteLine("Sent packet!");
                 //Thread.Sleep(1000);
-
                 networkClient.Disconnect();
                 //});
             }

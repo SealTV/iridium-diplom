@@ -10,7 +10,7 @@
         public GetLevelsPacketHandler(IridiumGameMasterServer masterServer, Packet packet) : base(masterServer, packet)
         {}
 
-        public override void ProcessPacket()
+        protected override void ProcessPacket()
         {
             throw new System.NotImplementedException();
         }
