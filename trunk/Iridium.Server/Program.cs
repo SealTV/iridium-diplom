@@ -34,7 +34,7 @@ namespace Iridium.Server
 
             DataConnection.AddConfiguration(Program.ConnectionString, Program.ConnectionString, new MySqlDataProvider());
 
-            using (var db = new iridiumDB(Program.ConnectionString))
+            //using (var db = new iridiumDB(Program.ConnectionString))
             { }
 
             masterServer = new IridiumGameMasterServer();

@@ -11,13 +11,13 @@
         public PingPacketHandler(IridiumGameMasterServer masterServer, Packet packet) : base(masterServer, packet)
         {}
 
-        public override void ProcessPacket()
+        protected override void ProcessPacket()
         {
-            this.client = client;
+            this.Client = this.Client;
 
 
-            Ping ping = this.packet as Ping;
-            if (packet == null)
+            Ping ping = this.Packet as Ping;
+            if (this.Packet == null)
             {
                 Logger.Error("Cannot cast packet to Ping packet type.");
             }

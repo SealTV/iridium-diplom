@@ -11,9 +11,9 @@
             : base(masterServer, packet)
         {}
 
-        public override void ProcessPacket()
+        protected override void ProcessPacket()
         {
-            throw new System.NotImplementedException();
+            Client.SendPacket(new GamesDataPacket(new GameData[0]));
         }
     }
 }

@@ -60,7 +60,7 @@
             }
             catch (Exception e)
             {
-                Logger.Info("Clietn disconnected!");
+                Logger.Info("Client disconnected!");
             }
 
             if(clientSocket == null)
@@ -78,22 +78,18 @@
 
         private void HandleNewClient(NetworkClient client)
         {
-            IridiumMasterClientProtocol.ClientProtocolHandler.HandleNextClient(client);
+            //IridiumMasterClientProtocol.ClientProtocolHandler.HandleNextClient(client);
             client.SendPacket(new ServerInfo(client.SessionId));
-            //this.clients.Enqueue(client);
+            this.clients.Enqueue(client);
         }
 
         private void ManagedClientsPackets()
         {
             while (this.isWorking)
             {
-                Thread.Sleep(100);
-
                 NetworkClient client;
-                Logger.Trace("{0} Connected!", clients.Count);
                 if (!clients.TryDequeue(out client)) 
                     continue;
-                Logger.Debug("{0} Connected!", clients.Count);
                 IridiumMasterClientProtocol.ClientProtocolHandler.HandleNextClient(client);
             }
         }

@@ -5,7 +5,7 @@
     [Serializable]
     public abstract class Packet
     {
-        public readonly Enum PacketType;
+        public Enum PacketType { get; protected set; }
 
         protected Packet(Enum packetType)
         {
@@ -28,9 +28,10 @@
     {
         Pong,
         ServerInfo,
-        GameList,
-        GameLevels,
+        GamesData,
+        GameLevelsData,
         LevelData,
         AlgorithmResult
     }
+
 }
