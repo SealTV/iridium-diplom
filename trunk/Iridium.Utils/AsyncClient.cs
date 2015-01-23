@@ -1,5 +1,7 @@
-﻿namespace Iridium.Utils
+﻿
+namespace Iridium.Utils
 {
+    using System;
     using System.IO;
     using System.Threading.Tasks;
     using System.Runtime.Serialization.Formatters.Binary;
@@ -11,34 +13,39 @@
     /// </summary>
     public partial class NetworkClient
     {
-        public async void SendPacketAsync(Packet packet)
+        public void SendPacket(Packet packet)
         {
             if (packet == null)
                 return;
-            using (var stream = new MemoryStream())
-            {
-                var formatter = new BinaryFormatter();
-                formatter.Serialize(stream, packet);
-                int packetSize = (int)stream.Length;
-                using (var memoryStream = new MemoryStream())
-                using (var writer = new BinaryWriter(memoryStream))
+            if (this.SocketConnected())
+                try
                 {
-                    writer.Write(packetSize);
-                    writer.Write(stream.GetBuffer(), 0, packetSize);
-                    await this.outputStream.WriteAsync(memoryStream.GetBuffer(), 0, (int)memoryStream.Length);
+                    using (var stream = new MemoryStream())
+                    using (var writer = new BinaryWriter(stream))
+                    {
+                        using (var dataStream = new MemoryStream())
+                        {
+                            var formatter = new BinaryFormatter();
+                            formatter.Serialize(dataStream, packet);
+                            int packetSize = (int)dataStream.Length;
+
+                            writer.Write(packetSize);
+                            writer.Write(dataStream.GetBuffer(), 0, packetSize);
+
+                            this.outputStream.WriteAsync(stream.GetBuffer(), 0, (int)stream.Length);
+                        }
+                    }
                 }
-            }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
         }
 
-        public async Task<Packet> ReadNextPacketAsync()
+        public async Task<Packet> ReadNextPacket()
         {
-            Packet packet = null;
             if (!this.inputStream.DataAvailable)
                 return null;
-            //byte[] buffer = new byte[1024];
-            //int readedData = await this.inputStream.ReadAsync(buffer, 0, buffer.Length);
-
-            //using (var memStream = new MemoryStream(buffer, 0, readedData))
             var reader = new BinaryReader(this.inputStream);
             {
                 int packetSize = reader.ReadInt32();
