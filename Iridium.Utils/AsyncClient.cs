@@ -35,16 +35,16 @@
             Packet packet = null;
             if (!this.inputStream.DataAvailable)
                 return null;
-            byte[] buffer = new byte[1024];
-            int readedData = await this.inputStream.ReadAsync(buffer, 0, buffer.Length);
+            //byte[] buffer = new byte[1024];
+            //int readedData = await this.inputStream.ReadAsync(buffer, 0, buffer.Length);
 
-            using (var memStream = new MemoryStream(buffer, 0, readedData))
-            using (var reader = new BinaryReader(memStream))
+            //using (var memStream = new MemoryStream(buffer, 0, readedData))
+            var reader = new BinaryReader(this.inputStream);
             {
                 int packetSize = reader.ReadInt32();
-
+                var stream = new MemoryStream(reader.ReadBytes(packetSize));
                 var formatter = new BinaryFormatter();
-                return formatter.Deserialize(memStream) as Packet;
+                return formatter.Deserialize(stream) as Packet;
             }
         }
     }
