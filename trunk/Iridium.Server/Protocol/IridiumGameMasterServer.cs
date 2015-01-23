@@ -78,7 +78,6 @@
 
         private void HandleNewClient(NetworkClient client)
         {
-            //IridiumMasterClientProtocol.ClientProtocolHandler.HandleNextClient(client);
             client.SendPacket(new ServerInfo(client.SessionId));
             this.clients.Enqueue(client);
         }

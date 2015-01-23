@@ -10,7 +10,7 @@
         public GetGamesPacketHandler(IridiumGameMasterServer masterServer, Packet packet)
             : base(masterServer, packet)
         {}
-
+        
         protected override void ProcessPacket()
         {
             Client.SendPacket(new GamesDataPacket(new GameData[0]));
