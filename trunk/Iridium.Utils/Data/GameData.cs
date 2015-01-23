@@ -1,5 +1,8 @@
 ﻿namespace Iridium.Utils.Data
 {
+    using System;
+
+    [Serializable]
     public class GameData
     {
         public int Id { get; private set; }

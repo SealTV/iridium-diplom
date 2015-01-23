@@ -24,7 +24,7 @@
         public GetGamesPacket()
             : base(ClientPacketType.GetGames)
         {
-
+            
         }
     }
 
