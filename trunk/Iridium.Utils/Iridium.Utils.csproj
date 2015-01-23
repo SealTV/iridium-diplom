@@ -49,8 +49,7 @@
   <ItemGroup>
     <Compile Include="AsyncClient.cs" />
     <Compile Include="Data\FullLevelData.cs" />
-    <Compile Include="Data\GameData.cs" />
-    <Compile Include="Data\LevelData.cs" />
+    <Compile Include="Data\InfoData.cs" />
     <Compile Include="Data\Packet.cs" />
     <Compile Include="Data\PacketsFromClientToMaster.cs" />
     <Compile Include="Data\PacketsFromMasterToClient.cs" />
