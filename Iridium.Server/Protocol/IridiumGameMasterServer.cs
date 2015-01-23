@@ -86,10 +86,18 @@
         {
             while (this.isWorking)
             {
-                NetworkClient client;
-                if (!clients.TryDequeue(out client)) 
-                    continue;
-                IridiumMasterClientProtocol.ClientProtocolHandler.HandleNextClient(client);
+                if (clients.Count > 0)
+                {
+                    Logger.Debug("Clients connected = {0}", clients.Count);
+                    NetworkClient client;
+                    if (!clients.TryDequeue(out client))
+                        continue;
+                    IridiumMasterClientProtocol.ClientProtocolHandler.HandleNextClientAsync(client);
+                }
+                else
+                {
+                    Thread.Sleep(100);                    
+                }
             }
         }
 

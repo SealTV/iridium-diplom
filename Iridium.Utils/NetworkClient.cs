@@ -1,11 +1,11 @@
 ﻿namespace Iridium.Utils
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Net;
     using System.Net.Sockets;
     using System.Runtime.Serialization.Formatters.Binary;
+
     using Utils.Data;
 
     public partial class NetworkClient
@@ -18,6 +18,7 @@
 
         public Guid SessionId { get; set; }
         public bool Connected { get { return socket.Connected; } }
+
 
         public NetworkClient(int port, string ipAddress)
         {
@@ -56,93 +57,26 @@
             }
         }
 
-        public void SendPacket(Packet packet)
+
+        public bool SocketConnected()
         {
-            if(packet == null)
-                return;
+            bool part1 = this.socket.Poll(1000, SelectMode.SelectRead);
+            bool part2 = (this.socket.Available == 0);
+            return !part1 || !part2;
+        }
+
+        public void Disconnect()
+        {
             try
             {
-                using (var stream = new MemoryStream())
-                using (var writer = new BinaryWriter(stream))
-                {
-                    using (var dataStream = new MemoryStream())
-                    {
-                        var formatter = new BinaryFormatter();
-                        formatter.Serialize(dataStream, packet);
-                        int packetSize = (int) dataStream.Length;
-
-                        writer.Write(packetSize);
-                        writer.Write(dataStream.GetBuffer(), 0, packetSize);
-
-                        this.outputStream.Write(stream.GetBuffer(), 0, (int) stream.Length);
-                    }
-                }
+                //this.socket.Shutdown(SocketShutdown.Both);
+                this.socket.Close();
+                socket.Dispose();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
             }
-        }
-
-        public void SendPackets(IEnumerable<Packet> packets)
-        {
-            if(packets == null)
-                return;
-            foreach (var packet in packets)
-            {
-                this.SendPacket(packet);
-            }     
-        }
-
-        public bool TryReadNextPacket(out Packet packet)
-        {
-            if (this.inputStream.DataAvailable)
-            {
-                var reader = new BinaryReader(this.inputStream);
-                {
-                    int packetSize = reader.ReadInt32();
-                    byte[] data = new byte[1024];
-                    int bytesReaded = reader.Read(data, 0, packetSize);
-                    if (bytesReaded != packetSize)
-                    {
-                        packet = null;
-                        return false;
-                    }
-                    using (var stream = new MemoryStream(data))
-                    {
-                        var formatter = new BinaryFormatter();
-                        packet = formatter.Deserialize(stream) as Packet;
-                        return true;
-                    }
-                }
-            }
-            packet = null;
-            return false;
-        }
-
-        public Packet ReadNextPacket()
-        {
-            Packet resultPacket;
-            this.TryReadNextPacket(out resultPacket);
-            return resultPacket;
-        }
-
-        public List<Packet> ReadAllPackets()
-        {
-            List<Packet> packets = new List<Packet>();
-            Packet packet;
-            while (this.TryReadNextPacket(out packet))
-            {
-                packets.Add(packet);
-            }
-            return packets;
-        }
-
-        public void Disconnect()
-        {
-            this.socket.Shutdown(SocketShutdown.Both);
-            this.socket.Close();
-            socket.Dispose();
         }
     }
 }

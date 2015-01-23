@@ -29,11 +29,16 @@
             this.IridiumGameMasterServer = iridiumGameMasterServer;
         }
 
-        public async void HandleNextClient(NetworkClient client)
+        public async void HandleNextClientAsync(NetworkClient client)
         {
             try
             {
-                Packet packet = await client.ReadNextPacketAsync();
+                if (!client.SocketConnected())
+                {
+                    client.Disconnect();
+                    return;
+                }
+                Packet packet = await client.ReadNextPacket();
                 if (packet == null)
                 {
                     IridiumGameMasterServer.AddClient(client);
