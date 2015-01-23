@@ -98,7 +98,7 @@
         {
             if (this.inputStream.DataAvailable)
             {
-                using (var reader = new BinaryReader(this.inputStream))
+                var reader = new BinaryReader(this.inputStream);
                 {
                     int packetSize = reader.ReadInt32();
                     byte[] data = new byte[1024];
@@ -127,7 +127,7 @@
             return resultPacket;
         }
 
-        public IEnumerable<Packet> ReadAllPackets()
+        public List<Packet> ReadAllPackets()
         {
             List<Packet> packets = new List<Packet>();
             Packet packet;

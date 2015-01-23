@@ -39,6 +39,7 @@
                     IridiumGameMasterServer.AddClient(client);
                     return;
                 }
+                Console.WriteLine(packet.PacketType);
                 var packetHandler = GetPacketHandlerFor(packet);
                 packetHandler.Handle(client);
             }
