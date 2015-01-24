@@ -20,7 +20,11 @@ namespace IridiumDatabase
 	/// </summary>
 	public partial class iridiumDB : LinqToDB.Data.DataConnection
 	{
-		public ITable<account> accounts { get { return this.GetTable<account>(); } }
+		public ITable<account>         accounts        { get { return this.GetTable<account>(); } }
+		public ITable<comleted_levels> comleted_levels { get { return this.GetTable<comleted_levels>(); } }
+		public ITable<game>            games           { get { return this.GetTable<game>(); } }
+		public ITable<level>           levels          { get { return this.GetTable<level>(); } }
+		public ITable<level_data>      level_data      { get { return this.GetTable<level_data>(); } }
 
 		public iridiumDB(LinqToDB.DataProvider.IDataProvider dataProvider, string connectionString)
 			: base(dataProvider, connectionString)
@@ -56,6 +60,63 @@ namespace IridiumDatabase
 		}
 	}
 
+	public partial class comleted_levels
+	{
+		public override string ToString()
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.Append("comleted_levels{");
+			sb.AppendFormat("account={0}, ", this.account);
+			sb.AppendFormat("game={0}, ", this.game);
+			sb.AppendFormat("levels_ccomplete={0}", this.levels_ccomplete);
+			sb.Append("}");
+			return sb.ToString();
+		}
+	}
+
+	public partial class game
+	{
+		public override string ToString()
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.Append("game{");
+			sb.AppendFormat("id={0}, ", this.id);
+			sb.AppendFormat("name={0}, ", this.name);
+			sb.AppendFormat("levels_count={0}", this.levels_count);
+			sb.Append("}");
+			return sb.ToString();
+		}
+	}
+
+	public partial class level
+	{
+		public override string ToString()
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.Append("level{");
+			sb.AppendFormat("id={0}, ", this.id);
+			sb.AppendFormat("game_id={0}, ", this.game_id);
+			sb.AppendFormat("level_id={0}, ", this.level_id);
+			sb.AppendFormat("name={0}", this.name);
+			sb.Append("}");
+			return sb.ToString();
+		}
+	}
+
+	public partial class level_data
+	{
+		public override string ToString()
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.Append("level_data{");
+			sb.AppendFormat("game_id={0}, ", this.game_id);
+			sb.AppendFormat("level_id={0}, ", this.level_id);
+			sb.AppendFormat("path={0}", this.path);
+			sb.Append("}");
+			return sb.ToString();
+		}
+	}
+
 	[Table("accounts")]
 	public partial class account
 	{
@@ -65,12 +126,73 @@ namespace IridiumDatabase
 		[Column,     NotNull ] public DateTime date     { get; set; } // datetime
 	}
 
+	[Table("comleted_levels")]
+	public partial class comleted_levels
+	{
+		[PrimaryKey(1), NotNull    ] public uint  account          { get; set; } // int(10) unsigned
+		[PrimaryKey(2), NotNull    ] public uint  game             { get; set; } // int(10) unsigned
+		[Column,           Nullable] public uint? levels_ccomplete { get; set; } // int(10) unsigned
+	}
+
+	[Table("games")]
+	public partial class game
+	{
+		[PrimaryKey, Identity   ] public uint   id           { get; set; } // int(10) unsigned
+		[Column,     NotNull    ] public string name         { get; set; } // varchar(45)
+		[Column,        Nullable] public int?   levels_count { get; set; } // int(10)
+	}
+
+	[Table("levels")]
+	public partial class level
+	{
+		[PrimaryKey(1), Identity   ] public uint   id       { get; set; } // int(10) unsigned
+		[PrimaryKey(2), NotNull    ] public uint   game_id  { get; set; } // int(10) unsigned
+		[PrimaryKey(3), NotNull    ] public uint   level_id { get; set; } // int(10) unsigned
+		[Column,           Nullable] public string name     { get; set; } // varchar(45)
+	}
+
+	[Table("level_data")]
+	public partial class level_data
+	{
+		[PrimaryKey(1), NotNull] public uint   game_id  { get; set; } // int(10) unsigned
+		[PrimaryKey(2), NotNull] public uint   level_id { get; set; } // int(10) unsigned
+		[Column,        NotNull] public string path     { get; set; } // varchar(128)
+	}
+
 	public static partial class TableExtensions
 	{
 		public static account Find(this ITable<account> table, uint id)
 		{
 			return table.FirstOrDefault(t =>
 				t.id == id);
+		}
+
+		public static comleted_levels Find(this ITable<comleted_levels> table, uint account, uint game)
+		{
+			return table.FirstOrDefault(t =>
+				t.account == account &&
+				t.game    == game);
+		}
+
+		public static game Find(this ITable<game> table, uint id)
+		{
+			return table.FirstOrDefault(t =>
+				t.id == id);
+		}
+
+		public static level Find(this ITable<level> table, uint id, uint game_id, uint level_id)
+		{
+			return table.FirstOrDefault(t =>
+				t.id       == id      &&
+				t.game_id  == game_id &&
+				t.level_id == level_id);
+		}
+
+		public static level_data Find(this ITable<level_data> table, uint game_id, uint level_id)
+		{
+			return table.FirstOrDefault(t =>
+				t.game_id  == game_id &&
+				t.level_id == level_id);
 		}
 	}
 }
