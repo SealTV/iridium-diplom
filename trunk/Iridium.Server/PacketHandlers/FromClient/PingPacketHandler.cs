@@ -13,9 +13,6 @@
 
         protected override void ProcessPacket()
         {
-            this.Client = this.Client;
-
-
             Ping ping = this.Packet as Ping;
             if (this.Packet == null)
             {

@@ -1,0 +1,41 @@
+CREATE TABLE `iridium`.`accounts` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `login` varchar(45) NOT NULL,
+  `password` varbinary(256) NOT NULL,
+  `date` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  UNIQUE KEY `login_UNIQUE` (`login`),
+  UNIQUE KEY `password_UNIQUE` (`password`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `iridium`.`games` (
+  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
+  `levels_count` INT(10) NULL DEFAULT 1,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE `iridium`.`level_data` (
+  `game_id` INT(10) UNSIGNED NOT NULL,
+  `level_id` INT(10) UNSIGNED NOT NULL,
+  `path` VARCHAR(128) NOT NULL,
+  PRIMARY KEY (`game_id`, `level_id`));
+
+CREATE TABLE `iridium`.`comleted_levels` (
+  `account` INT(10) UNSIGNED NOT NULL,
+  `game` INT(10) UNSIGNED NOT NULL,
+  `levels_ccomplete` INT(10) UNSIGNED NULL DEFAULT 0,
+  PRIMARY KEY (`account`, `game`));
+  
+  CREATE TABLE `iridium`.`levels` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `game_id` int(10) unsigned NOT NULL,
+  `level_id` int(10) unsigned NOT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`,`game_id`,`level_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
