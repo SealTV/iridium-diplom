@@ -71,7 +71,8 @@
     <Compile Include="PacketHandlers\FromClient\GameAlgorithmPacketHandler.cs" />
     <Compile Include="PacketHandlers\FromClient\GetGamesPacketHandler.cs" />
     <Compile Include="PacketHandlers\FromClient\GetLevelDataPacketHandler.cs" />
-    <Compile Include="PacketHandlers\FromClient\GetLevelsPacketHandler.cs" />
+    <Compile Include="PacketHandlers\FromClient\GetGameDataPacketHandler.cs" />
+    <Compile Include="PacketHandlers\FromClient\LoginPacketHandler.cs" />
     <Compile Include="Protocol\IridiumGameMasterServer.cs" />
     <Compile Include="PacketHandlers\FromClient\PingPacketHandler.cs" />
     <Compile Include="PacketHandlers\PacketHandler.cs" />

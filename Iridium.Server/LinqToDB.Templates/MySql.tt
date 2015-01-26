@@ -37,8 +37,8 @@
 
 //	LoadMySqlMetadata("127.0.0.1", "iridium_master_server", "root", "admin");
 
-	//LoadMySqlMetadata("176.103.146.173", "iridium", "seal", "iridiumMatob");
-	LoadMySqlMetadata("176.103.146.173", "iridium", "seal", "PASSWORD");
+	LoadMySqlMetadata("176.103.146.173", "iridium", "seal", "iridiumMatob");
+//	LoadMySqlMetadata("176.103.146.173", "iridium", "seal", "PASSWORD");
 
 //	LoadMySqlMetadata("Server="127.0.0.1";Port=3306;Database=iridium_master_server;Uid=root;Pwd=admin;charset=utf8;" );
  // Add additional constructor with parameter connectionString

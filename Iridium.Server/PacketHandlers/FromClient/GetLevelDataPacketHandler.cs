@@ -22,19 +22,19 @@
         {
             Logger.Info("Start process GetLevelData.");
 
-            PacketsFromClient.GetLevelDataPacket getLevelDataPacket = (PacketsFromClient.GetLevelDataPacket) this.Packet;
+            PacketsFromClient.GetLevelData getLevelData = (PacketsFromClient.GetLevelData) this.Packet;
 
             level_data levelData;
             using (var db = new iridiumDB())
             {
                 var query = from q in db.level_data
-                            where q.game_id == getLevelDataPacket.GameId
-                                  && q.level_id == getLevelDataPacket.LevelId
+                            where q.game_id == getLevelData.GameId
+                                  && q.level_id == getLevelData.LevelId
                             select q;
                 levelData = query.First();
             }
             var data = LavelsDataProvider.GetLevelData(levelData);
-            this.Client.SendPacket(new PacketsFromMaster.LevelDataPacket((int)levelData.game_id, (int)levelData.level_id, Encoding.Unicode.GetBytes(data)));
+            this.Client.SendPacket(new PacketsFromMaster.LevelData((int)levelData.game_id, (int)levelData.level_id, Encoding.Unicode.GetBytes(data)));
         }
     }
 }

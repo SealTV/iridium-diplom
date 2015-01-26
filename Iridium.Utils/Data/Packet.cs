@@ -5,7 +5,7 @@
     [Serializable]
     public abstract class Packet
     {
-        public Enum PacketType { get; protected set; }
+        public Enum PacketType { get; private set; }
 
         protected Packet(Enum packetType)
         {
@@ -17,8 +17,9 @@
     public enum ClientPacketType
     {
         Ping,
+        Login,
         GetGames,
-        GetLevels,
+        GetGameData,
         GetLevelData,
         GameAlgorithm
     }
@@ -28,8 +29,9 @@
     {
         Pong,
         ServerInfo,
-        GamesData,
-        GameLevelsData,
+        LoginOk,
+        GamesList,
+        GameData,
         LevelData,
         AlgorithmResult
     }

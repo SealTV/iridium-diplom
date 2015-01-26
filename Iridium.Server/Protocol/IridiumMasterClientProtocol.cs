@@ -66,10 +66,12 @@
             {
                 case ClientPacketType.Ping:
                     return new PingPacketHandler(this.IridiumGameMasterServer, packet);
+                case ClientPacketType.Login :
+                    return new LoginPacketHandler(this.IridiumGameMasterServer, packet);
                 case ClientPacketType.GetGames:
                     return new GetGamesPacketHandler(this.IridiumGameMasterServer, packet);
-                case ClientPacketType.GetLevels:
-                    return new GetLevelsPacketHandler(this.IridiumGameMasterServer, packet);
+                case ClientPacketType.GetGameData:
+                    return new GetGameDataPacketHandler(this.IridiumGameMasterServer, packet);
                 case ClientPacketType.GetLevelData:
                     return new GetLevelDataPacketHandler(this.IridiumGameMasterServer, packet);
                 case ClientPacketType.GameAlgorithm:

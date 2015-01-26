@@ -20,11 +20,11 @@ namespace IridiumDatabase
 	/// </summary>
 	public partial class iridiumDB : LinqToDB.Data.DataConnection
 	{
-		public ITable<account>         accounts        { get { return this.GetTable<account>(); } }
-		public ITable<comleted_levels> comleted_levels { get { return this.GetTable<comleted_levels>(); } }
-		public ITable<game>            games           { get { return this.GetTable<game>(); } }
-		public ITable<level>           levels          { get { return this.GetTable<level>(); } }
-		public ITable<level_data>      level_data      { get { return this.GetTable<level_data>(); } }
+		public ITable<account>          accounts         { get { return this.GetTable<account>(); } }
+		public ITable<completed_levels> completed_levels { get { return this.GetTable<completed_levels>(); } }
+		public ITable<game>             games            { get { return this.GetTable<game>(); } }
+		public ITable<level>            levels           { get { return this.GetTable<level>(); } }
+		public ITable<level_data>       level_data       { get { return this.GetTable<level_data>(); } }
 
 		public iridiumDB(LinqToDB.DataProvider.IDataProvider dataProvider, string connectionString)
 			: base(dataProvider, connectionString)
@@ -60,12 +60,12 @@ namespace IridiumDatabase
 		}
 	}
 
-	public partial class comleted_levels
+	public partial class completed_levels
 	{
 		public override string ToString()
 		{
 			StringBuilder sb = new StringBuilder();
-			sb.Append("comleted_levels{");
+			sb.Append("completed_levels{");
 			sb.AppendFormat("account={0}, ", this.account);
 			sb.AppendFormat("game={0}, ", this.game);
 			sb.AppendFormat("levels_ccomplete={0}", this.levels_ccomplete);
@@ -126,8 +126,8 @@ namespace IridiumDatabase
 		[Column,     NotNull ] public DateTime date     { get; set; } // datetime
 	}
 
-	[Table("comleted_levels")]
-	public partial class comleted_levels
+	[Table("completed_levels")]
+	public partial class completed_levels
 	{
 		[PrimaryKey(1), NotNull    ] public uint  account          { get; set; } // int(10) unsigned
 		[PrimaryKey(2), NotNull    ] public uint  game             { get; set; } // int(10) unsigned
@@ -167,7 +167,7 @@ namespace IridiumDatabase
 				t.id == id);
 		}
 
-		public static comleted_levels Find(this ITable<comleted_levels> table, uint account, uint game)
+		public static completed_levels Find(this ITable<completed_levels> table, uint account, uint game)
 		{
 			return table.FirstOrDefault(t =>
 				t.account == account &&
