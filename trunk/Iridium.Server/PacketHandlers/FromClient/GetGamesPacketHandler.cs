@@ -29,10 +29,10 @@
             var gamesData = new SharedPackets.GameData[games.Count];
             for (int i = 0; i < games.Count; i++)
             {
-                gamesData[i] = new SharedPackets.GameData((int)games[i].id, games[i].name, (int)games[i].levels_count);
+                gamesData[i] = new SharedPackets.GameData((int)games[i].id, games[i].name);
             }
 
-            Client.SendPacket(new PacketsFromMaster.GamesDataPacket(gamesData));
+            Client.SendPacket(new PacketsFromMaster.GamesList(gamesData));
         }
     }
 }

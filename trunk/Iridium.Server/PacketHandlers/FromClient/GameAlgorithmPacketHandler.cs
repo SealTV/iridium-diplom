@@ -14,7 +14,8 @@
         protected override void ProcessPacket()
         {
             Logger.Info("Start process GameAlgorithm.");
-
+            PacketsFromClient.GameAlgorithm gameAlgorithm = (PacketsFromClient.GameAlgorithm) this.Packet;
+            //todo write service to check received code
         }
     }
 }

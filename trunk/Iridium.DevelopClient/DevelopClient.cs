@@ -17,7 +17,7 @@
                 Console.WriteLine("Connected!");
                 networkClient.SendPacket(new PacketsFromClient.Ping(10));
                 networkClient.SendPacket(new PacketsFromClient.Ping(20));
-                networkClient.SendPacket(new PacketsFromClient.GetGamesPacket());
+                networkClient.SendPacket(new PacketsFromClient.GetGames());
 //                while (networkClient.Connected)
 //                {
 //                    var packets = networkClient.ReadAllPackets();

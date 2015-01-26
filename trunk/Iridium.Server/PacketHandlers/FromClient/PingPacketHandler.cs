@@ -13,13 +13,15 @@
 
         protected override void ProcessPacket()
         {
-            PacketsFromClient.Ping ping = this.Packet as PacketsFromClient.Ping;
+            Logger.Info("Strart process Ping packet.");
             if (this.Packet == null)
             {
                 Logger.Error("Cannot cast packet to Ping packet type.");
             }
-
+            PacketsFromClient.Ping ping = this.Packet as PacketsFromClient.Ping;
+            
             Logger.Info("Ping value = {0}", ping.Value);
+            this.Client.SendPacket(new PacketsFromMaster.Pong(ping.Value));
         }
     }
 }
