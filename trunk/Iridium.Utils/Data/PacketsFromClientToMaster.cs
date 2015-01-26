@@ -2,97 +2,106 @@
 {
     using System;
 
-    [Serializable]
-    public class Ping : Packet
+    public static class PacketsFromClient
     {
-        private readonly int value;
-        public int Value
+        [Serializable]
+        public class Ping : Packet
         {
-            get { return this.value; }
+            private readonly int value;
+
+            public int Value
+            {
+                get { return this.value; }
+            }
+
+            public Ping(int value)
+                            : base(ClientPacketType.Ping)
+            {
+                this.value = value;
+            }
         }
 
-        public Ping(int value)
-            : base(ClientPacketType.Ping)
+        [Serializable]
+        public class GetGamesPacket : Packet
         {
-            this.value = value;
-        }
-    }
-
-    [Serializable]
-    public class GetGamesPacket : Packet
-    {
-        public GetGamesPacket()
-            : base(ClientPacketType.GetGames)
-        {
-            
-        }
-    }
-
-    [Serializable]
-    public class GetGameDataPacket : Packet
-    {
-        private readonly int gameId;
-        public int GameId
-        {
-            get { return this.gameId; }
+            public GetGamesPacket()
+                            : base(ClientPacketType.GetGames)
+            {}
         }
 
-        public GetGameDataPacket(int gameId)
-            : base(ClientPacketType.GetLevels)
+        [Serializable]
+        public class GetGameDataPacket : Packet
         {
-            this.gameId = gameId;
-        }
-    }
+            private readonly int gameId;
 
-    [Serializable]
-    public class GetLevelDataPacket : Packet
-    {
-        private readonly int gameId;
-        public int GameId
-        {
-            get { return this.gameId; }
-        }
+            public int GameId
+            {
+                get { return this.gameId; }
+            }
 
-        private readonly int levelId;
-        public int LevelId
-        {
-            get { return this.levelId; }
+            public GetGameDataPacket(int gameId)
+                            : base(ClientPacketType.GetLevels)
+            {
+                this.gameId = gameId;
+            }
         }
 
-        public GetLevelDataPacket(int gameId, int levelId)
-            : base(ClientPacketType.GetLevelData)
+        [Serializable]
+        public class GetLevelDataPacket : Packet
         {
-            this.gameId = gameId;
-            this.levelId = levelId;
-        }
-    }
+            private readonly int gameId;
 
-    [Serializable]
-    public class GameAlgorithmPacket : Packet
-    {
-        private readonly int gameId;
-        public int GameId
-        {
-            get { return this.gameId; }
-        }
+            public int GameId
+            {
+                get { return this.gameId; }
+            }
 
-        private readonly int levelId;
-        public int LevelId
-        {
-            get { return this.levelId; }
-        }
-        private readonly string algoritm;
-        public string Algoritm
-        {
-            get { return this.algoritm; }
+            private readonly int levelId;
+
+            public int LevelId
+            {
+                get { return this.levelId; }
+            }
+
+            public GetLevelDataPacket(int gameId, int levelId)
+                            : base(ClientPacketType.GetLevelData)
+            {
+                this.gameId = gameId;
+                this.levelId = levelId;
+            }
         }
 
-        public GameAlgorithmPacket(int gameId, int levelId, string algoritm)
-            : base(ClientPacketType.GameAlgorithm)
+        [Serializable]
+        public class GameAlgorithmPacket : Packet
         {
-            this.gameId = gameId;
-            this.levelId = levelId;
-            this.algoritm = algoritm;
+            private readonly int gameId;
+
+            public int GameId
+            {
+                get { return this.gameId; }
+            }
+
+            private readonly int levelId;
+
+            public int LevelId
+            {
+                get { return this.levelId; }
+            }
+
+            private readonly string algoritm;
+
+            public string Algoritm
+            {
+                get { return this.algoritm; }
+            }
+
+            public GameAlgorithmPacket(int gameId, int levelId, string algoritm)
+                            : base(ClientPacketType.GameAlgorithm)
+            {
+                this.gameId = gameId;
+                this.levelId = levelId;
+                this.algoritm = algoritm;
+            }
         }
     }
 }

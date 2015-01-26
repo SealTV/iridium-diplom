@@ -12,7 +12,7 @@
 
         protected override void ProcessPacket()
         {
-            throw new System.NotImplementedException();
+            
         }
     }
 }

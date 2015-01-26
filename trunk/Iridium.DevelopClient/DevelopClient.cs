@@ -15,9 +15,9 @@
                 //NetworkClient networkClient = new NetworkClient(27001, "176.103.146.173");
                 networkClient.Connect();
                 Console.WriteLine("Connected!");
-                networkClient.SendPacket(new Ping(10));
-                networkClient.SendPacket(new Ping(20));
-                networkClient.SendPacket(new GetGamesPacket());
+                networkClient.SendPacket(new PacketsFromClient.Ping(10));
+                networkClient.SendPacket(new PacketsFromClient.Ping(20));
+                networkClient.SendPacket(new PacketsFromClient.GetGamesPacket());
 //                while (networkClient.Connected)
 //                {
 //                    var packets = networkClient.ReadAllPackets();

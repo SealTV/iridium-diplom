@@ -26,13 +26,13 @@
                             select q;
                 games = query.ToList();
             }
-            var gamesData = new GameData[games.Count];
+            var gamesData = new SharedPackets.GameData[games.Count];
             for (int i = 0; i < games.Count; i++)
             {
-                gamesData[i] = new GameData((int)games[i].id, games[i].name, (int)games[i].levels_count);
+                gamesData[i] = new SharedPackets.GameData((int)games[i].id, games[i].name, (int)games[i].levels_count);
             }
 
-            Client.SendPacket(new GamesDataPacket(gamesData));
+            Client.SendPacket(new PacketsFromMaster.GamesDataPacket(gamesData));
         }
     }
 }
