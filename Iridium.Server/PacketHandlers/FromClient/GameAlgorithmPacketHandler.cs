@@ -13,7 +13,8 @@
 
         protected override void ProcessPacket()
         {
-            throw new System.NotImplementedException();
+            Logger.Info("Start process GameAlgorithm.");
+
         }
     }
 }

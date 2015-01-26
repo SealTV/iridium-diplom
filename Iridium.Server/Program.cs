@@ -9,6 +9,11 @@ using IridiumDatabase;
 
 namespace Iridium.Server
 {
+    using Iridium.Server.Services;
+
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+
     public class Program
     {
         public static IridiumConfig Configuration;
@@ -35,7 +40,7 @@ namespace Iridium.Server
             DataConnection.AddConfiguration(Program.ConnectionString, Program.ConnectionString, new MySqlDataProvider());
 
             //using (var db = new iridiumDB(Program.ConnectionString))
-            { }
+            //{ }
 
             masterServer = new IridiumGameMasterServer();
         }
