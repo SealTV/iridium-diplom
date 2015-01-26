@@ -2,112 +2,124 @@
 
 namespace Iridium.Utils.Data
 {
-    [Serializable]
-    public class Pong : Packet
+    public static class PacketsFromMaster
     {
-        private readonly int value;
-        public int Value { get { return this.value; }}
-
-        public Pong(int value)
-            : base(MasterServerPacketType.Pong)
+        [Serializable]
+        public class Pong : Packet
         {
-            this.value = value;
-        }
-    }
+            private readonly int value;
 
-    [Serializable]
-    public class ServerInfo : Packet
-    {
-        private readonly int serverVersion;
-        public int ServerVersion
-        {
-            get { return this.serverVersion; }
+            public int Value
+            {
+                get { return this.value; }
+            }
+
+            public Pong(int value)
+                            : base(MasterServerPacketType.Pong)
+            {
+                this.value = value;
+            }
         }
 
-        private readonly Guid clientId;
-        public Guid ClientId
+        [Serializable]
+        public class ServerInfo : Packet
         {
-            get { return this.clientId; }
+            private readonly int serverVersion;
+
+            public int ServerVersion
+            {
+                get { return this.serverVersion; }
+            }
+
+            private readonly Guid clientId;
+
+            public Guid ClientId
+            {
+                get { return this.clientId; }
+            }
+
+            public ServerInfo(Guid clientId)
+                            : base(MasterServerPacketType.ServerInfo)
+            {
+                this.serverVersion = 1;
+                this.clientId = clientId;
+            }
         }
 
-        public ServerInfo(Guid clientId)
-            : base(MasterServerPacketType.ServerInfo)
+        [Serializable]
+        public class GamesDataPacket : Packet
         {
-            this.serverVersion = 1;
-            this.clientId = clientId;
-        }
-    }
+            public SharedPackets.GameData[] Games { get; private set; }
 
-    [Serializable]
-    public class GamesDataPacket : Packet
-    {
-        public GameData[] Games { get; private set; }
-
-        public GamesDataPacket(GameData[] games)
-            : base(MasterServerPacketType.GamesData)
-        {
-            this.Games = games;
-        }
-    }
-
-    [Serializable]
-    public class GameDataPacket : Packet
-    {
-        public int GameId { get; private set; }
-        public LevelData[] LevelsIds { get; private set; }
-
-        public GameDataPacket(int gameId, LevelData[] levelsIds)
-            : base(MasterServerPacketType.GameLevelsData)
-        {
-            this.LevelsIds = levelsIds;
-            this.GameId = gameId;
-        }
-    }
-
-    [Serializable]
-    public class LevelDataPacket : Packet
-    {
-
-        public int GameId { get; private set; }
-        public int LevelId { get; private set; }
-        public byte[] Data { get; private set; }
-
-        public LevelDataPacket(int gameId, int levelId, byte[] data)
-            : base(MasterServerPacketType.LevelData)
-        {
-            this.Data = data;
-            this.LevelId = levelId;
-            this.GameId = gameId;
-        }
-    }
-
-    [Serializable]
-    public class AlgorithmResult : Packet
-    {
-        private readonly int gameId;
-        public int GameId
-        {
-            get { return this.gameId; }
+            public GamesDataPacket(SharedPackets.GameData[] games)
+                            : base(MasterServerPacketType.GamesData)
+            {
+                this.Games = games;
+            }
         }
 
-        private readonly int levelId;
-        public int LevelId
+        [Serializable]
+        public class GameDataPacket : Packet
         {
-            get { return this.levelId; }
+            public int GameId { get; private set; }
+            public SharedPackets.LevelData[] LevelsIds { get; private set; }
+
+            public GameDataPacket(int gameId, SharedPackets.LevelData[] levelsIds)
+                            : base(MasterServerPacketType.GameLevelsData)
+            {
+                this.LevelsIds = levelsIds;
+                this.GameId = gameId;
+            }
         }
 
-        private readonly string[] steps;
-        public string[] Steps
+        [Serializable]
+        public class LevelDataPacket : Packet
         {
-            get { return this.steps; }
+
+            public int GameId { get; private set; }
+            public int LevelId { get; private set; }
+            public byte[] Data { get; private set; }
+
+            public LevelDataPacket(int gameId, int levelId, byte[] data)
+                            : base(MasterServerPacketType.LevelData)
+            {
+                this.Data = data;
+                this.LevelId = levelId;
+                this.GameId = gameId;
+            }
         }
 
-        public AlgorithmResult(int gameId, int levelId, string[] steps)
-            : base(MasterServerPacketType.AlgorithmResult)
+        [Serializable]
+        public class AlgorithmResult : Packet
         {
-            this.gameId = gameId;
-            this.levelId = levelId;
-            this.steps = steps;
+            private readonly int gameId;
+
+            public int GameId
+            {
+                get { return this.gameId; }
+            }
+
+            private readonly int levelId;
+
+            public int LevelId
+            {
+                get { return this.levelId; }
+            }
+
+            private readonly string[] steps;
+
+            public string[] Steps
+            {
+                get { return this.steps; }
+            }
+
+            public AlgorithmResult(int gameId, int levelId, string[] steps)
+                            : base(MasterServerPacketType.AlgorithmResult)
+            {
+                this.gameId = gameId;
+                this.levelId = levelId;
+                this.steps = steps;
+            }
         }
     }
 }

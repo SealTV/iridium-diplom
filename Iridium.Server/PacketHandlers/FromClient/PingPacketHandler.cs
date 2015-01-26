@@ -13,7 +13,7 @@
 
         protected override void ProcessPacket()
         {
-            Ping ping = this.Packet as Ping;
+            PacketsFromClient.Ping ping = this.Packet as PacketsFromClient.Ping;
             if (this.Packet == null)
             {
                 Logger.Error("Cannot cast packet to Ping packet type.");
