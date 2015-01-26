@@ -9,13 +9,25 @@
         {
             public int Value { get; private set; }
 
-            public Ping(int value)
-                            : base(ClientPacketType.Ping)
+            public Ping(int value) : base(ClientPacketType.Ping)
             {
                 this.Value = value;
             }
         }
 
+        [Serializable]
+        public class Register : Packet
+        {
+            public string LoginName { get; private set; }
+            public byte[] Password { get; private set; }
+
+            public Register(string loginName, byte[] password) : base(ClientPacketType.Register)
+            {
+                this.LoginName = loginName;
+                this.Password = password;
+            }
+        } 
+        
         [Serializable]
         public class Login : Packet
         {

@@ -8,11 +8,16 @@
 
     public class IridiumMasterClientProtocol
     {
-        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
-        private readonly IridiumGameMasterServer IridiumGameMasterServer;
-
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         public static IridiumMasterClientProtocol ClientProtocolHandler { get; private set; }
 
+        private readonly IridiumGameMasterServer IridiumGameMasterServer;
+
+        private IridiumMasterClientProtocol(IridiumGameMasterServer iridiumGameMasterServer)
+        {
+            this.IridiumGameMasterServer = iridiumGameMasterServer;
+        }
+        
         public static void Init(IridiumGameMasterServer iridiumGameMasterServer)
         {
             ClientProtocolHandler = new IridiumMasterClientProtocol(iridiumGameMasterServer);
@@ -21,12 +26,6 @@
         public static void Stop()
         {
             ClientProtocolHandler = null;
-        }
-
-
-        private IridiumMasterClientProtocol(IridiumGameMasterServer iridiumGameMasterServer)
-        {
-            this.IridiumGameMasterServer = iridiumGameMasterServer;
         }
 
         public async void HandleNextClientAsync(NetworkClient client)
@@ -49,7 +48,7 @@
             }
             catch (Exception e)
             {
-                logger.Error(e);
+                Logger.Error(e);
                 IridiumGameMasterServer.Disconnect(client);
             }
         }
@@ -66,7 +65,9 @@
             {
                 case ClientPacketType.Ping:
                     return new PingPacketHandler(this.IridiumGameMasterServer, packet);
-                case ClientPacketType.Login :
+                case ClientPacketType.Register:
+                    return new RegisterHandler(this.IridiumGameMasterServer, packet);
+                case ClientPacketType.Login:
                     return new LoginPacketHandler(this.IridiumGameMasterServer, packet);
                 case ClientPacketType.GetGames:
                     return new GetGamesPacketHandler(this.IridiumGameMasterServer, packet);

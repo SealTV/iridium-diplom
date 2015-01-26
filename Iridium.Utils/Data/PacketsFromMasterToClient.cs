@@ -30,6 +30,20 @@ namespace Iridium.Utils.Data
                 this.ClientId = clientId;
             }
         }
+        
+        [Serializable]
+        public class RegisterResult : Packet
+        {
+            public int AccountId { get; private set; }
+            public bool RegisterOK { get; private set; }
+
+            public RegisterResult(bool registerOK, int accountId)
+                            : base(MasterServerPacketType.RegisterResult)
+            {
+                this.RegisterOK = registerOK;
+                this.AccountId = accountId;
+            }
+        }
 
         [Serializable]
         public class LoginOk : Packet

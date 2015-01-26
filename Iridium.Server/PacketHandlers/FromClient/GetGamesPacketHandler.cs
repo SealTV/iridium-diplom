@@ -20,7 +20,7 @@
             Logger.Info("Start process GetGamesPacke.");
 
             List<game> games;
-            using (var db = new iridiumDB())
+            using (var db = new iridiumDB(Program.ConnectionString))
             {
                 var query = from q in db.games
                             select q;
