@@ -17,6 +17,7 @@
     public enum ClientPacketType
     {
         Ping,
+        Register,
         Login,
         GetGames,
         GetGameData,
@@ -29,6 +30,7 @@
     {
         Pong,
         ServerInfo,
+        RegisterResult,
         LoginOk,
         GamesList,
         GameData,

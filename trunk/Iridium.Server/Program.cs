@@ -9,7 +9,12 @@ using IridiumDatabase;
 
 namespace Iridium.Server
 {
+    using System.Diagnostics;
+    using System.Text;
+
+    using Iridium.Server.PacketHandlers.FromClient;
     using Iridium.Server.Services;
+    using Iridium.Utils.Data;
 
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
@@ -41,8 +46,8 @@ namespace Iridium.Server
 
             //using (var db = new iridiumDB(Program.ConnectionString))
             //{ }
-
             masterServer = new IridiumGameMasterServer();
+
         }
         
         private void Start()

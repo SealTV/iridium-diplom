@@ -40,6 +40,8 @@
 
             BeginAcceptNewClient();
             this.clientsManagerTask = Task.Factory.StartNew(this.ManagedClientsPackets);
+
+            //var clientsManager = Utils.PeriodicTaskFactory.Start(this.ManagedClientsPackets, 100, 0, -1, -1, true, new CancellationToken(), TaskCreationOptions.LongRunning);
         }
 
         private void BeginAcceptNewClient()
