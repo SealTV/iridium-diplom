@@ -25,7 +25,7 @@ CREATE TABLE `iridium`.`level_data` (
   `path` VARCHAR(128) NOT NULL,
   PRIMARY KEY (`game_id`, `level_id`));
 
-CREATE TABLE `iridium`.`comleted_levels` (
+CREATE TABLE `iridium`.`completed_levels` (
   `account` INT(10) UNSIGNED NOT NULL,
   `game` INT(10) UNSIGNED NOT NULL,
   `levels_ccomplete` INT(10) UNSIGNED NULL DEFAULT 0,
