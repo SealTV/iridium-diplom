@@ -5,8 +5,10 @@ namespace Iridium.Server
     using System;
     using System.Configuration;
 
+    using Iridium.Server.PacketHandlers.FromClient;
     using Iridium.Server.Services;
     using Iridium.Server.Protocol;
+    using Iridium.Utils.Data;
 
     using LinqToDB.Data;
     using LinqToDB.DataProvider.MySql;
@@ -38,8 +40,7 @@ namespace Iridium.Server
 
             //using (var db = new iridiumDB(Program.ConnectionString))
             //{ }
-            TestBuilderService service = new TestBuilderService();
-            service.Run();
+            //CodeBuildService.Run();
 
             masterServer = new IridiumGameMasterServer();
 
