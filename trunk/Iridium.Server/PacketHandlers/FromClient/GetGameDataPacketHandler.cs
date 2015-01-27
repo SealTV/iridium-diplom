@@ -3,6 +3,7 @@
     using System.Linq;
 
     using Iridium.Server.Protocol;
+    using Iridium.Utils;
     using Iridium.Utils.Data;
 
     using IridiumDatabase;
@@ -17,6 +18,14 @@
         protected override void ProcessPacket()
         {
             Logger.Info("Start process GetGemaLevels packet");
+            
+            if (this.Client.State == SessionState.NotLogged)
+            {
+                Logger.Error("Client is not logged");
+                this.Disconnect();
+                return;
+            }
+
             PacketsFromClient.GetGameData getGameData = (PacketsFromClient.GetGameData) this.Packet;
 
             game game;
@@ -31,7 +40,7 @@
                 game = games.First();
 
                 var completedLevelses = from q in db.completed_levels
-                             where q.game == game.id
+                             where q.game == game.id && q.account == this.Client.AccountId
                              select q;
                 completedLevels = completedLevelses.First();
 
