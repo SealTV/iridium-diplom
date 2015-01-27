@@ -2,7 +2,7 @@
 {
     using System;
 
-    public static class SharedPackets
+    public static class SharedData
     {
         [Serializable]
         public class GameData

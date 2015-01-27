@@ -1,4 +1,4 @@
-﻿namespace Scripts
+﻿namespace Assets.Scripts
 {
     public enum ConnectorType
     {
@@ -7,5 +7,21 @@
         Bool,
         Int,
         Float
+    }
+
+    public enum RequestState
+    {
+        NotValue,
+        Waiting,
+        Accepted
+    }
+
+    public enum MainMenuState
+    {
+        MainMenu,
+        WaitingGames,
+        Games,
+        WeaitingLevels,
+        Levels
     }
 }
