@@ -23,11 +23,9 @@
         {
             public int Id { get; private set; }
             public Point Position { get; private set; }
-            public int Distance { get; private set; }
 
-            public Enemy(int id, Point position, int distance)
+            public Enemy(int id, Point position)
             {
-                this.Distance = distance;
                 this.Position = position;
                 this.Id = id;
             }

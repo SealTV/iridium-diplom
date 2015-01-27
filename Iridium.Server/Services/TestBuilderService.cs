@@ -3,6 +3,8 @@
     using System;
     using System.Linq;
 
+    using Iridium.Utils.Data;
+
     using Tech.CodeGeneration;
     using Tech.CodeGeneration.Compilers;
 
@@ -41,12 +43,18 @@
                         Value = 15
                     };
 
+                    SharedData.Enemy enemy = new SharedData.Enemy(1, new SharedData.Point(1, 1));
+
                     var code = CodeGenerator.CreateCode<int>(sandbox, CS.Compiler,
-                                                             sourceCode, null, null, CodeParameter.Create("max", max),
+                                                             sourceCode, 
+                                                             new []{"Iridium.Utils"},
+                                                             new[] { "Iridium.Utils.dll" }, 
+                                                             CodeParameter.Create("max", max),
                                                              CodeParameter.Create("array", array),
                                                              CodeParameter.Create("@class", @class),
-                                                             CodeParameter.Create("struckt", struckt));
-                    var value = code.Execute(max, array, @class, struckt);
+                                                             CodeParameter.Create("struckt", struckt),
+                                                             CodeParameter.Create("enemy", enemy));
+                    var value = code.Execute(max, array, @class, struckt, enemy);
                     Console.WriteLine(value);
                 }
                 catch (Exception e)

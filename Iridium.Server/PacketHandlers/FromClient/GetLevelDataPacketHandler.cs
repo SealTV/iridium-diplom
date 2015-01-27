@@ -5,7 +5,6 @@
     using Iridium.Network;
     using Iridium.Server.Protocol;
     using Iridium.Server.Services;
-    using Iridium.Utils;
     using Iridium.Utils.Data;
 
     using IridiumDatabase;
