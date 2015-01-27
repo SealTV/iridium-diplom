@@ -1,30 +1,22 @@
-﻿using System;
-using System.Configuration;
-
-using Iridium.Server.Protocol;
-
-using LinqToDB.Data;
-using LinqToDB.DataProvider.MySql;
-using IridiumDatabase;
+﻿
 
 namespace Iridium.Server
 {
-    using System.Diagnostics;
-    using System.Text;
+    using System;
+    using System.Configuration;
 
-    using Iridium.Server.PacketHandlers.FromClient;
     using Iridium.Server.Services;
-    using Iridium.Utils.Data;
+    using Iridium.Server.Protocol;
 
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
+    using LinqToDB.Data;
+    using LinqToDB.DataProvider.MySql;
 
     public class Program
     {
         public static IridiumConfig Configuration;
         public static string ConnectionString;
 
-        private static NLog.Logger s_logger = NLog.LogManager.GetCurrentClassLogger();
+        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         private const string ConfigurationSectionName = "IridiumServer";
         private IridiumGameMasterServer masterServer;
@@ -46,6 +38,9 @@ namespace Iridium.Server
 
             //using (var db = new iridiumDB(Program.ConnectionString))
             //{ }
+            TestBuilderService service = new TestBuilderService();
+            service.Run();
+
             masterServer = new IridiumGameMasterServer();
 
         }
