@@ -25,7 +25,7 @@ namespace Assets.Scripts
             Debug.Log("StartCoroutine");
             yield return new WaitForSeconds(3f);
             this.levels = new[] {"firstLevel", "secondLevel"};
-            this.OnLevelsLoaded(levels);
+            this.OnLevelsLoaded(new PacketsFromMaster.GameData(1, "test", 2, 5, new[] { "asdas", "asdas", "asdas", "asdas", "asdas"}));
         }
 
         private IEnumerator GetGameDatasFromServer()
@@ -38,7 +38,6 @@ namespace Assets.Scripts
                 new SharedData.GameData(2, "Вторая Тестовая Игра", "SecondGame")
             };
             this.OnGamesLoaded(this.games);
-
         }
 
         public void Init()
