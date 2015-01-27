@@ -9,6 +9,9 @@
 
     using IridiumDatabase;
 
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+
 
     public class GetLevelDataPacketHandler : PacketHandler
     {
@@ -32,16 +35,23 @@
             PacketsFromClient.GetLevelData getLevelData = (PacketsFromClient.GetLevelData) this.Packet;
 
             level_data levelData;
-            using (var db = new iridiumDB())
+            using (var db = new iridiumDB(Program.ConnectionString))
             {
                 var query = from q in db.level_data
-                            where q.game_id == getLevelData.GameId
-                                  && q.level_id == getLevelData.LevelId
+                            where q.game_id == (uint)getLevelData.GameId
+                                  && q.level_id == (uint)getLevelData.LevelId
                             select q;
                 levelData = query.First();
             }
+
             var data = LavelsDataProvider.GetLevelData(levelData);
-            this.Client.SendPacket(new PacketsFromMaster.LevelData((int)levelData.game_id, (int)levelData.level_id, Encoding.Unicode.GetBytes(data), new string[0]));
+            var json = JsonConvert.DeserializeObject<JToken>(data);
+            string intput = JsonConvert.SerializeObject(new
+            {
+                input = json["input"].ToString(),
+            });
+
+            this.Client.SendPacket(new PacketsFromMaster.LevelData((int)levelData.game_id, (int)levelData.level_id, intput));
         }
     }
 }

@@ -3,14 +3,26 @@
     using System;
     using System.Linq;
 
+    using Iridium.Server.Games;
     using Iridium.Utils.Data;
+
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     using Tech.CodeGeneration;
     using Tech.CodeGeneration.Compilers;
 
-    public class TestBuilderService
+    public class CodeBuildService
     {
-       
+        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
+        public bool RunCode(string jsonString, string code, out string[] results)
+        {
+            var json = JsonConvert.DeserializeObject<JToken>(jsonString);
+            var game = GamesFactory.GetGame(json["game_id"].ToObject<int>());
+
+            return game.RunCode(json["input"].ToString(), json["output"].ToString(), code, out results);
+        }
 
         public void Run()
         {
@@ -30,7 +42,10 @@
                                               "Console.WriteLine(\"a = {0}\",a);" +
                                               "}" +
                                               "Console.WriteLine(\"@class = {0}\", @class.Working);" +
-                                              "Console.WriteLine(\"@struckt = {0}\", @struckt.Value);" +
+                                              "Console.WriteLine(\"@struct = {0}\", @struct.Value);" +
+                                              "Console.WriteLine(\"@enemy = {0}\", @enemy.Id);" +
+                                              "Console.WriteLine(\"@enemy = {0}\", @enemy.Position.X);" +
+                                              "Console.WriteLine(\"@enemy = {0}\", @enemy.Position.Y);" +
                                               "return 52222;";
                     const int max = 25;
                     int[] array = { 2, 4, 5 };
@@ -38,23 +53,25 @@
                     {
                         Working = false
                     };
-                    Struckt struckt = new Struckt()
+
+                    Struct @struct = new Struct()
                     {
                         Value = 15
                     };
 
-                    SharedData.Enemy enemy = new SharedData.Enemy(1, new SharedData.Point(1, 1));
+                    Enemy enemy = new Enemy(1, new Point(1, 1));
 
                     var code = CodeGenerator.CreateCode<int>(sandbox, CS.Compiler,
-                                                             sourceCode, 
-                                                             new []{"Iridium.Utils"},
-                                                             new[] { "Iridium.Utils.dll" }, 
+                                                             sourceCode,
+                                                             new[] { "Iridium.Utils" },
+                                                             new[] { "Iridium.Utils.dll" },
                                                              CodeParameter.Create("max", max),
                                                              CodeParameter.Create("array", array),
                                                              CodeParameter.Create("@class", @class),
-                                                             CodeParameter.Create("struckt", struckt),
+                                                             CodeParameter.Create("@struct", @struct),
                                                              CodeParameter.Create("enemy", enemy));
-                    var value = code.Execute(max, array, @class, struckt, enemy);
+
+                    var value = code.Execute(max, array, @class, @struct, enemy);
                     Console.WriteLine(value);
                 }
                 catch (Exception e)
@@ -94,7 +111,7 @@
     }
 
     [Serializable]
-    public struct Struckt
+    public struct Struct
     {
         public int Value { get; set; }
     }

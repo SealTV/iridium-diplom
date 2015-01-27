@@ -91,15 +91,12 @@ namespace Iridium.Utils.Data
 
             public int GameId { get; private set; }
             public int LevelId { get; private set; }
-            public string[] InputParameters { get; private set; }
+            public string InputParameters { get; private set; }
 
-            public byte[] Data { get; private set; }
-
-            public LevelData(int gameId, int levelId, byte[] data, string[] inputParameters)
+            public LevelData(int gameId, int levelId, string inputParameters)
                             : base(MasterServerPacketType.LevelData)
             {
                 this.InputParameters = inputParameters;
-                this.Data = data;
                 this.LevelId = levelId;
                 this.GameId = gameId;
             }
@@ -108,33 +105,18 @@ namespace Iridium.Utils.Data
         [Serializable]
         public class AlgorithmResult : Packet
         {
-            private readonly int gameId;
+            public int GameId { get; private set; }
+            public int LevelId { get; private set; }
+            public string Steps { get; private set;}
+            public bool IsSuccess { get; private set;}
 
-            public int GameId
-            {
-                get { return this.gameId; }
-            }
-
-            private readonly int levelId;
-
-            public int LevelId
-            {
-                get { return this.levelId; }
-            }
-
-            private readonly string[] steps;
-
-            public string[] Steps
-            {
-                get { return this.steps; }
-            }
-
-            public AlgorithmResult(int gameId, int levelId, string[] steps)
+            public AlgorithmResult(int gameId, int levelId, string steps, bool isSuccess)
                             : base(MasterServerPacketType.AlgorithmResult)
             {
-                this.gameId = gameId;
-                this.levelId = levelId;
-                this.steps = steps;
+                this.GameId = gameId;
+                this.LevelId = levelId;
+                this.Steps = steps;
+                this.IsSuccess = isSuccess;
             }
         }
     }

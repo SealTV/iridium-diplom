@@ -18,29 +18,47 @@
                 this.Id = id;
             }
         }
+    }
 
-        public class Enemy : MarshalByRefObject
+    public class Enemy : MarshalByRefObject
+    {
+        public int Id { get; set; }
+        public Point Position { get; set; }
+        public string Name { get; set; }
+        public int Speed { get; set; }
+        public int Health { get; set; }
+
+        public Enemy()
         {
-            public int Id { get; private set; }
-            public Point Position { get; private set; }
-
-            public Enemy(int id, Point position)
-            {
-                this.Position = position;
-                this.Id = id;
-            }
+            Id = 0;
+            Position = new Point();
+            Name = string.Empty;
+            Speed = 0;
+            Health = 0;
         }
 
-        public class Point : MarshalByRefObject
+        public Enemy(int id, Point position)
         {
-            public int X{ get; private set; }
-            public int Y{ get; private set; }
+            this.Position = position;
+            this.Id = id;
+        }
+    }
 
-            public Point(int x, int y)
-            {
-                this.Y = y;
-                this.X = x;
-            }
+    public class Point : MarshalByRefObject
+    {
+        public float X { get; set; }
+        public float Y { get; set; }
+
+        public Point()
+        {
+            this.X = 0;
+            this.Y = 0;
+        }
+
+        public Point(int x, int y)
+        {
+            this.Y = y;
+            this.X = x;
         }
     }
 }
