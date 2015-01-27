@@ -56,9 +56,9 @@ namespace Iridium.Utils.Data
         [Serializable]
         public class GamesList : Packet
         {
-            public SharedPackets.GameData[] Games { get; private set; }
+            public SharedData.GameData[] Games { get; private set; }
 
-            public GamesList(SharedPackets.GameData[] games)
+            public GamesList(SharedData.GameData[] games)
                             : base(MasterServerPacketType.GamesList)
             {
                 this.Games = games;

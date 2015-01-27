@@ -35,10 +35,10 @@
                             select q;
                 games = query.ToList();
             }
-            var gamesData = new SharedPackets.GameData[games.Count];
+            var gamesData = new SharedData.GameData[games.Count];
             for (int i = 0; i < games.Count; i++)
             {
-                gamesData[i] = new SharedPackets.GameData((int)games[i].id, games[i].name);
+                gamesData[i] = new SharedData.GameData((int)games[i].id, games[i].name);
             }
 
             Client.SendPacket(new PacketsFromMaster.GamesList(gamesData));

@@ -1,13 +1,25 @@
-﻿//namespace Assets.Scripts
-//{
-//    using System.IO;
-//    using System.Net;
-//    using System.Net.Sockets;
-//    using System.Threading;
-//    using UnityEngine;
+﻿namespace Assets.Scripts
+{
+    using Iridium.Utils.Data;
+    using UnityEngine;
 
-//    public class ServerConnector : MonoBehaviour
-//    {
+    public delegate void GamesLoaded(GameData[] games);
+    public delegate void LevelsLoaded(LevelData[] levels);
+
+    public interface IServerConnector
+    {
+        void Init();
+        void Connect(int port, string ip);
+        
+        void GetGames();
+        void GetLevels(int gameId);
+
+        bool TryGetLevels(ref LevelData[] gameDatas);
+        event GamesLoaded OnGamesLoaded;
+        event LevelsLoaded OnLevelsLoaded;
+    }
+    public class ServerConnector:MonoBehaviour,IServerConnector
+    {
 //        private bool isConnect;
 //        private Stream workStream;
 //        private Thread thread;
@@ -49,5 +61,34 @@
 //        {
             
 //        }
-//    }
-//}
+        public void Init()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Connect(int port, string ip)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void GetGames()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void GetLevels(int gameId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool TryGetLevels(ref LevelData[] gameDatas)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public event GamesLoaded OnGamesLoaded;
+        public event LevelsLoaded OnLevelsLoaded;
+    }
+
+    
+}

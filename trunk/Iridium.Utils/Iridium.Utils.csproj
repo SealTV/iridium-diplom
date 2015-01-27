@@ -51,7 +51,7 @@
     <Compile Include="Data\Packet.cs" />
     <Compile Include="Data\PacketsFromClientToMaster.cs" />
     <Compile Include="Data\PacketsFromMasterToClient.cs" />
-    <Compile Include="Data\SharedPackets.cs" />
+    <Compile Include="Data\SharedData.cs" />
     <Compile Include="NetworkClient.cs" />
     <Compile Include="PeriodicTaskFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

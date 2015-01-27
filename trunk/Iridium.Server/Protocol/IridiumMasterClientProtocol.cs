@@ -1,6 +1,7 @@
 ﻿namespace Iridium.Server.Protocol
 {
     using System;
+    using System.Threading.Tasks;
     using Utils;
     using Utils.Data;
     using PacketHandlers;
