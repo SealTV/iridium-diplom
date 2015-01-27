@@ -3,8 +3,8 @@
     using Iridium.Utils.Data;
     using UnityEngine;
 
-    public delegate void GamesLoaded(GameData[] games);
-    public delegate void LevelsLoaded(LevelData[] levels);
+    public delegate void GamesLoaded(SharedData.GameData[] games);
+    public delegate void LevelsLoaded(string[] levels);
 
     public interface IServerConnector
     {
@@ -14,7 +14,6 @@
         void GetGames();
         void GetLevels(int gameId);
 
-        bool TryGetLevels(ref LevelData[] gameDatas);
         event GamesLoaded OnGamesLoaded;
         event LevelsLoaded OnLevelsLoaded;
     }
