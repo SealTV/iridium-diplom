@@ -129,6 +129,10 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Iridium.Network\Iridium.Network.csproj">
+      <Project>{a38847d3-b1d0-40d3-b092-f3f41e815bf3}</Project>
+      <Name>Iridium.Network</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Iridium.Utils\Iridium.Utils.csproj">
       <Project>{23B844BD-9137-46E6-B683-8060F3E28924}</Project>
       <Name>Iridium.Utils</Name>

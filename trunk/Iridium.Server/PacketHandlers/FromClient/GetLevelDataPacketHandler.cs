@@ -2,7 +2,7 @@
 {
     using System.Linq;
     using System.Text;
-
+    using Iridium.Network;
     using Iridium.Server.Protocol;
     using Iridium.Server.Services;
     using Iridium.Utils;

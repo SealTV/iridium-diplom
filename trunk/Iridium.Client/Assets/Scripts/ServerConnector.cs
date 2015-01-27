@@ -4,7 +4,7 @@
     using UnityEngine;
 
     public delegate void GamesLoaded(SharedData.GameData[] games);
-    public delegate void LevelsLoaded(string[] levels);
+    public delegate void LevelsLoaded(PacketsFromMaster.GameData gameData);
 
     public interface IServerConnector
     {
@@ -76,11 +76,6 @@
         }
 
         public void GetLevels(int gameId)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public bool TryGetLevels(ref LevelData[] gameDatas)
         {
             throw new System.NotImplementedException();
         }

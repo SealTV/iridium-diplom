@@ -8,20 +8,18 @@ namespace Assets.Scripts
     public class MainMenu : MonoBehaviour
     {
 
-        public IServerConnector ServerConnector;
+        public TestServerConnector ServerConnector;
         public Button[] GameButtons;
         public Button[] LevelButtons;
         public GameObject GamesPanel;
         public GameObject LevelsPanel;
 
-        private string[] levels;
-
 
         void Start () {
             this.ServerConnector.Init();
-            this.ServerConnector.Connect(12, "asdasd");
             this.ServerConnector.OnGamesLoaded += this.OnGamesLoaded;
             this.ServerConnector.OnLevelsLoaded += this.OnLevelsLoaded;
+            this.ServerConnector.Connect(12, "asdasd");
             this.ServerConnector.GetGames();
         }
 
@@ -36,13 +34,25 @@ namespace Assets.Scripts
                 this.GameButtons[i].gameObject.SetActive(true);
                 this.GameButtons[i].image.sprite = Resources.Load<Sprite>(games[i].PictureName);
                 this.GameButtons[i].onClick.RemoveAllListeners();
-                this.GameButtons[i].onClick.AddListener(()=>this.SelectGame(games[i].Id));
+                int gameId = games[i].Id;
+                this.GameButtons[i].onClick.AddListener(() => this.SelectGame(gameId));
             }
         }
 
-        private void OnLevelsLoaded(string[] levels)
+        private void OnLevelsLoaded(PacketsFromMaster.GameData gameData)
         {
-            
+            foreach (var button in this.LevelButtons)
+            {
+                button.gameObject.SetActive(false);
+            }
+            for (int i = 0; i < gameData.Levels.Length; i++)
+            {
+                this.LevelButtons[i].gameObject.SetActive(true);
+                this.LevelButtons[i].onClick.RemoveAllListeners();
+                string level = gameData.Levels[i];
+                this.LevelButtons[i].onClick.AddListener(() => this.SelectLevel(level));
+                this.LevelButtons[i].interactable = gameData.CompletedLevels <= i;
+            }
         }
 
         public void SelectGame(int gameId)
@@ -52,22 +62,9 @@ namespace Assets.Scripts
             ServerConnector.GetLevels(gameId);
         }
 
-        public void SelectLevel(int levelId)
+        public void SelectLevel(string level)
         {
             
         }
-
-
-        void OnGUI()
-        {
-
-        }
-
-        public Rect GetGamePosition(int number)
-        {
-            return new Rect(300 * (number % 2), 300 * (number / 2), 300, 300);
-        }
-
-
     }
 }

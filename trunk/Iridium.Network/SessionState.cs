@@ -1,4 +1,4 @@
-﻿namespace Iridium.Utils
+﻿namespace Iridium.Network
 {
     public enum SessionState
     {

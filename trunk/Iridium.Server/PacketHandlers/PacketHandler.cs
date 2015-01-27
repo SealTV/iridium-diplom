@@ -2,7 +2,7 @@
 
 namespace Iridium.Server.PacketHandlers
 {
-    using Iridium.Utils;
+    using Iridium.Network;
     using Iridium.Utils.Data;
 
     public abstract class PacketHandler

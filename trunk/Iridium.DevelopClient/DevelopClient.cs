@@ -1,9 +1,8 @@
 ﻿namespace Iridium.DevelopClient
 {
     using System;
+    using Iridium.Network;
     using Iridium.Utils.Data;
-    
-    using Utils;
 
     internal class DevelopClient
     {
