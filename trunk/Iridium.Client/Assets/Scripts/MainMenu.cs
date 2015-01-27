@@ -64,7 +64,7 @@ namespace Assets.Scripts
 
         public void SelectLevel(string level)
         {
-            
+            Application.LoadLevel(1);
         }
     }
 }
