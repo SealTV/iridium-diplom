@@ -42,7 +42,7 @@
                 levelData = query.First();
             }
             var data = LavelsDataProvider.GetLevelData(levelData);
-            this.Client.SendPacket(new PacketsFromMaster.LevelData((int)levelData.game_id, (int)levelData.level_id, Encoding.Unicode.GetBytes(data)));
+            this.Client.SendPacket(new PacketsFromMaster.LevelData((int)levelData.game_id, (int)levelData.level_id, Encoding.Unicode.GetBytes(data), new string[0]));
         }
     }
 }

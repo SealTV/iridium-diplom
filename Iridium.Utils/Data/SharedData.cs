@@ -19,11 +19,12 @@
             }
         }
 
-        public class Enemy
+        public class Enemy : MarshalByRefObject
         {
             public int Id { get; private set; }
             public Point Position { get; private set; }
             public int Distance { get; private set; }
+
             public Enemy(int id, Point position, int distance)
             {
                 this.Distance = distance;
@@ -32,7 +33,7 @@
             }
         }
 
-        public class Point
+        public class Point : MarshalByRefObject
         {
             public int X{ get; private set; }
             public int Y{ get; private set; }

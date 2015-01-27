@@ -1,63 +1,93 @@
-﻿
-
-namespace Iridium.Server.Services
+﻿namespace Iridium.Server.Services
 {
-    using System.Collections.Concurrent;
-    using System.Collections.Generic;
-    using Iridium.Network;
-    using Microsoft.Build.Evaluation;
-    using Microsoft.Build.Execution;
+    using System;
+    using System.Linq;
 
-    using Protocol;
-    using Utils;
+    using Tech.CodeGeneration;
+    using Tech.CodeGeneration.Compilers;
 
     public class TestBuilderService
     {
-        private const string MSBUILDER_PATH = "";
-
-        private IridiumGameMasterServer iridiumGameMasterServer;
-        private System.Collections.Concurrent.ConcurrentQueue<NetworkClient> networkClients;
        
-        private static TestBuilderService _testBuilder;
-
-        private static TestBuilderService TestBuilder
-        {
-            get { return _testBuilder; }
-            set { _testBuilder = value; }
-        }
-
-        private TestBuilderService(IridiumGameMasterServer iridiumGameMasterServer)
-        {
-            this.iridiumGameMasterServer = iridiumGameMasterServer;
-            this.networkClients = new ConcurrentQueue<NetworkClient>();
-        }
-
-        public static void Init(IridiumGameMasterServer masterServer)
-        {
-            TestBuilder = new TestBuilderService(masterServer);
-        }
-
-
-        public static void SetNewClientInQueue(NetworkClient client)
-        {
-            TestBuilder.networkClients.Enqueue(client);
-        }
 
         public void Run()
         {
-            string projectFileName = @"...\ConsoleApplication3\ConsoleApplication3.sln";
-            ProjectCollection pc = new ProjectCollection();
-            Dictionary<string, string> GlobalProperty = new Dictionary<string, string>
+            using (var sandbox = new Sandbox())
             {
-                { "Configuration", "Debug" },
-                { "Platform", "x86" }
-            };
+                try
+                {
+                    const string sourceCode = "int i = 0;" +
+                                              "while (i != 5)" +
+                                              "{ " +
+                                              "i++; " +
+                                              "Console.WriteLine(i);" +
+                                              "max++;" +
+                                              "Console.WriteLine(array[0]);" +
+                                              "}" +
+                                              "foreach(var a in array){" +
+                                              "Console.WriteLine(\"a = {0}\",a);" +
+                                              "}" +
+                                              "Console.WriteLine(\"@class = {0}\", @class.Working);" +
+                                              "Console.WriteLine(\"@struckt = {0}\", @struckt.Value);" +
+                                              "return 52222;";
+                    const int max = 25;
+                    int[] array = { 2, 4, 5 };
+                    Class @class = new Class()
+                    {
+                        Working = false
+                    };
+                    Struckt struckt = new Struckt()
+                    {
+                        Value = 15
+                    };
 
-            BuildRequestData BuildRequest = new BuildRequestData(projectFileName, GlobalProperty, null, new string[] { "Build" }, null);
-
-            BuildResult buildResult = BuildManager.DefaultBuildManager.Build(new BuildParameters(pc), BuildRequest);
-
-            
+                    var code = CodeGenerator.CreateCode<int>(sandbox, CS.Compiler,
+                                                             sourceCode, null, null, CodeParameter.Create("max", max),
+                                                             CodeParameter.Create("array", array),
+                                                             CodeParameter.Create("@class", @class),
+                                                             CodeParameter.Create("struckt", struckt));
+                    var value = code.Execute(max, array, @class, struckt);
+                    Console.WriteLine(value);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+            }
         }
+
+        public bool Run(int[] inputs, int[] output, string bodySource)
+        {
+            bool result = false;
+            try
+            {
+                using (var sandbox = new Sandbox())
+                {
+                    var code = CodeGenerator.CreateCode<int[]>(sandbox, CS.Compiler, bodySource, null, null,
+                                                               CodeParameter.Create("inputs", inputs));
+                    var codeResult = code.Execute(inputs);
+                    if (codeResult.Length == output.Length)
+                    {
+                        result = !codeResult.Where((t, i) => t != output[i]).Any();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            return result;
+        }
+    }
+    
+    public class Class : MarshalByRefObject
+    {
+        public bool Working { get; set; }
+    }
+
+    [Serializable]
+    public struct Struckt
+    {
+        public int Value { get; set; }
     }
 }

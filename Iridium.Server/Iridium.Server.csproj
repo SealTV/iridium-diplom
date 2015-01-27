@@ -91,7 +91,7 @@
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="Data\first_game\first_level.json">
+    <None Include="Data\star_wars\first_level.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="LinqToDB.Templates\!ReadMe.LinqToDB.md" />
@@ -126,9 +126,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\CodeGeneration\CodeGeneration.csproj">
+      <Project>{a05e9f7c-08ff-415b-bb6c-7b886d5fa3d7}</Project>
+      <Name>CodeGeneration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Iridium.Network\Iridium.Network.csproj">
       <Project>{a38847d3-b1d0-40d3-b092-f3f41e815bf3}</Project>
       <Name>Iridium.Network</Name>
