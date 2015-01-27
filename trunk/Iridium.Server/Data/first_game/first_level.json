@@ -1,8 +1,0 @@
-﻿{
-	id: 1,
-	name: "first_game",
-	level: 1,
-	steps: 1,
-	input: [1],
-	output: [2, 3]
-}
