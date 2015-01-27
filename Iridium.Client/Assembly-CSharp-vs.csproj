@@ -47,12 +47,12 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\Blocks\Block.cs" />
-     <Compile Include="Assets\Scripts\Blocks\BoolBlock.cs" />
      <Compile Include="Assets\Scripts\Blocks\EqualsBlock.cs" />
      <Compile Include="Assets\Scripts\Blocks\OperationBlock.cs" />
      <Compile Include="Assets\Scripts\Blocks\SimpleBlock.cs" />
      <Compile Include="Assets\Scripts\Blocks\ValueBlock.cs" />
      <Compile Include="Assets\Scripts\Blocks\WhileBlock.cs" />
+     <Compile Include="Assets\Scripts\BoolBlock.cs" />
      <Compile Include="Assets\Scripts\Connector.cs" />
      <Compile Include="Assets\Scripts\Controller.cs" />
      <Compile Include="Assets\Scripts\Enums.cs" />

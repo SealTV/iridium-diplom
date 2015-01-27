@@ -9,12 +9,12 @@ namespace Assets.Scripts
     {
 
         public IServerConnector ServerConnector;
-        public Button[] GamesButtons;
+        public Button[] GameButtons;
+        public Button[] LevelButtons;
         public GameObject GamesPanel;
         public GameObject LevelsPanel;
 
-        private GameData[] games;
-        private LevelData[] levels;
+        private string[] levels;
 
 
         void Start () {
@@ -25,21 +25,22 @@ namespace Assets.Scripts
             this.ServerConnector.GetGames();
         }
 
-        private void OnGamesLoaded(GameData[] games)
+        private void OnGamesLoaded(SharedData.GameData[] games)
         {
-            this.games = games;
-            foreach (var button in GamesButtons)
+            foreach (var button in this.GameButtons)
             {
                 button.gameObject.SetActive(false);
             }
             for (int i = 0; i < games.Length; i++)
             {
-                this.GamesButtons[i].gameObject.SetActive(true);
-                this.GamesButtons[i].image.sprite = Resources.Load<Sprite>(games[i].PictureName);
+                this.GameButtons[i].gameObject.SetActive(true);
+                this.GameButtons[i].image.sprite = Resources.Load<Sprite>(games[i].PictureName);
+                this.GameButtons[i].onClick.RemoveAllListeners();
+                this.GameButtons[i].onClick.AddListener(()=>this.SelectGame(games[i].Id));
             }
         }
 
-        private void OnLevelsLoaded(LevelData[] levels)
+        private void OnLevelsLoaded(string[] levels)
         {
             
         }
@@ -48,7 +49,7 @@ namespace Assets.Scripts
         {
             GamesPanel.SetActive(false);
             LevelsPanel.SetActive(true);
-            ServerConnector.Get
+            ServerConnector.GetLevels(gameId);
         }
 
         public void SelectLevel(int levelId)

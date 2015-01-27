@@ -7,8 +7,8 @@ namespace Assets.Scripts
 
     public class TestServerConnector : MonoBehaviour, IServerConnector
     {
-        private GameData[] games;
-        private LevelData[] levels;
+        private SharedData.GameData[] games;
+        private string[] levels;
 
         public void GetGames()
         {
@@ -24,12 +24,7 @@ namespace Assets.Scripts
         {
             Debug.Log("StartCoroutine");
             yield return new WaitForSeconds(3f);
-            this.levels = new[]
-            {
-                new LevelData(1, 1, "StarWars - Успей уничтожить всех захватчиков, до того как они достигнут земли", "StarWars"), 
-                new LevelData(1, 2, "Вторая Тестовая Игра", "SecondGame")
-            };
-            this.OnGamesLoaded(this.games);
+            this.levels = new[] {"firstLevel", "secondLevel"};
 
         }
 
@@ -39,17 +34,12 @@ namespace Assets.Scripts
             yield return new WaitForSeconds(3f);
             this.games = new[]
             {
-                new GameData(1, "StarWars - Успей уничтожить всех захватчиков, до того как они достигнут земли", "StarWars"),
-                new GameData(2, "Вторая Тестовая Игра", "SecondGame")
+                new SharedData.GameData(1, "StarWars - Успей уничтожить всех захватчиков, до того как они достигнут земли", "StarWars"),
+                new SharedData.GameData(2, "Вторая Тестовая Игра", "SecondGame")
             };
             this.OnGamesLoaded(this.games);
 
         }
-        public bool TryGetLevels(ref LevelData[] gameDatas)
-        {
-            return true;
-        }
-
 
         public void Init()
         {
