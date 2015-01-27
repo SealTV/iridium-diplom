@@ -1,4 +1,4 @@
-﻿namespace Iridium.Utils
+﻿namespace Iridium.Network
 {
     using System;
     using System.IO;

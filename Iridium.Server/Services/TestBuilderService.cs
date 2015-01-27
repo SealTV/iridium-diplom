@@ -4,7 +4,7 @@ namespace Iridium.Server.Services
 {
     using System.Collections.Concurrent;
     using System.Collections.Generic;
-
+    using Iridium.Network;
     using Microsoft.Build.Evaluation;
     using Microsoft.Build.Execution;
 

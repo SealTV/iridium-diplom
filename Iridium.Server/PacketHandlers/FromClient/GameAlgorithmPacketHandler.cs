@@ -1,5 +1,6 @@
 ﻿namespace Iridium.Server.PacketHandlers.FromClient
 {
+    using Iridium.Network;
     using Iridium.Utils;
     using Iridium.Utils.Data;
     using Iridium.Server.Protocol;

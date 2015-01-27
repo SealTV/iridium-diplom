@@ -18,5 +18,30 @@
                 this.Id = id;
             }
         }
+
+        public class Enemy
+        {
+            public int Id { get; private set; }
+            public Point Position { get; private set; }
+            public int Distance { get; private set; }
+            public Enemy(int id, Point position, int distance)
+            {
+                this.Distance = distance;
+                this.Position = position;
+                this.Id = id;
+            }
+        }
+
+        public class Point
+        {
+            public int X{ get; private set; }
+            public int Y{ get; private set; }
+
+            public Point(int x, int y)
+            {
+                this.Y = y;
+                this.X = x;
+            }
+        }
     }
 }

@@ -1,12 +1,10 @@
-﻿
-namespace Iridium.Utils
+﻿namespace Iridium.Network
 {
     using System;
     using System.IO;
     using System.Threading.Tasks;
     using System.Runtime.Serialization.Formatters.Binary;
-
-    using Utils.Data;
+    using Iridium.Utils.Data;
 
     /// <summary>
     ///In this class write async methods for send and receive packets.

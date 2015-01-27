@@ -91,11 +91,14 @@ namespace Iridium.Utils.Data
 
             public int GameId { get; private set; }
             public int LevelId { get; private set; }
+            public string[] InputParameters { get; private set; }
+
             public byte[] Data { get; private set; }
 
-            public LevelData(int gameId, int levelId, byte[] data)
+            public LevelData(int gameId, int levelId, byte[] data, string[] inputParameters)
                             : base(MasterServerPacketType.LevelData)
             {
+                this.InputParameters = inputParameters;
                 this.Data = data;
                 this.LevelId = levelId;
                 this.GameId = gameId;
