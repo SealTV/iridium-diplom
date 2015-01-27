@@ -5,6 +5,7 @@
 
     using Iridium.Server.Protocol;
     using Iridium.Server.Services;
+    using Iridium.Utils;
     using Iridium.Utils.Data;
 
     using IridiumDatabase;
@@ -21,6 +22,13 @@
         protected override void ProcessPacket()
         {
             Logger.Info("Start process GetLevelData.");
+
+            if (this.Client.State == SessionState.NotLogged)
+            {
+                Logger.Error("Client is not logged");
+                this.Disconnect();
+                return;
+            }
 
             PacketsFromClient.GetLevelData getLevelData = (PacketsFromClient.GetLevelData) this.Packet;
 

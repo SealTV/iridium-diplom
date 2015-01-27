@@ -3,6 +3,8 @@
     using System.Linq;
     using System.Collections.Generic;
 
+    using Iridium.Utils;
+
     using IridiumDatabase;
     using Iridium.Utils.Data;
     using Iridium.Server.Protocol;
@@ -18,6 +20,13 @@
         protected override void ProcessPacket()
         {
             Logger.Info("Start process GetGamesPacke.");
+
+            if (this.Client.State == SessionState.NotLogged)
+            {
+                Logger.Error("Client is not logged");
+                this.Disconnect();
+                return;
+            }
 
             List<game> games;
             using (var db = new iridiumDB(Program.ConnectionString))

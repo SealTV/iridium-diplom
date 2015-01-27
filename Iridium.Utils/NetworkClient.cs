@@ -14,8 +14,8 @@
         private NetworkStream outputStream;
 
         public Guid SessionId { get; set; }
-        public bool Connected { get { return socket.Connected; } }
-
+        public uint AccountId { get; set; }
+        public SessionState State { get; set; }
 
         public NetworkClient(int port, string ipAddress)
         {
@@ -31,6 +31,7 @@
             this.socket = clientSocket;
             this.inputStream = new NetworkStream(this.socket, FileAccess.Read);
             this.outputStream = new NetworkStream(this.socket, FileAccess.Write);
+            this.State = SessionState.NotLogged;
         }
 
 

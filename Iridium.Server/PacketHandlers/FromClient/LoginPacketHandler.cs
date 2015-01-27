@@ -4,6 +4,7 @@
     using System.Text;
 
     using Iridium.Server.Protocol;
+    using Iridium.Utils;
     using Iridium.Utils.Data;
 
     using IridiumDatabase;
@@ -18,6 +19,14 @@
         protected override void ProcessPacket()
         {
             Logger.Info("Strart process Login packet.");
+
+            if (this.Client.State == SessionState.LoggedIn)
+            {
+                Logger.Error("logginned client reloggin?! Error!");
+                this.Disconnect();
+                return;
+            }
+            
             if (this.Packet == null)
             {
                 Logger.Error("Cannot cast packet to Ping packet type.");
@@ -32,9 +41,14 @@
                                    where a.login == login.LoginName
                                          && Enumerable.SequenceEqual(a.password, login.Password)
                                    select a).First();
+                if (account != null)
+                {
+                    this.Client.SendPacket(new PacketsFromMaster.LoginOk());
+                    this.Client.AccountId = account.id;
+                }
             }
+            
 
-            this.Client.SendPacket(new PacketsFromMaster.LoginOk());
         }
     }
 }
