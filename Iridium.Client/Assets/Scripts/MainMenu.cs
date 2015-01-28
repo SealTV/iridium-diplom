@@ -19,6 +19,7 @@ namespace Assets.Scripts
             this.ServerConnector.Init();
             this.ServerConnector.OnGamesLoaded += this.OnGamesLoaded;
             this.ServerConnector.OnLevelsLoaded += this.OnLevelsLoaded;
+            this.ServerConnector.OnLevelDataLoaded += this.OnLevelDataLoaded;
             this.ServerConnector.Connect(12, "asdasd");
             this.ServerConnector.GetGames();
         }
@@ -30,13 +31,14 @@ namespace Assets.Scripts
                 button.gameObject.SetActive(false);
             }
             for (int i = 0; i < games.Length; i++)
-            {
+            { 
                 this.GameButtons[i].gameObject.SetActive(true);
                 this.GameButtons[i].image.sprite = Resources.Load<Sprite>(games[i].PictureName);
                 this.GameButtons[i].onClick.RemoveAllListeners();
                 int gameId = games[i].Id;
                 this.GameButtons[i].onClick.AddListener(() => this.SelectGame(gameId));
             }
+
         }
 
         private void OnLevelsLoaded(PacketsFromMaster.GameData gameData)
@@ -49,22 +51,27 @@ namespace Assets.Scripts
             {
                 this.LevelButtons[i].gameObject.SetActive(true);
                 this.LevelButtons[i].onClick.RemoveAllListeners();
-                string level = gameData.Levels[i];
-                this.LevelButtons[i].onClick.AddListener(() => this.SelectLevel(level));
-                this.LevelButtons[i].interactable = gameData.CompletedLevels <= i;
+                int levelId = i;
+                this.LevelButtons[i].onClick.AddListener(() => this.SelectLevel(levelId));
+                this.LevelButtons[i].interactable = (gameData.CompletedLevels > i);
             }
-        }
-
-        public void SelectGame(int gameId)
-        {
             GamesPanel.SetActive(false);
             LevelsPanel.SetActive(true);
+        }
+
+        private void OnLevelDataLoaded(PacketsFromMaster.LevelData levelData)
+        {
+            GlobalData.LevelData = levelData;
+            Application.LoadLevel(1);
+        }
+        public void SelectGame(int gameId)
+        {
             ServerConnector.GetLevels(gameId);
         }
 
-        public void SelectLevel(string level)
+        public void SelectLevel(int level)
         {
-            Application.LoadLevel(1);
+            ServerConnector.GetLevelData(1,1);
         }
     }
 }
