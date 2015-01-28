@@ -21,7 +21,7 @@
             var json = JsonConvert.DeserializeObject<JToken>(jsonString);
             var game = GamesFactory.GetGame(json["game_id"].ToObject<int>());
 
-            return game.RunCode(json["input"].ToString(), json["output"].ToString(), code, out results);
+            return game.RunCode(json["input"].ToString(), code, out results);
         }
 
         public void Run()

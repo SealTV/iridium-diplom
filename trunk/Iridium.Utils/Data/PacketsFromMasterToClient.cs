@@ -107,15 +107,15 @@ namespace Iridium.Utils.Data
         {
             public int GameId { get; private set; }
             public int LevelId { get; private set; }
-            public string Steps { get; private set;}
+            public string[] Output { get; private set;}
             public bool IsSuccess { get; private set;}
 
-            public AlgorithmResult(int gameId, int levelId, string steps, bool isSuccess)
+            public AlgorithmResult(int gameId, int levelId, string[] output, bool isSuccess)
                             : base(MasterServerPacketType.AlgorithmResult)
             {
                 this.GameId = gameId;
                 this.LevelId = levelId;
-                this.Steps = steps;
+                this.Output = output;
                 this.IsSuccess = isSuccess;
             }
         }

@@ -3,11 +3,15 @@
     using System.Linq;
 
     using Iridium.Network;
+    using Iridium.Server.Games;
     using Iridium.Server.Services;
     using Iridium.Utils.Data;
     using Iridium.Server.Protocol;
 
     using IridiumDatabase;
+
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     public class GameAlgorithmPacketHandler : PacketHandler
     {
@@ -21,12 +25,12 @@
         {
             Logger.Info("Start process GameAlgorithm.");
 
-            if (this.Client.State == SessionState.NotLogged)
-            {
-                Logger.Error("Client is not logged");
-                this.Disconnect();
-                return;
-            }
+            //if (this.Client.State == SessionState.NotLogged)
+            //{
+            //    Logger.Error("Client is not logged");
+            //    this.Disconnect();
+            //    return;
+            //}
 
             PacketsFromClient.GameAlgorithm gameAlgorithm = (PacketsFromClient.GameAlgorithm) this.Packet;
            
@@ -40,11 +44,25 @@
                 levelData = query.First();
             }
 
-            var data = LavelsDataProvider.GetLevelData(levelData);
+            var data = LevelsDataProvider.GetLevelData(levelData);
+            var json = JsonConvert.DeserializeObject<JToken>(data);
 
-            string output = string.Empty;
+            var game = GamesFactory.GetGame(json["game_id"].ToObject<int>());
+
+            string code = "Console.WriteLine(container.Enemies.Length);" +
+                          "return 0;";
+            string[] output = null;
+
+            game.RunCode(json["input"].ToString(), code, out output);
+
             bool isSuccess = false;
-            this.Client.SendPacket(new PacketsFromMaster.AlgorithmResult(gameAlgorithm.GameId, gameAlgorithm.LevelId, output, isSuccess));
+          
+//            this.Client.SendPacket(new PacketsFromMaster.AlgorithmResult(gameAlgorithm.GameId, gameAlgorithm.LevelId, output, isSuccess));
+        }
+
+        public void Run()
+        {
+            this.ProcessPacket();
         }
     }
 }

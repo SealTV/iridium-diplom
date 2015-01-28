@@ -1,7 +1,5 @@
 ﻿namespace Iridium.Server.Games
 {
-    using System;
-
     public static class GamesFactory
     {
         public static Game GetGame(int gameId)

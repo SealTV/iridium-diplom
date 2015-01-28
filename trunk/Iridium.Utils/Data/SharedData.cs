@@ -23,6 +23,7 @@
     public class Enemy : MarshalByRefObject
     {
         public int Id { get; set; }
+        public Point StartPosition { get; set; }
         public Point Position { get; set; }
         public string Name { get; set; }
         public int Speed { get; set; }
@@ -30,18 +31,25 @@
 
         public Enemy()
         {
-            Id = 0;
-            Position = new Point();
-            Name = string.Empty;
-            Speed = 0;
-            Health = 0;
+            this.Id = 0;
+            this.StartPosition = new Point(); 
+            this.Position = new Point();
+            this.Name = string.Empty;
+            this.Speed = 0;
+            this.Health = 0;
         }
 
         public Enemy(int id, Point position)
         {
+            this.StartPosition = position; 
             this.Position = position;
             this.Id = id;
         }
+    }
+
+    public class EnemyContainer : MarshalByRefObject
+    {
+        public Enemy[] Enemies { get; set; }
     }
 
     public class Point : MarshalByRefObject

@@ -5,7 +5,7 @@
 
     using IridiumDatabase;
 
-    public class LavelsDataProvider
+    public class LevelsDataProvider
     {
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
