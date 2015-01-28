@@ -1,5 +1,6 @@
 ﻿namespace Iridium.Server.PacketHandlers.FromClient
 {
+    using System;
     using System.Linq;
     using System.Text;
     using Iridium.Network;
@@ -35,20 +36,29 @@
 
             Logger.Info("Login name = {0}, password = {1}", login.LoginName, Encoding.Unicode.GetString(login.Password));
 
-            using (var db = new iridiumDB(Program.ConnectionString))
+            try
             {
-                account account = (from a in db.accounts
-                                   where a.login == login.LoginName
-                                         && Enumerable.SequenceEqual(a.password, login.Password)
-                                   select a).First();
-                if (account != null)
+                using (var db = new iridiumDB(Program.ConnectionString))
                 {
-                    this.Client.SendPacket(new PacketsFromMaster.LoginOk());
-                    this.Client.AccountId = account.id;
+                    account account = (from a in db.accounts
+                                       where a.login == login.LoginName
+                                             && Enumerable.SequenceEqual(a.password, login.Password)
+                                       select a).First();
+                    if (account != null)
+                    {
+                        this.Client.SendPacket(new PacketsFromMaster.LoginOk());
+                        this.Client.AccountId = account.id;
+                        this.Client.State = SessionState.LoggedIn;
+                        return;
+                    }
                 }
             }
-            
-
+            catch (Exception e)
+            {
+                Logger.Error(e);
+                this.Disconnect();
+            }
+            this.Disconnect();
         }
     }
 }

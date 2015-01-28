@@ -1,87 +1,152 @@
 namespace Iridium.Server.Games
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
-
-    using Iridium.Utils.Data;
 
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
+    using NLog;
+
     using Tech.CodeGeneration;
     using Tech.CodeGeneration.Compilers;
 
+    using Iridium.Utils.Data;
+
     public class StarWars : Game
     {
-        private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public bool RunCode(string intput, string output, string codeSource, out string[] results)
+        public bool RunCode(string intput, string codeSource, out string[] results)
         {
             var json = JsonConvert.DeserializeObject<JToken>(intput);
-            var enemiesData = json["enemies"].ToObject<string[]>();
+            var enemiesData = json["enemies"].ToArray();
 
-            var enemies = new Enemy[enemiesData.Length];
-            for (int i = 0; i < enemies.Length; i++)
-            {
-                var enemy = JsonConvert.DeserializeObject<JToken>(enemiesData[i]);
+            List<Enemy> enemies = GetEnemiesList(enemiesData);
 
-                enemies[i] = new Enemy()
-                {
-                    Id = enemy["id"].ToObject<int>(),
-                    Position = new Point()
-                    {
-                        X = enemy["position"]["x"].ToObject<float>(),
-                        Y = enemy["position"]["y"].ToObject<float>()
-                    },
-                    Name = enemy["name"].ToString(),
-                    Speed = enemy["speed"].ToObject<int>(),
-                    Health = enemy["health"].ToObject<int>()
-                };
-            }
             try
             {
-                    
                 using (var sandbox = new Sandbox())
                 {
-                    var code = CodeGenerator.CreateCode<int>(sandbox, CS.Compiler, codeSource, null, null,
-                                                               CodeParameter.Create("enemies", enemies));
+                    List<string> enemyList = null;
+                    var result = ProcessCode(codeSource, enemies, sandbox, out enemyList);
 
-                    var codeResult = code.Execute(enemies);
-
+                    results = enemyList.ToArray();
+                    return result;
                 }
             }
             catch (Exception e)
             {
                 Logger.Error(e);
             }
-            finally
-            {
-                results = null;
-            }
+
+            results = null;
             return false;
         }
 
-        public bool Run(int[] inputs, int[] output, string bodySource)
+        private static bool ProcessCode(string codeSource, List<Enemy> enemies, Sandbox sandbox, out List<string> enemyList)
         {
-            bool result = false;
-            try
+            bool isAlive = true;
+            enemyList = new List<string>();
+            while (isAlive && enemies.Count() != 0)
             {
-                using (var sandbox = new Sandbox())
+                EnemyContainer container = new EnemyContainer()
                 {
-                    var code = CodeGenerator.CreateCode<int[]>(sandbox, CS.Compiler, bodySource, null, null,
-                                                               CodeParameter.Create("inputs", inputs));
-                    var codeResult = code.Execute(inputs);
-                    if (codeResult.Length == output.Length)
-                    {
-                        result = !codeResult.Where((t, i) => t != output[i]).Any();
-                    }
+                    Enemies = enemies.ToArray()
+                };
+                var code = CodeGenerator.CreateCode<int>(sandbox, CS.Compiler, codeSource,
+                                                         new[] { "Iridium.Utils" },
+                                                         new[] { "Iridium.Utils.dll" },
+                                                         CodeParameter.Create("container", container));
+                var enemyId = code.Execute(container);
+                enemyList.Add(enemyId.ToString());
+                Enemy enemy = enemies.FirstOrDefault(e => e.Id == enemyId);
+                if (enemy != null)
+                {
+                    enemy.Health--;
+                    if (enemy.Health <= 0)
+                        enemies.Remove(enemy);
                 }
+
+                ChangePositions(enemies);
+                if (enemies.Any(e => e.Position.X <= 0f))
+                    isAlive = false;
             }
-            catch (Exception e)
+
+            return isAlive;
+        }
+
+        private static List<Enemy> GetEnemiesList(IEnumerable<JToken> enemiesData)
+        {
+            return (from t in enemiesData
+                    select (t)
+                    into enemy
+                    let point = new Point
+                    {
+                        X = enemy["position"]["x"].ToObject<float>(),
+                        Y = enemy["position"]["y"].ToObject<float>()
+                    }
+                    select new Enemy
+                    {
+                        Id = enemy["id"].ToObject<int>(),
+                        StartPosition = point,
+                        Position = point,
+                        Name = enemy["name"].ToString(),
+                        Speed = enemy["speed"].ToObject<int>(),
+                        Health = enemy["health"].ToObject<int>()
+                    }).ToList();
+        }
+
+        private static void ChangePositions(IEnumerable<Enemy> enemies)
+        {
+            Point playerPosition = new Point(0, 5);
+            foreach (var enemy in enemies)
             {
-                Console.WriteLine(e);
+                var vector = GetVector(enemy.StartPosition, playerPosition);
+                vector = NormalizeVector(vector);
+                vector = Multi(vector, enemy.Speed);
+                AddPoint(enemy.Position, vector);
             }
-            return result;
+        }
+
+        public static void AddPoint(Point a, Point b)
+        {
+            a.X += b.X;
+            a.Y += b.Y;
+        }
+
+        public static Point Multi(Point p, float f)
+        {
+            return new Point()
+            {
+                X = p.X * f,
+                Y = p.Y * f
+            };
+        }
+
+        public static Point NormalizeVector(Point vector)
+        {
+            var len = VectorLen(vector);
+            return new Point()
+            {
+                X = vector.X / len,
+                Y = vector.Y / len
+            };
+        }
+
+        private static float VectorLen(Point vector)
+        {
+            return (float)Math.Sqrt(vector.X * vector.X + vector.Y * vector.Y);
+        }
+
+        public static Point GetVector(Point a, Point b)
+        {
+            return new Point()
+            {
+                X = b.X - a.X,
+                Y = b.Y - a.Y
+            };
         }
     }
 }

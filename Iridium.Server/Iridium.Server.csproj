@@ -83,7 +83,7 @@
     <Compile Include="Protocol\IridiumMasterClientProtocol.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\LavelsDataProvider.cs" />
+    <Compile Include="Services\LevelsDataProvider.cs" />
     <Compile Include="Services\CodeBuildService.cs" />
   </ItemGroup>
   <ItemGroup>

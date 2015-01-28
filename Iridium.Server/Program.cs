@@ -35,12 +35,15 @@ namespace Iridium.Server
                                                  pushDatabase.Schema,
                                                  pushDatabase.User,
                                                  pushDatabase.Password);
-
+            Console.WriteLine(ConnectionString);
             DataConnection.AddConfiguration(Program.ConnectionString, Program.ConnectionString, new MySqlDataProvider());
 
             //using (var db = new iridiumDB(Program.ConnectionString))
             //{ }
             //CodeBuildService.Run();
+            var packet = new PacketsFromClient.GameAlgorithm(1, 1, null);
+            GameAlgorithmPacketHandler handler = new GameAlgorithmPacketHandler(masterServer, packet);
+            handler.Run();
 
             masterServer = new IridiumGameMasterServer();
 
@@ -49,7 +52,7 @@ namespace Iridium.Server
         private void Start()
         {
             IridiumMasterClientProtocol.Init(masterServer);
-            masterServer.Start();
+           // masterServer.Start();
         }
 
         private void Stop()

@@ -44,7 +44,7 @@
                 levelData = query.First();
             }
 
-            var data = LavelsDataProvider.GetLevelData(levelData);
+            var data = LevelsDataProvider.GetLevelData(levelData);
             var json = JsonConvert.DeserializeObject<JToken>(data);
             string intput = JsonConvert.SerializeObject(new
             {

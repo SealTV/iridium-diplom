@@ -2,6 +2,7 @@
 {
     public interface Game
     {
-        bool RunCode(string intput, string output, string codeSource, out string[] results);
+
+        bool RunCode(string intput, string codeSource, out string[] results);
     }
 }
