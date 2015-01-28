@@ -12,23 +12,35 @@ namespace Assets.Scripts
 
         public void GetGames()
         {
-            StartCoroutine(this.GetGameDatasFromServer());
+            StartCoroutine(this.GetGamesDataFromServer());
         }
 
         public void GetLevels(int gameId)
         {
-            StartCoroutine(this.GetLevelDatasFromServer());
+            StartCoroutine(this.GetLevelsFromServer());
         }
 
-        private IEnumerator GetLevelDatasFromServer()
+        public void GetLevelData(int gameId, int levelId)
+        {
+            StartCoroutine(this.GetLevelDataFromServer());
+        }
+
+        private IEnumerator GetLevelDataFromServer()
+        {
+            yield return new WaitForSeconds(1f);
+            this.levels = new[] { "firstLevel", "secondLevel" };
+            this.OnLevelDataLoaded(new PacketsFromMaster.LevelData(1,1,new byte[0]));
+        }
+
+        private IEnumerator GetLevelsFromServer()
         {
             Debug.Log("StartCoroutine");
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(1f);
             this.levels = new[] {"firstLevel", "secondLevel"};
             this.OnLevelsLoaded(new PacketsFromMaster.GameData(1, "test", 2, 5, new[] { "asdas", "asdas", "asdas", "asdas", "asdas"}));
         }
 
-        private IEnumerator GetGameDatasFromServer()
+        private IEnumerator GetGamesDataFromServer()
         {
             Debug.Log("StartCoroutine");
             yield return new WaitForSeconds(1f);
@@ -40,6 +52,7 @@ namespace Assets.Scripts
             this.OnGamesLoaded(this.games);
         }
 
+
         public void Init()
         {
         }
@@ -50,5 +63,6 @@ namespace Assets.Scripts
 
         public event GamesLoaded OnGamesLoaded;
         public event LevelsLoaded OnLevelsLoaded;
+        public event LevelDataLoaded OnLevelDataLoaded;
     }
 }

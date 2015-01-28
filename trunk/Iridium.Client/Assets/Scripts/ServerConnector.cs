@@ -5,6 +5,7 @@
 
     public delegate void GamesLoaded(SharedData.GameData[] games);
     public delegate void LevelsLoaded(PacketsFromMaster.GameData gameData);
+    public delegate void LevelDataLoaded(PacketsFromMaster.LevelData levelData);
 
     public interface IServerConnector
     {
@@ -16,6 +17,7 @@
 
         event GamesLoaded OnGamesLoaded;
         event LevelsLoaded OnLevelsLoaded;
+        event LevelDataLoaded OnLevelDataLoaded;
     }
     public class ServerConnector:MonoBehaviour,IServerConnector
     {
@@ -82,6 +84,7 @@
 
         public event GamesLoaded OnGamesLoaded;
         public event LevelsLoaded OnLevelsLoaded;
+        public event LevelDataLoaded OnLevelDataLoaded;
     }
 
     

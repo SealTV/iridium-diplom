@@ -2,13 +2,11 @@
 {
     using Blocks;
     using UnityEngine;
-    using UnityEngine.UI;
 
     public class BoolBlock : Block {
 
         public SubBlocksField Field;
-        public Canvas canvas;
-        public Image image;
+        public SpriteRenderer image;
         private bool value;
 
         public Sprite TrueSprite;
@@ -31,7 +29,7 @@
             {
                 text.sortingOrder = layer + 1;
             }
-            this.canvas.sortingOrder = layer + 1;
+            this.image.sortingOrder = layer + 1;
         }
 
         void Start()
