@@ -67,7 +67,6 @@
         {
             try
             {
-                //this.socket.Shutdown(SocketShutdown.Both);
                 this.socket.Close();
                 socket.Dispose();
             }

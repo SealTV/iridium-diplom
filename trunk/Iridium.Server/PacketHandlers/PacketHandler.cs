@@ -2,6 +2,8 @@
 
 namespace Iridium.Server.PacketHandlers
 {
+    using System;
+
     using Iridium.Network;
     using Iridium.Utils.Data;
 
@@ -20,7 +22,14 @@ namespace Iridium.Server.PacketHandlers
         public void Handle(NetworkClient client)
         {
             this.Client = client;
-            this.ProcessPacket();
+            try
+            {
+                this.ProcessPacket();                
+            }
+            catch (Exception e)
+            {
+                  this.Disconnect(); 
+            }
             this.EndProcessPacket();
         }
 

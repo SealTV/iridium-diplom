@@ -6,7 +6,6 @@ namespace Iridium.Server
     using System.Configuration;
 
     using Iridium.Server.PacketHandlers.FromClient;
-    using Iridium.Server.Services;
     using Iridium.Server.Protocol;
     using Iridium.Utils.Data;
 
@@ -38,13 +37,6 @@ namespace Iridium.Server
             Console.WriteLine(ConnectionString);
             DataConnection.AddConfiguration(Program.ConnectionString, Program.ConnectionString, new MySqlDataProvider());
 
-            //using (var db = new iridiumDB(Program.ConnectionString))
-            //{ }
-            //CodeBuildService.Run();
-            var packet = new PacketsFromClient.GameAlgorithm(1, 1, null);
-            GameAlgorithmPacketHandler handler = new GameAlgorithmPacketHandler(masterServer, packet);
-            handler.Run();
-
             masterServer = new IridiumGameMasterServer();
 
         }
@@ -52,7 +44,7 @@ namespace Iridium.Server
         private void Start()
         {
             IridiumMasterClientProtocol.Init(masterServer);
-           // masterServer.Start();
+            masterServer.Start();
         }
 
         private void Stop()
@@ -65,14 +57,7 @@ namespace Iridium.Server
             var p = new Program();
             p.Start();
             Console.ReadKey();
-            //Console.WriteLine("Write STOP!");
-            //string str = Console.ReadLine();
-            //while (str!="STOP")
-            //{
-            //    str = Console.ReadLine();
-            //}
             Console.WriteLine("Server already stoped! Press any key to close.");
-
             p.Stop();
         }
     }

@@ -46,11 +46,15 @@ namespace Iridium.Utils.Data
         }
 
         [Serializable]
-        public class LoginOk : Packet
+        public class LoginResult : Packet
         {
-            public LoginOk()
-                : base(MasterServerPacketType.LoginOk)
-            {}
+            public LoginResults Result { get; private set; }
+
+            public LoginResult(LoginResults result)
+                            : base(MasterServerPacketType.LoginOk)
+            {
+                this.Result = result;
+            }
         }
 
         [Serializable]

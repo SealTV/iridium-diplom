@@ -69,4 +69,13 @@
             this.X = x;
         }
     }
+
+    public enum LoginResults
+    {
+        LoginOk,
+        LoginFail,
+        UserNotFount,
+        PasswordIncorrect
+    }
+
 }

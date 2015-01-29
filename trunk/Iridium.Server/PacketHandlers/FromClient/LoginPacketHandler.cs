@@ -1,14 +1,15 @@
 ﻿namespace Iridium.Server.PacketHandlers.FromClient
 {
-    using System;
     using System.Linq;
     using System.Text;
+
     using Iridium.Network;
-    using Iridium.Server.Protocol;
-    using Iridium.Utils;
     using Iridium.Utils.Data;
+    using Iridium.Server.Protocol;
 
     using IridiumDatabase;
+
+    using LinqToDB.SqlQuery;
 
     public class LoginPacketHandler : PacketHandler
     {
@@ -34,7 +35,7 @@
             }
             PacketsFromClient.Login login = (PacketsFromClient.Login) this.Packet;
 
-            Logger.Info("Login name = {0}, password = {1}", login.LoginName, Encoding.Unicode.GetString(login.Password));
+            Logger.Info("Login name = {0}, password = {1}", login.LoginName, Encoding.UTF8.GetString(login.Password));
 
             try
             {
@@ -42,23 +43,37 @@
                 {
                     account account = (from a in db.accounts
                                        where a.login == login.LoginName
-                                             && Enumerable.SequenceEqual(a.password, login.Password)
                                        select a).First();
                     if (account != null)
                     {
-                        this.Client.SendPacket(new PacketsFromMaster.LoginOk());
-                        this.Client.AccountId = account.id;
-                        this.Client.State = SessionState.LoggedIn;
-                        return;
+                        if (Encoding.UTF8.GetString(account.password) == Encoding.UTF8.GetString(login.Password))
+                        {
+                            Logger.Info("Loggin success!");
+                            this.Client.SendPacket(new PacketsFromMaster.LoginResult(LoginResults.LoginOk));
+                            this.Client.AccountId = account.id;
+                            this.Client.State = SessionState.LoggedIn;
+                        }
+                        else
+                        {
+                            Logger.Error("Incorrect password");
+                            this.Client.SendPacket(new PacketsFromMaster.LoginResult(LoginResults.PasswordIncorrect));
+                            this.Disconnect();    
+                        }
+                    }
+                    else
+                    {
+                        Logger.Error("User with login name {0} are not found password", login.LoginName);
+                        this.Client.SendPacket(new PacketsFromMaster.LoginResult(LoginResults.UserNotFount));
+                        this.Disconnect();    
                     }
                 }
             }
-            catch (Exception e)
+            catch (SqlException e)
             {
                 Logger.Error(e);
-                this.Disconnect();
+                this.Client.SendPacket(new PacketsFromMaster.LoginResult(LoginResults.LoginFail));
+                this.Disconnect();    
             }
-            this.Disconnect();
         }
     }
 }

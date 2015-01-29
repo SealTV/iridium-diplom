@@ -1,9 +1,8 @@
 ﻿namespace Iridium.Server.PacketHandlers.FromClient
 {
     using System.Linq;
-    using System.Collections.Generic;
     using Iridium.Network;
-    using Iridium.Utils;
+    using System.Collections.Generic;
 
     using IridiumDatabase;
     using Iridium.Utils.Data;
