@@ -68,7 +68,7 @@
                 case ClientPacketType.Ping:
                     return new PingPacketHandler(this.IridiumGameMasterServer, packet);
                 case ClientPacketType.Register:
-                    return new RegisterHandler(this.IridiumGameMasterServer, packet);
+                    return new RegisterPacketHandler(this.IridiumGameMasterServer, packet);
                 case ClientPacketType.Login:
                     return new LoginPacketHandler(this.IridiumGameMasterServer, packet);
                 case ClientPacketType.GetGames:

@@ -1,6 +1,8 @@
 ﻿namespace Iridium.DevelopClient
 {
     using System;
+    using System.Text;
+    using System.Threading;
 
     using Iridium.Network;
     using Iridium.Utils.Data;
@@ -9,28 +11,66 @@
     {
         private static void Main(string[] args)
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 1; i++)
             {
-                NetworkClient networkClient = new NetworkClient(27001, "127.0.0.1");
-                //NetworkClient networkClient = new NetworkClient(27001, "176.103.146.173");
-                networkClient.Connect();
-                Console.WriteLine("Connected!");
-                networkClient.SendPacket(new PacketsFromClient.Ping(10));
-                networkClient.SendPacket(new PacketsFromClient.Ping(20));
-                networkClient.SendPacket(new PacketsFromClient.GetGames());
-//                while (networkClient.Connected)
-//                {
-//                    var packets = networkClient.ReadAllPackets();
-//                    foreach (var packet in packets)
-//                    {
-//                        Console.WriteLine(packet.PacketType);
-//                    }
-//                }
-                Console.WriteLine();
-                networkClient.Disconnect();
-
+               Run();
             }
             Console.ReadKey();
+        }
+
+        private static async void Run()
+        {
+            NetworkClient networkClient = new NetworkClient(27001, "104.40.216.136");
+            networkClient.Connect();
+            Console.WriteLine("Connected!");
+            Thread.Sleep(100);
+           
+            var packet = await networkClient.ReadNextPacket();
+
+            if (packet != null)
+                Console.WriteLine(packet.PacketType);
+
+//            networkClient.SendPacket(new PacketsFromClient.Register("seal", Encoding.UTF8.GetBytes("seal123")));
+//            Thread.Sleep(100);
+//
+//            packet = await networkClient.ReadNextPacket();
+//
+//            if (packet != null)
+//                Console.WriteLine(packet.PacketType);
+
+            //            const string code = "Console.WriteLine(container.Enemies.Length);" +
+            //                                "return 0;";
+
+            networkClient.SendPacket(new PacketsFromClient.Login("seal", Encoding.UTF8.GetBytes("seal123")));
+            Thread.Sleep(100);
+            packet = await networkClient.ReadNextPacket();
+            if (packet != null)
+                Console.WriteLine(packet.PacketType);
+
+
+            
+            networkClient.SendPacket(new PacketsFromClient.Ping(10));
+
+            Thread.Sleep(100);
+            packet = await networkClient.ReadNextPacket();
+            if (packet != null)
+                Console.WriteLine(packet.PacketType);
+
+            networkClient.SendPacket(new PacketsFromClient.Ping(20));
+            Thread.Sleep(100);
+            packet = await networkClient.ReadNextPacket();
+            if (packet != null)
+                Console.WriteLine(packet.PacketType);
+
+            networkClient.SendPacket(new PacketsFromClient.GetGames());
+            Thread.Sleep(100);
+            packet = await networkClient.ReadNextPacket();
+            if (packet != null)
+                Console.WriteLine(packet.PacketType);
+
+            Console.WriteLine();
+            Console.ReadLine();
+            networkClient.Disconnect();
         }
 
     }

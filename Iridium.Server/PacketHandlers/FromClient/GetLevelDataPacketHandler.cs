@@ -1,7 +1,10 @@
 ﻿namespace Iridium.Server.PacketHandlers.FromClient
 {
     using System.Linq;
-    using System.Text;
+
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+    
     using Iridium.Network;
     using Iridium.Server.Protocol;
     using Iridium.Server.Services;
@@ -9,8 +12,6 @@
 
     using IridiumDatabase;
 
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
 
 
     public class GetLevelDataPacketHandler : PacketHandler

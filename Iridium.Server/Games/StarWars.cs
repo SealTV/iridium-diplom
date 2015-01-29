@@ -25,21 +25,18 @@ namespace Iridium.Server.Games
 
             List<Enemy> enemies = GetEnemiesList(enemiesData);
 
-            try
-            {
-                using (var sandbox = new Sandbox())
+            using (var sandbox = new Sandbox())
+                try
                 {
-                    List<string> enemyList = null;
+                    List<string> enemyList;
                     var result = ProcessCode(codeSource, enemies, sandbox, out enemyList);
-
                     results = enemyList.ToArray();
                     return result;
                 }
-            }
-            catch (Exception e)
-            {
-                Logger.Error(e);
-            }
+                catch (Exception e)
+                {
+                    Logger.Error(e);
+                }
 
             results = null;
             return false;
@@ -118,7 +115,7 @@ namespace Iridium.Server.Games
 
         public static Point Multi(Point p, float f)
         {
-            return new Point()
+            return new Point
             {
                 X = p.X * f,
                 Y = p.Y * f
@@ -128,7 +125,7 @@ namespace Iridium.Server.Games
         public static Point NormalizeVector(Point vector)
         {
             var len = VectorLen(vector);
-            return new Point()
+            return new Point
             {
                 X = vector.X / len,
                 Y = vector.Y / len
@@ -142,7 +139,7 @@ namespace Iridium.Server.Games
 
         public static Point GetVector(Point a, Point b)
         {
-            return new Point()
+            return new Point
             {
                 X = b.X - a.X,
                 Y = b.Y - a.Y

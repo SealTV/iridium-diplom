@@ -25,12 +25,12 @@
         {
             Logger.Info("Start process GameAlgorithm.");
 
-            //if (this.Client.State == SessionState.NotLogged)
-            //{
-            //    Logger.Error("Client is not logged");
-            //    this.Disconnect();
-            //    return;
-            //}
+            if (this.Client.State == SessionState.NotLogged)
+            {
+                Logger.Error("Client is not logged");
+                this.Disconnect();
+                return;
+            }
 
             PacketsFromClient.GameAlgorithm gameAlgorithm = (PacketsFromClient.GameAlgorithm) this.Packet;
            
@@ -49,20 +49,10 @@
 
             var game = GamesFactory.GetGame(json["game_id"].ToObject<int>());
 
-            string code = "Console.WriteLine(container.Enemies.Length);" +
-                          "return 0;";
-            string[] output = null;
-
-            game.RunCode(json["input"].ToString(), code, out output);
-
-            bool isSuccess = false;
+            string[] output;
+            bool isSuccess = game.RunCode(json["input"].ToString(), gameAlgorithm.Algorithm, out output);
           
-//            this.Client.SendPacket(new PacketsFromMaster.AlgorithmResult(gameAlgorithm.GameId, gameAlgorithm.LevelId, output, isSuccess));
-        }
-
-        public void Run()
-        {
-            this.ProcessPacket();
+            this.Client.SendPacket(new PacketsFromMaster.AlgorithmResult(gameAlgorithm.GameId, gameAlgorithm.LevelId, output, isSuccess));
         }
     }
 }

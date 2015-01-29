@@ -18,7 +18,7 @@
             {
                 Logger.Error("Cannot cast packet to Ping packet type.");
             }
-            PacketsFromClient.Ping ping = this.Packet as PacketsFromClient.Ping;
+            PacketsFromClient.Ping ping = (PacketsFromClient.Ping)this.Packet;
             
             Logger.Info("Ping value = {0}", ping.Value);
             this.Client.SendPacket(new PacketsFromMaster.Pong(ping.Value));

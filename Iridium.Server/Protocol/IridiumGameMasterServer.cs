@@ -6,8 +6,9 @@
     using System.Threading;
     using System.Threading.Tasks;
     using System.Collections.Concurrent;
+
     using Iridium.Network;
-    using Utils;
+
     using Utils.Data;
 
     public class IridiumGameMasterServer
@@ -17,7 +18,6 @@
         private bool isWorking;
         private readonly Socket listener;
         private readonly IPEndPoint ipEndPoint;
-        //private Task acceptNewClientsTask;
         private Task clientsManagerTask;
 
         private readonly ConcurrentQueue<NetworkClient> clients; 
@@ -90,7 +90,7 @@
             {
                 if (clients.Count > 0)
                 {
-                    Logger.Debug("Clients connected = {0}", clients.Count);
+//                    Logger.Debug("Clients connected = {0}", clients.Count);
                     NetworkClient client;
                     if (!clients.TryDequeue(out client))
                         continue;

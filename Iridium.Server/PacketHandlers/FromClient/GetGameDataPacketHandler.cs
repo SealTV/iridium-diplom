@@ -2,9 +2,8 @@
 {
     using System.Linq;
     using Iridium.Network;
-    using Iridium.Server.Protocol;
-    using Iridium.Utils;
     using Iridium.Utils.Data;
+    using Iridium.Server.Protocol;
 
     using IridiumDatabase;
 
