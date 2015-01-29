@@ -64,6 +64,9 @@
      <Compile Include="Assets\Scripts\GlobalData.cs" />
      <Compile Include="Assets\Scripts\JsonExtension.cs" />
      <Compile Include="Assets\Scripts\MainMenu.cs" />
+     <Compile Include="Assets\Scripts\Network\NetworkClient.cs" />
+     <Compile Include="Assets\Scripts\Network\Protocols\PacketHandler.cs" />
+     <Compile Include="Assets\Scripts\Network\SessionState.cs" />
      <Compile Include="Assets\Scripts\ServerConnector.cs" />
      <Compile Include="Assets\Scripts\SimpleJSON.cs" />
      <Compile Include="Assets\Scripts\SpriteManager.cs" />
@@ -77,6 +80,10 @@
  <Reference Include="Iridium.Utils">
  <HintPath>Z:/SVNProjects/Diplom/Iridium.Client/Assets/Plugins/Iridium.Utils.dll</HintPath>
  </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass-vs.csproj">
+      <Project>{ECDDA6B6-93E2-E595-3BCB-5AF19F1431C6}</Project>      <Name>Assembly-CSharp-firstpass-vs</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

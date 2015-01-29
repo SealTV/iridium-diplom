@@ -1,6 +1,8 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2008
 
+Project("{9A36B069-E504-733C-8EE2-9870EB3C24ED}") = "Iridium.Client", "Assembly-CSharp-firstpass.csproj", "{ECDDA6B6-93E2-E595-3BCB-5AF19F1431C6}"
+EndProject
 Project("{9A36B069-E504-733C-8EE2-9870EB3C24ED}") = "Iridium.Client", "Assembly-CSharp.csproj", "{5BB5875F-BBDA-15CF-0E61-699BCFA99BCC}"
 EndProject
 Global
@@ -9,6 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ECDDA6B6-93E2-E595-3BCB-5AF19F1431C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECDDA6B6-93E2-E595-3BCB-5AF19F1431C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECDDA6B6-93E2-E595-3BCB-5AF19F1431C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECDDA6B6-93E2-E595-3BCB-5AF19F1431C6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5BB5875F-BBDA-15CF-0E61-699BCFA99BCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5BB5875F-BBDA-15CF-0E61-699BCFA99BCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BB5875F-BBDA-15CF-0E61-699BCFA99BCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -17,7 +23,7 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-																																																																																															GlobalSection(MonoDevelopProperties) = preSolution
+																																																																																																															GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Assembly-CSharp.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
