@@ -29,17 +29,18 @@ namespace Assets.Scripts
 
         public void SelectGame(int gameId)
         {
-            ServerConnector.GetLevels(gameId);
+            Debug.Log("Select Game "+gameId);
+            this.ServerConnector.GetLevels(gameId);
         }
 
         public void SelectLevel(int level)
         {
-            ServerConnector.GetLevelData(1, 1);
+            this.ServerConnector.GetLevelData(1, 1);
         }
 
         public void TryLogin()
         {
-            ServerConnector.Login(LoginField.text, PasswordField.text);
+            this.ServerConnector.Login(this.LoginField.text, this.PasswordField.text);
         }
 
         private void OnGamesLoaded(SharedData.GameData[] games)
@@ -54,11 +55,11 @@ namespace Assets.Scripts
                 this.GameButtons[i].gameObject.SetActive(true);
                 Debug.Log(games[i].Description);
                 this.GameButtons[i].image.sprite = Resources.Load<Sprite>(games[i].Description);
+                Debug.Log("remove");
+                Debug.Log(this.GameButtons[i].name);
                 this.GameButtons[i].onClick.RemoveAllListeners();
                 int gameId = games[i].Id;
                 this.GameButtons[i].onClick.AddListener(() => this.SelectGame(gameId));
-
-                
             }
 
         }
@@ -77,13 +78,12 @@ namespace Assets.Scripts
                 this.LevelButtons[i].onClick.AddListener(() => this.SelectLevel(levelId));
                 this.LevelButtons[i].interactable = (gameData.CompletedLevels > i);
             }
-            GamesPanel.SetActive(false);
-            LevelsPanel.SetActive(true);
+            this.GamesPanel.SetActive(false);
+            this.LevelsPanel.SetActive(true);
         }
 
         private void OnLevelDataLoaded(PacketsFromMaster.LevelData levelData)
         {
-            //GlobalData.LevelData = levelData;
             Application.LoadLevel(1);
         }
 
@@ -94,8 +94,8 @@ namespace Assets.Scripts
 
         private void OnLoggedOnServer()
         {
-            LoginPanel.SetActive(false);
-            GamesPanel.SetActive(true);
+            this.LoginPanel.SetActive(false);
+            this.GamesPanel.SetActive(true);
             this.ServerConnector.GetGames();
         }
 
