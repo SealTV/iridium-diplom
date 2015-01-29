@@ -29,7 +29,7 @@ namespace Assets.Scripts
         {
             yield return new WaitForSeconds(1f);
             this.levels = new[] { "firstLevel", "secondLevel" };
-            this.OnLevelDataLoaded(new PacketsFromMaster.LevelData(1,1,new byte[0]));
+            this.OnLevelDataLoaded(new PacketsFromMaster.LevelData(1,1,string.Empty));
         }
 
         private IEnumerator GetLevelsFromServer()
@@ -64,5 +64,7 @@ namespace Assets.Scripts
         public event GamesLoaded OnGamesLoaded;
         public event LevelsLoaded OnLevelsLoaded;
         public event LevelDataLoaded OnLevelDataLoaded;
+        public event Connected OnConnectedToServer;
+        public event LoggedOnServer OnLoggedOnServer;
     }
 }

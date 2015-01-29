@@ -5,11 +5,11 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{5BB5875F-BBDA-15CF-0E61-699BCFA99BCC}</ProjectGuid>
+	<ProjectGuid>{ECDDA6B6-93E2-E595-3BCB-5AF19F1431C6}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
-	<AssemblyName>Assembly-CSharp</AssemblyName>
+	<AssemblyName>Assembly-CSharp-firstpass</AssemblyName>
 	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
 	<FileAlignment>512</FileAlignment>
 	<BaseDirectory>Assets</BaseDirectory>
@@ -46,33 +46,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\Block Modules\Active.cs" />
-     <Compile Include="Assets\Scripts\Block Modules\BoolButton.cs" />
-     <Compile Include="Assets\Scripts\Block Modules\Connector.cs" />
-     <Compile Include="Assets\Scripts\Block Modules\SubBlock.cs" />
-     <Compile Include="Assets\Scripts\Block Modules\SubBlocksField.cs" />
-     <Compile Include="Assets\Scripts\Block Types\Block.cs" />
-     <Compile Include="Assets\Scripts\Block Types\BoolBlock.cs" />
-     <Compile Include="Assets\Scripts\Block Types\EqualsBlock.cs" />
-     <Compile Include="Assets\Scripts\Block Types\OperationBlock.cs" />
-     <Compile Include="Assets\Scripts\Block Types\SimpleBlock.cs" />
-     <Compile Include="Assets\Scripts\Block Types\ValueBlock.cs" />
-     <Compile Include="Assets\Scripts\Block Types\WhileBlock.cs" />
-     <Compile Include="Assets\Scripts\Controller.cs" />
-     <Compile Include="Assets\Scripts\Enums.cs" />
-     <Compile Include="Assets\Scripts\Games\StarWars\StarWarsController.cs" />
-     <Compile Include="Assets\Scripts\GlobalData.cs" />
-     <Compile Include="Assets\Scripts\JsonExtension.cs" />
-     <Compile Include="Assets\Scripts\MainMenu.cs" />
-     <Compile Include="Assets\Scripts\Network\NetworkClient.cs" />
-     <Compile Include="Assets\Scripts\Network\Protocols\PacketHandler.cs" />
-     <Compile Include="Assets\Scripts\Network\SessionState.cs" />
-     <Compile Include="Assets\Scripts\ServerConnector.cs" />
-     <Compile Include="Assets\Scripts\SimpleJSON.cs" />
-     <Compile Include="Assets\Scripts\SpriteManager.cs" />
-     <Compile Include="Assets\Scripts\TestServerConnector.cs" />
-     <Compile Include="Assets\Scripts\UI\PanelButton.cs" />
-     <Compile Include="Assets\Test.cs" />
+     <Compile Include="Assets\Plugins\SimpleJSON.cs" />
      <None Include="Assets\Sprites\LevelIcons\iconAtlass.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.0/UnityEngine.UI.dll</HintPath>
@@ -80,10 +54,6 @@
  <Reference Include="Iridium.Utils">
  <HintPath>Z:/SVNProjects/Diplom/Iridium.Client/Assets/Plugins/Iridium.Utils.dll</HintPath>
  </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{ECDDA6B6-93E2-E595-3BCB-5AF19F1431C6}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
