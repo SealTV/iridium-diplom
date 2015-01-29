@@ -3,6 +3,7 @@
     using System;
     using System.Collections;
     using System.Net;
+    using System.Text;
     using System.Threading;
     using Iridium.Network;
     using Iridium.Client.PacketHandlers;
@@ -32,7 +33,7 @@
     }
     public class ServerConnector:MonoBehaviour,IServerConnector
     {
-        private int timeOut = 10000;
+        private const int timeOut = 10000;
         private SharedData.GameData[] games;
         private string[] levels;
 
@@ -46,41 +47,41 @@
 
         public void Connect(int port, string ip)
         {
-            serverPort = port;
-            serverIpAddress = ip;
-            StartCoroutine(this.StartConnectServer());
+            this.serverPort = port;
+            this.serverIpAddress = ip;
+            this.StartCoroutine(this.StartConnectServer());
 
         }
 
         public void Login(string login, string password)
         {
-            StartCoroutine(this.StartLogin(login, password));
+            this.StartCoroutine(this.StartLogin(login, password));
         }
 
         public void GetGames()
         {         
-            StartCoroutine(this.Send());
+            this.StartCoroutine(this.GetGameListFromServer());
         }
 
         public void GetLevels(int gameId)
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public void GetLevelData(int gameId, int levelId)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         private IEnumerator StartConnectServer()
         {
             try
             {
-                client = new NetworkClient(serverPort, serverIpAddress);
-                client.Connect();
-                Packet pak = client.WaitNextPacket(timeOut);
+                this.client = new NetworkClient(this.serverPort, this.serverIpAddress);
+                this.client.Connect();
+                Packet pak = this.client.WaitNextPacket(timeOut);
                 Debug.Log(pak.PacketType);
-                OnConnectedToServer();
+                this.OnConnectedToServer();
             }
             catch (Exception e)
             {
@@ -93,10 +94,10 @@
         {
             try
             {
-                client.SendPacket(new PacketsFromClient.Login(login, System.Text.Encoding.UTF8.GetBytes(password)));
-                Packet pak = client.WaitNextPacket(timeOut) as PacketsFromMaster.LoginResult;
+                this.client.SendPacket(new PacketsFromClient.Login(login, Encoding.UTF8.GetBytes(password)));
+                Packet pak = this.client.WaitNextPacket(timeOut) as PacketsFromMaster.LoginResult;
                 Debug.Log(pak.PacketType);
-                OnLoggedOnServer();
+                this.OnLoggedOnServer();
             }
             catch (Exception e)
             {
@@ -107,8 +108,8 @@
 
         private IEnumerator Send()
         {
-            client.SendPacket(new PacketsFromClient.GameAlgorithm(1, 1, "Console.WriteLine(124);"));
-            var pak = client.WaitNextPacket(timeOut) as PacketsFromMaster.AlgorithmResult;
+            this.client.SendPacket(new PacketsFromClient.GameAlgorithm(1, 1, "Console.WriteLine(124);"));
+            var pak = this.client.WaitNextPacket(timeOut) as PacketsFromMaster.AlgorithmResult;
             foreach (var s in pak.Output)
             {
                 Debug.Log(s);
@@ -118,8 +119,8 @@
         }
         private IEnumerator GetGameListFromServer()
         {
-            client.SendPacket(new PacketsFromClient.GetGames());
-            var pak = client.WaitNextPacket(timeOut) as PacketsFromMaster.GamesList;
+            this.client.SendPacket(new PacketsFromClient.GetGames());
+            var pak = this.client.WaitNextPacket(timeOut) as PacketsFromMaster.GamesList;
             Debug.Log(pak.PacketType);
             this.games = pak.Games;
             this.OnGamesLoaded(this.games);
