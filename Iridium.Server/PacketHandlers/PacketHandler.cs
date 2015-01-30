@@ -1,16 +1,18 @@
-﻿using Iridium.Server.Protocol;
-
-namespace Iridium.Server.PacketHandlers
+﻿namespace Iridium.Server.PacketHandlers
 {
     using System;
 
     using Iridium.Network;
     using Iridium.Utils.Data;
+    using Iridium.Server.Protocol;
 
     public abstract class PacketHandler
     {
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
+        private readonly IridiumGameMasterServer MasterServer;
+       
         protected NetworkClient Client;
-        protected readonly IridiumGameMasterServer MasterServer;
         protected readonly Packet Packet;
 
         protected PacketHandler(IridiumGameMasterServer masterServer, Packet packet)
@@ -24,12 +26,14 @@ namespace Iridium.Server.PacketHandlers
             this.Client = client;
             try
             {
-                this.ProcessPacket();                
+                this.ProcessPacket();
             }
             catch (Exception e)
             {
-                  this.Disconnect(); 
+                Logger.Error(e);
+                this.Disconnect();
             }
+
             this.EndProcessPacket();
         }
 
