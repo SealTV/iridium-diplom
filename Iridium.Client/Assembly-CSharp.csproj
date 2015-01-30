@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{5BB5875F-BBDA-15CF-0E61-699BCFA99BCC}</ProjectGuid>
+	<ProjectGuid>{B24809A0-2353-B7F5-4611-493B208C72DA}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -78,12 +78,12 @@
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.1/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="Iridium.Utils">
- <HintPath>C:/Users/BaltX/Projects/Iridium/Iridium.Client/Assets/Plugins/Iridium.Utils.dll</HintPath>
+ <HintPath>C:/Users/BaltX/Projects/ie/Assets/Plugins/Iridium.Utils.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{ECDDA6B6-93E2-E595-3BCB-5AF19F1431C6}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
+      <Project>{52F0F481-E564-2586-11B0-0BFBC13B65D6}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

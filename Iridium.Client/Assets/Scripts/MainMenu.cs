@@ -29,7 +29,7 @@ namespace Assets.Scripts
 
         public void SelectGame(int gameId)
         {
-            Debug.Log("Select Game "+gameId);
+            Debug.Log("Select Game: " + gameId);
             this.ServerConnector.GetLevels(gameId);
         }
 
@@ -55,11 +55,11 @@ namespace Assets.Scripts
                 this.GameButtons[i].gameObject.SetActive(true);
                 Debug.Log(games[i].Description);
                 this.GameButtons[i].image.sprite = Resources.Load<Sprite>(games[i].Description);
-                Debug.Log("remove");
-                Debug.Log(this.GameButtons[i].name);
                 this.GameButtons[i].onClick.RemoveAllListeners();
                 int gameId = games[i].Id;
                 this.GameButtons[i].onClick.AddListener(() => this.SelectGame(gameId));
+
+                
             }
 
         }
@@ -84,12 +84,12 @@ namespace Assets.Scripts
 
         private void OnLevelDataLoaded(PacketsFromMaster.LevelData levelData)
         {
+            //GlobalData.LevelData = levelData;
             Application.LoadLevel(1);
         }
 
         private void OnConnectedToServer()
         {
-            //this.ServerConnector.Login("BaltX","215435");
         }
 
         private void OnLoggedOnServer()
