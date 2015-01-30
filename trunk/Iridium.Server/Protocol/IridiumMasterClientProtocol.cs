@@ -1,10 +1,11 @@
 ﻿namespace Iridium.Server.Protocol
 {
     using System;
-    using System.Threading.Tasks;
+
     using Iridium.Network;
-    using Utils;
+
     using Utils.Data;
+
     using PacketHandlers;
     using PacketHandlers.FromClient;
 
@@ -54,8 +55,7 @@
                 IridiumGameMasterServer.Disconnect(client);
             }
         }
-
-
+        
         private PacketHandler GetPacketHandlerFor(Packet packet)
         {
             if (!(packet.PacketType is ClientPacketType))
