@@ -18,32 +18,12 @@ namespace Iridium.Server.Games
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public bool RunCode(string intput, string codeSource, out string[] results)
+        protected override bool ProcessCode(string codeSource, string intput, Sandbox sandbox, out List<string> enemyList)
         {
             var json = JsonConvert.DeserializeObject<JToken>(intput);
             var enemiesData = json["enemies"].ToArray();
 
             List<Enemy> enemies = GetEnemiesList(enemiesData);
-
-            using (var sandbox = new Sandbox())
-                try
-                {
-                    List<string> enemyList;
-                    var result = ProcessCode(codeSource, enemies, sandbox, out enemyList);
-                    results = enemyList.ToArray();
-                    return result;
-                }
-                catch (Exception e)
-                {
-                    Logger.Error(e);
-                }
-
-            results = null;
-            return false;
-        }
-
-        private static bool ProcessCode(string codeSource, List<Enemy> enemies, Sandbox sandbox, out List<string> enemyList)
-        {
             bool isAlive = true;
             enemyList = new List<string>();
             while (isAlive && enemies.Count() != 0)
