@@ -43,6 +43,7 @@
         {
             if (socket != null && socket.Connected)
                 return;
+
             this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
             try
             {

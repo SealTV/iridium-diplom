@@ -33,7 +33,7 @@
     }
     public class ServerConnector:MonoBehaviour,IServerConnector
     {
-        private const int timeOut = 10000;
+        private int timeOut = 10000;
         private SharedData.GameData[] games;
         private string[] levels;
 
@@ -55,22 +55,28 @@
 
         public void Login(string login, string password)
         {
-            this.StartCoroutine(this.StartLogin(login, password));
+            this.StartCoroutine(this.LoginCoroutine(login, password));
         }
 
         public void GetGames()
         {         
-            this.StartCoroutine(this.GetGameListFromServer());
+            this.StartCoroutine(this.GameListCoroutine());
         }
 
         public void GetLevels(int gameId)
         {
-            
+            this.StartCoroutine(this.LevelsCoroutine(gameId));
         }
 
         public void GetLevelData(int gameId, int levelId)
         {
             throw new NotImplementedException();
+        }
+
+        private void ConnectThread(out bool isConnected)
+        {
+            
+            isConnected = true;
         }
 
         private IEnumerator StartConnectServer()
@@ -79,7 +85,8 @@
             {
                 this.client = new NetworkClient(this.serverPort, this.serverIpAddress);
                 this.client.Connect();
-                Packet pak = this.client.WaitNextPacket(timeOut);
+                Debug.Log(client.State);
+                Packet pak = this.client.WaitNextPacket(this.timeOut);
                 Debug.Log(pak.PacketType);
                 this.OnConnectedToServer();
             }
@@ -90,12 +97,13 @@
             yield break;
         }
 
-        private IEnumerator StartLogin(string login, string password)
+
+        private IEnumerator LoginCoroutine(string login, string password)
         {
             try
             {
                 this.client.SendPacket(new PacketsFromClient.Login(login, Encoding.UTF8.GetBytes(password)));
-                Packet pak = this.client.WaitNextPacket(timeOut) as PacketsFromMaster.LoginResult;
+                Packet pak = this.client.WaitNextPacket(this.timeOut) as PacketsFromMaster.LoginResult;
                 Debug.Log(pak.PacketType);
                 this.OnLoggedOnServer();
             }
@@ -109,7 +117,7 @@
         private IEnumerator Send()
         {
             this.client.SendPacket(new PacketsFromClient.GameAlgorithm(1, 1, "Console.WriteLine(124);"));
-            var pak = this.client.WaitNextPacket(timeOut) as PacketsFromMaster.AlgorithmResult;
+            var pak = this.client.WaitNextPacket(this.timeOut) as PacketsFromMaster.AlgorithmResult;
             foreach (var s in pak.Output)
             {
                 Debug.Log(s);
@@ -117,13 +125,23 @@
             Debug.Log(pak.IsSuccess);
             yield break;
         }
-        private IEnumerator GetGameListFromServer()
+        private IEnumerator GameListCoroutine()
         {
             this.client.SendPacket(new PacketsFromClient.GetGames());
-            var pak = this.client.WaitNextPacket(timeOut) as PacketsFromMaster.GamesList;
+            var pak = this.client.WaitNextPacket(this.timeOut) as PacketsFromMaster.GamesList;
             Debug.Log(pak.PacketType);
             this.games = pak.Games;
             this.OnGamesLoaded(this.games);
+            yield break;
+        }
+
+        private IEnumerator LevelsCoroutine(int gameId)
+        {
+            this.client.SendPacket(new PacketsFromClient.GetGameData(gameId));
+            var pak = this.client.WaitNextPacket(this.timeOut) as PacketsFromMaster.GameData;
+            Debug.Log(pak.PacketType);
+            this.levels = pak.Levels;
+            this.OnLevelsLoaded(pak);
             yield break;
         }
 
