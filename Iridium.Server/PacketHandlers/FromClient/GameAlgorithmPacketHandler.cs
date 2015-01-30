@@ -10,6 +10,8 @@
 
     using IridiumDatabase;
 
+    using LinqToDB;
+
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
@@ -51,7 +53,29 @@
 
             string[] output;
             bool isSuccess = game.RunCode(json["input"].ToString(), gameAlgorithm.Algorithm, out output);
-          
+
+            if(isSuccess)
+                using (var db = new iridiumDB(Program.ConnectionString))
+                {
+                    var compleated_level = (from q in db.completed_levels
+                                            where q.account == this.Client.AccountId
+                                                  && q.game == levelData.game_id
+                                            select q).FirstOrDefault();
+                    if (compleated_level != null)
+                    {
+                        if (compleated_level.levels_ccomplete < levelData.level_id)
+                            compleated_level.levels_ccomplete = levelData.level_id;
+                        db.Update(compleated_level);
+                    }
+                    else
+                        db.Insert(new completed_levels()
+                        {
+                            account = this.Client.AccountId,
+                            game = levelData.game_id,
+                            levels_ccomplete = levelData.level_id
+                        });
+                }
+
             this.Client.SendPacket(new PacketsFromMaster.AlgorithmResult(gameAlgorithm.GameId, gameAlgorithm.LevelId, output, isSuccess));
         }
     }
