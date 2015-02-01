@@ -2,6 +2,7 @@
 {
     public enum ConnectorType
     {
+        None,
         Next,
         Value,
         Bool,

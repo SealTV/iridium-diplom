@@ -5,7 +5,7 @@ namespace Assets.Scripts
 {
     using Iridium.Utils.Data;
 
-    public class TestServerConnector : MonoBehaviour, IServerConnector
+    public class TestServerConnector : MonoBehaviour
     {
         private SharedData.GameData[] games;
         private string[] levels;
@@ -29,7 +29,7 @@ namespace Assets.Scripts
         {
             yield return new WaitForSeconds(1f);
             this.levels = new[] { "firstLevel", "secondLevel" };
-            this.OnLevelDataLoaded(new PacketsFromMaster.LevelData(1,1,string.Empty));
+            this.OnLevelDataLoaded();
         }
 
         private IEnumerator GetLevelsFromServer()

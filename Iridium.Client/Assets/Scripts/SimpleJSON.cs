@@ -579,6 +579,16 @@ namespace SimpleJSON
             stream.Position = 0;
             return LoadFromStream(stream);
         }
+
+        public List<JSONNode> ToList()
+        {
+            List<JSONNode> result = new List<JSONNode>();
+            for (int i = 0; i < this.AsArray.Count; i++)
+            {
+                result.Add(this.AsArray[i]);
+            }
+            return result;
+        }
     } // End of JSONNode
 
     public class JSONArray : JSONNode, IEnumerable
