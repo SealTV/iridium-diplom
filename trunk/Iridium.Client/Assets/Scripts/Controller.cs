@@ -10,14 +10,16 @@
     {
         private bool isBlockTaken;
         private Block pressedBlock;
-
+        private Active pressedActive;
+        private BlockPrototip pressedPrototip;
         private Vector3 downPosition;
         private float screenRatio;
 
         public Transform Scaler;
-        private float scaleSpeed = 0.3f;
-        private float scaleMin = 0.5f;
-        private float scaleMax = 1f;
+        private const float scaleSpeed = 0.3f;
+        private const float scaleMin = 0.5f;
+        private const float scaleMax = 1f;
+        private float scale;
         private Vector3 mousePressedPosition;
         private float minMouseShift;
 
@@ -25,6 +27,7 @@
         {
             this.screenRatio = 0.5f*Screen.height/Camera.main.orthographicSize;
             this.minMouseShift = Screen.height/40f;
+            this.scale = this.Scaler.transform.localScale.x;
         }
 
         private void Update()
@@ -47,11 +50,29 @@
                 this.TryFindBlock(hits);
             }
 
-            if (Input.GetMouseButton(0) && !this.isBlockTaken && pressedBlock != null)
+            if (Input.GetMouseButton(0) && !this.isBlockTaken)
             {
-                if ((Input.mousePosition - this.mousePressedPosition).magnitude > this.minMouseShift)
+                if (this.pressedBlock != null)
                 {
-                    this.GetBlock();
+                    if ((Input.mousePosition - this.mousePressedPosition).magnitude > this.minMouseShift)
+                    {
+                        this.GetBlock();
+                    }
+                }
+                else
+                {
+                    if (this.pressedPrototip != null)
+                    {
+                        if ((Input.mousePosition - this.mousePressedPosition).magnitude > this.minMouseShift)
+                        {
+                            var instantiate = (GameObject) Instantiate(this.pressedPrototip.InstantiatedPrefab);
+                            this.pressedBlock = instantiate.GetComponent<Block>();
+                            this.pressedBlock.transform.localScale = this.pressedBlock.BaseScale * scale;
+                            this.isBlockTaken = true;
+                            this.downPosition = (Input.mousePosition - this.pressedPrototip.transform.position * this.screenRatio);
+                            this.pressedPrototip = null;
+                        }
+                    }
                 }
             }
 
@@ -70,40 +91,23 @@
                     }
                     this.isBlockTaken = false;
                 }
-                else
+                else if(this.pressedActive!=null)
                 {
                     var worldTouch = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     RaycastHit2D[] hits = Physics2D.RaycastAll(new Vector2(worldTouch.x, worldTouch.y), Vector2.zero,
                         Mathf.Infinity);
-                    Debug.Log(hits.Count());
-                    this.TryUsingGUI(hits);
+                    this.TryUsingActive(hits);
                 }
             }
-            float i = Scaler.localScale.x;
-            i += scaleSpeed * Input.GetAxis("Mouse ScrollWheel");
-            i = Math.Min(Math.Max(scaleMin, i), scaleMax);
-            Scaler.localScale=new Vector3(i,i,i);
+            this.scale += scaleSpeed * Input.GetAxis("Mouse ScrollWheel");
+            this.scale = Math.Min(Math.Max(scaleMin, this.scale), scaleMax);
+            this.Scaler.localScale = new Vector3(this.scale, this.scale, this.scale);
         }
 
-        private bool TryUsingGUI(RaycastHit2D[] hits)
+        private bool TryUsingActive(RaycastHit2D[] hits)
         {
-            int hightestLayer = 0;
-            Active tempActive= null;
-            foreach (var hit in hits)
-            {
-                Transform blockTransform = hit.transform;
-                if (blockTransform.tag == "GUI")
-                {
-                    Debug.Log("GUI");
-                    Active temp = blockTransform.GetComponent<Active>();
-                    if (temp.Parent.CurrentLayerSorting > hightestLayer)
-                    {
-                        hightestLayer = temp.Parent.CurrentLayerSorting;
-                        tempActive = temp;
-                    }
-                }
-            }
-            if(tempActive!=null) tempActive.Use();
+            if (!hits.Any(hit => hit.transform.gameObject == this.pressedActive.gameObject)) { return false; }
+            this.pressedActive.Use();
             return true;
         }
 
@@ -149,19 +153,34 @@
         private void TryFindBlock(RaycastHit2D[] hits)
         {
             this.pressedBlock = null;
-            int hightestLayer = 0;
+            int blockHightestLayer = -5;
+            int activeHightestLayer = 0;
             foreach (var hit in hits)
             {
                 Transform blockTransform = hit.transform;
                 if (blockTransform.tag == "Block")
                 {
                     Block temp = blockTransform.GetComponent<SubBlock>().Parent.Parent;
-                    if (temp.CurrentLayerSorting > hightestLayer)
+                    if (temp.CurrentLayerSorting > blockHightestLayer)
                     {
-                        hightestLayer = temp.CurrentLayerSorting;
+                        blockHightestLayer = temp.CurrentLayerSorting;
                         this.pressedBlock = temp;
                         this.downPosition = (Input.mousePosition - this.pressedBlock.transform.position * this.screenRatio);
                     }
+                    Debug.Log(pressedBlock.name);
+                }
+                else if (blockTransform.tag == "Active")
+                {
+                    Active temp = blockTransform.GetComponent<Active>();
+                    if (temp.Parent.CurrentLayerSorting > activeHightestLayer)
+                    {
+                        activeHightestLayer = temp.Parent.CurrentLayerSorting;
+                        this.pressedActive = temp;
+                    }
+                }
+                else if (blockTransform.tag == "Prototip")
+                {
+                    this.pressedPrototip = blockTransform.GetComponent<BlockPrototip>();
                 }
             }
         }

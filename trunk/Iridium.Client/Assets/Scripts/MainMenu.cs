@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
+    using System.Threading;
     using UnityEngine.UI;
 
     public class MainMenu : MonoBehaviour
@@ -17,6 +18,8 @@ namespace Assets.Scripts
         public InputField LoginField;
         public InputField PasswordField;
 
+        private Thread workTread;
+
         void Start () {
             this.ServerConnector.Init();
             this.ServerConnector.OnGamesLoaded += this.OnGamesLoaded;
@@ -24,25 +27,39 @@ namespace Assets.Scripts
             this.ServerConnector.OnLevelDataLoaded += this.OnLevelDataLoaded;
             this.ServerConnector.OnConnectedToServer += this.OnConnectedToServer;
             this.ServerConnector.OnLoggedOnServer += this.OnLoggedOnServer;
-            this.ServerConnector.Connect(27001, "104.40.216.136");
+            this.StartCoroutine(this.ServerConnector.StartConnectServer(27001, "104.40.216.136"));
+            //this.ServerConnector.Connect(27001, "104.40.216.136");
+            //this.ServerConnector.Connect(27001, "127.0.0.1");
         }
 
         public void SelectGame(int gameId)
         {
             Debug.Log("Select Game: " + gameId);
-            this.ServerConnector.GetLevels(gameId);
+            this.StartCoroutine(this.ServerConnector.StartGetLevels(gameId));
         }
 
-        public void SelectLevel(int level)
+        public void SelectLevel(int game, int level)
         {
-            this.ServerConnector.GetLevelData(1, 1);
+            Debug.Log("Select level: "+ level);
+            this.StartCoroutine(this.ServerConnector.StartGetLevelData(game, level));
         }
 
         public void TryLogin()
         {
-            this.ServerConnector.Login(this.LoginField.text, this.PasswordField.text);
+            Debug.Log("adasd");
+            this.StartCoroutine(this.ServerConnector.StartLogin(this.LoginField.text, this.PasswordField.text));
         }
 
+        private void OnConnectedToServer()
+        {
+            this.LoginPanel.SetActive(true);
+        }
+        private void OnLoggedOnServer()
+        {
+            this.LoginPanel.SetActive(false);
+            this.GamesPanel.SetActive(true);
+            this.StartCoroutine(this.ServerConnector.StartGetGames());
+        }
         private void OnGamesLoaded(SharedData.GameData[] games)
         {
             Debug.Log("GamesLoaded");
@@ -63,7 +80,6 @@ namespace Assets.Scripts
             }
 
         }
-
         private void OnLevelsLoaded(PacketsFromMaster.GameData gameData)
         {
             foreach (var button in this.LevelButtons)
@@ -74,30 +90,19 @@ namespace Assets.Scripts
             {
                 this.LevelButtons[i].gameObject.SetActive(true);
                 this.LevelButtons[i].onClick.RemoveAllListeners();
-                int levelId = i;
-                this.LevelButtons[i].onClick.AddListener(() => this.SelectLevel(levelId));
+                int levelId = i+1;
+                this.LevelButtons[i].onClick.AddListener(() => this.SelectLevel(gameData.GameId, levelId));
                 this.LevelButtons[i].interactable = (gameData.CompletedLevels > i);
             }
             this.GamesPanel.SetActive(false);
             this.LevelsPanel.SetActive(true);
         }
-
-        private void OnLevelDataLoaded(PacketsFromMaster.LevelData levelData)
+        private void OnLevelDataLoaded()
         {
-            //GlobalData.LevelData = levelData;
             Application.LoadLevel(1);
         }
 
-        private void OnConnectedToServer()
-        {
-        }
 
-        private void OnLoggedOnServer()
-        {
-            this.LoginPanel.SetActive(false);
-            this.GamesPanel.SetActive(true);
-            this.ServerConnector.GetGames();
-        }
 
     }
 }

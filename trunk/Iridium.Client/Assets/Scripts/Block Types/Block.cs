@@ -5,6 +5,7 @@
 
     public abstract class Block: MonoBehaviour
     {
+        public Vector3 BaseScale;
         public Dictionary<string, Block> Connectors = new Dictionary<string, Block>(); 
         public abstract float GetHeight();
         public abstract float GetWidth();
