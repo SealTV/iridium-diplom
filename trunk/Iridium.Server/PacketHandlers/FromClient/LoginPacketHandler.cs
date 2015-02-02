@@ -39,7 +39,7 @@
 
             try
             {
-                using (var db = new iridiumDB(Program.ConnectionString))
+                using (var db = new iridiumDB(IridiumMasterServer.ConnectionString))
                 {
                     account account = (from a in db.accounts
                                        where a.login == login.LoginName

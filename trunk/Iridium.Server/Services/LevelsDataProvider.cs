@@ -12,7 +12,7 @@
         private const string DefaultPath = "Data";
         private static readonly Dictionary<string, string> levelData = new Dictionary<string, string>();
 
-        public static string  GetLevelData(level_data level_data)
+        public static string GetLevelData(level_data level_data)
         {
             string result;
             if (levelData.TryGetValue(level_data.path, out result))
@@ -20,11 +20,19 @@
                 return result;
             }
             string path = DefaultPath + Path.AltDirectorySeparatorChar + level_data.path;
-            using (var stream = new FileStream(path, FileMode.Open))
-            using (var reader = new StreamReader(stream))
+            try
             {
-                var data = reader.ReadToEnd();
-                levelData.Add(level_data.path, data);
+                using (var stream = new FileStream(path, FileMode.Open))
+                using (var reader = new StreamReader(stream))
+                {
+                    var data = reader.ReadToEnd();
+                    levelData.Add(level_data.path, data);
+                }
+            }
+            catch (IOException e)
+            {
+                Logger.Error(e);
+                return null;
             }
 
             return levelData[level_data.path];

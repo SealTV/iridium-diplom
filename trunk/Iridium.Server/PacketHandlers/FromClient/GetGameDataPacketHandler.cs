@@ -31,7 +31,7 @@
             completed_levels completedLevels;
             string[] levels;
 
-            using (var db = new iridiumDB(Program.ConnectionString))
+            using (var db = new iridiumDB(IridiumMasterServer.ConnectionString))
             {
                 var games = from q in db.games
                             where q.id == getGameData.GameId

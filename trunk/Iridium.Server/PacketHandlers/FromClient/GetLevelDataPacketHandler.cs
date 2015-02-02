@@ -2,9 +2,6 @@
 {
     using System.Linq;
 
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
-    
     using Iridium.Network;
     using Iridium.Server.Protocol;
     using Iridium.Server.Services;
@@ -36,7 +33,7 @@
             PacketsFromClient.GetLevelData getLevelData = (PacketsFromClient.GetLevelData) this.Packet;
 
             level_data levelData;
-            using (var db = new iridiumDB(Program.ConnectionString))
+            using (var db = new iridiumDB(IridiumMasterServer.ConnectionString))
             {
                 var query = from q in db.level_data
                             where q.game_id == (uint)getLevelData.GameId
@@ -46,13 +43,7 @@
             }
 
             var data = LevelsDataProvider.GetLevelData(levelData);
-            var json = JsonConvert.DeserializeObject<JToken>(data);
-            string intput = JsonConvert.SerializeObject(new
-            {
-                input = json["input"].ToString(),
-            });
-
-            this.Client.SendPacket(new PacketsFromMaster.LevelData((int)levelData.game_id, (int)levelData.level_id, intput));
+            this.Client.SendPacket(new PacketsFromMaster.LevelData((int)levelData.game_id, (int)levelData.level_id, data));
         }
     }
 }

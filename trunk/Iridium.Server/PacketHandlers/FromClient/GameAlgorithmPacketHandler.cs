@@ -37,7 +37,7 @@
             PacketsFromClient.GameAlgorithm gameAlgorithm = (PacketsFromClient.GameAlgorithm) this.Packet;
            
             level_data levelData;
-            using (var db = new iridiumDB(Program.ConnectionString))
+            using (var db = new iridiumDB(IridiumMasterServer.ConnectionString))
             {
                 var query = from q in db.level_data
                             where q.game_id == (uint)gameAlgorithm.GameId && q.level_id == (uint)gameAlgorithm.LevelId
@@ -55,7 +55,7 @@
 
             if (isSuccess)
             {
-                using (var db = new iridiumDB(Program.ConnectionString))
+                using (var db = new iridiumDB(IridiumMasterServer.ConnectionString))
                 {
                     var compleated_level = (from q in db.completed_levels
                                             where q.account == this.Client.AccountId && q.game == levelData.game_id

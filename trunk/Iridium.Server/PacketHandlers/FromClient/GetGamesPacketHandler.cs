@@ -28,7 +28,7 @@
             }
 
             List<game> games;
-            using (var db = new iridiumDB(Program.ConnectionString))
+            using (var db = new iridiumDB(IridiumMasterServer.ConnectionString))
             {
                 var query = from q in db.games
                             select q;
