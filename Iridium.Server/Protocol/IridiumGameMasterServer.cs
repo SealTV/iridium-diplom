@@ -25,7 +25,7 @@
         public IridiumGameMasterServer()
         {
             this.clients = new ConcurrentQueue<NetworkClient>();
-            this.ipEndPoint = new IPEndPoint(IPAddress.Parse(Program.Configuration.ServerProperties.Host), Program.Configuration.ServerProperties.Port);
+            this.ipEndPoint = new IPEndPoint(IPAddress.Parse(IridiumMasterServer.Configuration.ServerProperties.Host), IridiumMasterServer.Configuration.ServerProperties.Port);
             this.listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             clients = new ConcurrentQueue<NetworkClient>();
         }

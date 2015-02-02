@@ -29,7 +29,7 @@
 
             bool registerOK = false;
             int accountId = 0;
-            using (var db = new iridiumDB(Program.ConnectionString))
+            using (var db = new iridiumDB(IridiumMasterServer.ConnectionString))
             {
                 var query = (from q in db.accounts
                              where q.login == register.LoginName

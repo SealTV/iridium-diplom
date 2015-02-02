@@ -13,6 +13,9 @@
 			speed: 2,
 			health: 1
 		}]
-	},
-	output: [1]
+	}
+	blocks: [
+		"bool",
+		"foreach"
+	]
 }
