@@ -45,6 +45,11 @@
             this.Position = position;
             this.Id = id;
         }
+
+        public float GetDistance(Point point)
+        {
+            return Point.VectorLen(Point.GetVector(point, Position));
+        }
     }
 
     public class EnemyContainer : MarshalByRefObject
