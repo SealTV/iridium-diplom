@@ -1,6 +1,7 @@
 ﻿namespace Iridium.Utils.Data
 {
     using System;
+    using System.Collections.Generic;
 
     public static class SharedData
     {
@@ -54,7 +55,7 @@
 
     public class EnemyContainer : MarshalByRefObject
     {
-        public Enemy[] Enemies { get; set; }
+        public List<Enemy> Enemies { get; set; }
     }
 
     public class Point : MarshalByRefObject
