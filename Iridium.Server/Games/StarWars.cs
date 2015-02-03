@@ -29,6 +29,15 @@ namespace Iridium.Server.Games
             List<Enemy> enemies = GetEnemiesList(enemiesData);
             bool isAlive = true;
             enemyList = new List<string>();
+
+            var code = CodeGenerator.CreateCode<int>(sandbox, CS.Compiler, codeSource,
+                                                         new[] { "Iridium.Utils", "System" },
+                                                         new[]
+                                                         {
+                                                             string.Format("{0}\\Iridium.Utils.dll", IridiumMasterServer.Configuration.ServerProperties.FilePath),
+                                                             string.Format("C:\\Windows\\microsoft.net\\framework\\v4.0.30319\\mscorlib.dll")
+                                                         },
+                                                         new CodeParameter("container", typeof(EnemyContainer)));
             while (isAlive && enemies.Count() != 0)
             {
                 Logger.Info("enemies.Count() = {0}", enemies.Count());
@@ -36,15 +45,7 @@ namespace Iridium.Server.Games
                 {
                     Enemies = enemies.ToArray()
                 };
-
-                var code = CodeGenerator.CreateCode<int>(sandbox, CS.Compiler, codeSource,
-                                                         new[] { "Iridium.Utils", "System" },
-                                                         new[]
-                                                         {
-                                                             string.Format("{0}\\Iridium.Utils.dll", IridiumMasterServer.Configuration.ServerProperties.FilePath),
-                                                             string.Format("C:\\Windows\\microsoft.net\\framework\\v4.0.30319\\mscorlib.dll")
-                                                         },
-                                                         CodeParameter.Create("container", container));
+                
                 var enemyId = code.Execute(container);
                 Logger.Info(enemyId);
                 enemyList.Add(enemyId.ToString());
