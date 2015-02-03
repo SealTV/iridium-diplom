@@ -36,6 +36,15 @@ namespace Tech.CodeGeneration.Compilers
                 "{0}{1}{2}{3}", usings, codeHeader, sourceCode, codeFooter);
         }
 
+        protected override string FormatAssemblySourceCode(string sourceCode,
+                                                           string mainMethodName,
+                                                           IEnumerable<string> usingNamespaces,
+                                                           Type returnType,
+                                                           IEnumerable<CodeParameter> parameters)
+        {
+            throw new NotImplementedException();
+        }
+
 
         protected override int CodeHeaderHeight
         {

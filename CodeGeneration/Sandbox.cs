@@ -41,7 +41,6 @@ namespace Tech.CodeGeneration
             }
         }
         
-
         internal string ApplicationBase
         {
             get { return _appDomain.SetupInformation.ApplicationBase; }
@@ -52,15 +51,47 @@ namespace Tech.CodeGeneration
         {
             var type = typeof(CodeProxy);
 
+//             using (var file = new FileStream("C:/ouput1.txt", FileMode.CreateNew))
+//                {
+//                    using (var writer = new StreamWriter(file))
+//                    {
+//                        writer.WriteLine(type.Assembly.Location);
+//                        writer.WriteLine(asmLocation);
+////                        foreach (var referencedAssembly in referencedAssemblies)
+////                        {
+////                            writer.WriteLine(referencedAssembly);
+////                        }
+//                    }
+//                }
             var marshaler = (CodeProxy)_appDomain.CreateInstanceFromAndUnwrap(
-                               type.Assembly.Location,
-                               type.FullName,
+                       assemblyFile: type.Assembly.Location,
+                           typeName: type.FullName,
                          ignoreCase: false,
                         bindingAttr: BindingFlags.Default,
                              binder: null,
                                args: new object[] { asmLocation },
                             culture: null,
                activationAttributes: null);
+
+            _loadedAssemblies.Add(asmLocation);
+
+            return marshaler;
+        }
+
+        internal CodeProxy CreateCodeProxy(string asmLocation, string mainMethodName)
+        {
+            var type = typeof(CodeProxy);
+            var k = _appDomain.CreateInstanceFromAndUnwrap(
+                       assemblyFile: type.Assembly.Location,
+                           typeName: type.FullName,
+                         ignoreCase: false,
+                        bindingAttr: BindingFlags.Default,
+                             binder: null,
+                               args: new object[] { asmLocation },
+                            culture: null,
+               activationAttributes: null);
+            var marshaler = (CodeProxy)k;
+            
 
             _loadedAssemblies.Add(asmLocation);
 

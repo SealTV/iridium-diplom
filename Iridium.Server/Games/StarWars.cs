@@ -23,20 +23,30 @@ namespace Iridium.Server.Games
             var json = JsonConvert.DeserializeObject<JToken>(intput);
             var enemiesData = json["enemies"].ToArray();
 
+            Logger.Info(intput);
+            Logger.Info(codeSource);
+
             List<Enemy> enemies = GetEnemiesList(enemiesData);
             bool isAlive = true;
             enemyList = new List<string>();
             while (isAlive && enemies.Count() != 0)
             {
-                EnemyContainer container = new EnemyContainer()
+                Logger.Info("enemies.Count() = {0}", enemies.Count());
+                EnemyContainer container = new EnemyContainer
                 {
                     Enemies = enemies.ToArray()
                 };
+
                 var code = CodeGenerator.CreateCode<int>(sandbox, CS.Compiler, codeSource,
-                                                         new[] { "Iridium.Utils" },
-                                                         new[] { "Iridium.Utils.dll" },
+                                                         new[] { "Iridium.Utils", "System" },
+                                                         new[]
+                                                         {
+                                                             string.Format("{0}\\Iridium.Utils.dll", IridiumMasterServer.Configuration.ServerProperties.FilePath),
+                                                             string.Format("C:\\Windows\\microsoft.net\\framework\\v4.0.30319\\mscorlib.dll")
+                                                         },
                                                          CodeParameter.Create("container", container));
                 var enemyId = code.Execute(container);
+                Logger.Info(enemyId);
                 enemyList.Add(enemyId.ToString());
                 Enemy enemy = enemies.FirstOrDefault(e => e.Id == enemyId);
                 if (enemy != null)
@@ -80,50 +90,11 @@ namespace Iridium.Server.Games
             Point playerPosition = new Point(0, 5);
             foreach (var enemy in enemies)
             {
-                var vector = GetVector(enemy.StartPosition, playerPosition);
-                vector = NormalizeVector(vector);
-                vector = Multi(vector, enemy.Speed);
-                AddPoint(enemy.Position, vector);
+                var vector = Point.GetVector(enemy.StartPosition, playerPosition);
+                vector = Point.NormalizeVector(vector);
+                vector = Point.Multi(vector, enemy.Speed);
+                Point.AddPoint(enemy.Position, vector);
             }
-        }
-
-        public static void AddPoint(Point a, Point b)
-        {
-            a.X += b.X;
-            a.Y += b.Y;
-        }
-
-        public static Point Multi(Point p, float f)
-        {
-            return new Point
-            {
-                X = p.X * f,
-                Y = p.Y * f
-            };
-        }
-
-        public static Point NormalizeVector(Point vector)
-        {
-            var len = VectorLen(vector);
-            return new Point
-            {
-                X = vector.X / len,
-                Y = vector.Y / len
-            };
-        }
-
-        private static float VectorLen(Point vector)
-        {
-            return (float)Math.Sqrt(vector.X * vector.X + vector.Y * vector.Y);
-        }
-
-        public static Point GetVector(Point a, Point b)
-        {
-            return new Point
-            {
-                X = b.X - a.X,
-                Y = b.Y - a.Y
-            };
         }
     }
 }

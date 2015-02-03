@@ -22,6 +22,19 @@ namespace Tech.CodeGeneration.Internals
             return GetDelegate(dynamicObject, dynamicMethod);
         }
 
+        public static Delegate CreateDelegate(Assembly dynamicAssembly, string MainMethodName)
+        {
+            var dynamicObject = dynamicAssembly.CreateInstance(DYNAMIC_CLASS_NAME);
+            if (dynamicObject == null)
+                throw new TypeLoadException(DYNAMIC_CLASS_NAME);
+
+            var dynamicMethod = dynamicObject.GetType().GetMethod(MainMethodName);
+            if (dynamicMethod == null)
+                throw new MissingMethodException(DYNAMIC_METHOD_NAME);
+
+            return GetDelegate(dynamicObject, dynamicMethod);
+        }
+
 
         public static Assembly CompileDynamicAssembly(string assemblySourceCode, 
             CodeDomProvider compiler, 
@@ -44,6 +57,14 @@ namespace Tech.CodeGeneration.Internals
             var assembly = Assembly.LoadFrom(assemblyLocation);
             return CreateDelegate(assembly);
         }
+
+        public static Delegate LoadAndCreateDynamicDelegate(string assemblyLocation, string methodName)
+        {
+            var assembly = Assembly.LoadFrom(assemblyLocation);
+            return CreateDelegate(assembly, methodName);
+        }
+
+
 
 
         private static Delegate GetDelegate(object target, MethodInfo method)

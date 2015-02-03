@@ -22,6 +22,17 @@ namespace Tech.CodeGeneration.Internals
             }
         }
 
+        public TResult Execute(string mainMethodName, params object[] parameterValues)
+        {
+            try
+            {
+                return (TResult)_delegate.DynamicInvoke(parameterValues);
+            }
+            catch (TargetInvocationException x)
+            {
+                throw x.InnerException;
+            }
+        }
 
         private readonly Delegate _delegate;        
     }

@@ -37,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compilers\BaseCompiler.cs" />
+    <Compile Include="Compilers\CSExtend.cs" />
     <Compile Include="Compilers\VB.cs" />
     <Compile Include="ICompiler.cs" />
     <Compile Include="Internals\Code.cs" />

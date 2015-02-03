@@ -1,0 +1,109 @@
+﻿{
+	name: "Star Wars. Level 1",
+	game_id: 1,
+	level_id: 3,
+	input: {
+		enemies: [{
+			id: 0,
+			position: {
+				x: 15,
+				y: 10
+			},
+			name: "first",
+			speed: 2,
+			health: 1
+		},
+		{
+			id: 1,
+			position: {
+				x: 15,
+				y: 9
+			},
+			name: "second",
+			speed: 1,
+			health: 1
+		},
+		{
+			id: 2,
+			position: {
+				x: 15,
+				y: 8
+			},
+			name: "second",
+			speed: 1,
+			health: 1
+		},
+		{
+			id: 3,
+			position: {
+				x: 15,
+				y: 7
+			},
+			name: "second",
+			speed: 1,
+			health: 1
+		},
+		{
+			id: 4,
+			position: {
+				x: 15,
+				y: 6
+			},
+			name: "second",
+			speed: 1,
+			health: 1
+		},
+		{
+			id: 5,
+			position: {
+				x: 15,
+				y: 5
+			},
+			name: "third",
+			speed: 2,
+			health: 5
+		},
+		{
+			id: 6,
+			position: {
+				x: 15,
+				y: 4
+			},
+			name: "second",
+			speed: 1,
+			health: 1
+		},
+		{
+			id: 7,
+			position: {
+				x: 15,
+				y: 3
+			},
+			name: "second",
+			speed: 1,
+			health: 1
+		},
+		{
+			id: 8,
+			position: {
+				x: 15,
+				y: 2
+			},
+			name: "second",
+			speed: 1,
+			health: 1
+		},
+		{
+			id: 9,
+			position: {
+				x: 15,
+				y: 1
+			},
+			name: "second",
+			speed: 1,
+			health: 1
+		}]
+	},
+	blocks: ["bool",
+	"foreach"]
+}

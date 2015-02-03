@@ -19,7 +19,7 @@
             {
                 return result;
             }
-            string path = DefaultPath + Path.AltDirectorySeparatorChar + level_data.path;
+            string path = IridiumMasterServer.Configuration.ServerProperties.FilePath + Path.AltDirectorySeparatorChar + DefaultPath + Path.AltDirectorySeparatorChar + level_data.path;
             try
             {
                 using (var stream = new FileStream(path, FileMode.Open))
