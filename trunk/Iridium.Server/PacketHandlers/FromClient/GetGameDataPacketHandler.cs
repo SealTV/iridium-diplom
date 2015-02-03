@@ -34,12 +34,12 @@
             using (var db = new iridiumDB(IridiumMasterServer.ConnectionString))
             {
                 var games = from q in db.games
-                            where q.id == getGameData.GameId
+                            where q.id == (uint)getGameData.GameId
                             select q;
                 game = games.First();
 
                 var completedLevelses = from q in db.completed_levels
-                             where q.game == game.id && q.account == this.Client.AccountId
+                                        where q.game == game.id && q.account == this.Client.AccountId
                              select q;
                 completedLevels = completedLevelses.First();
 

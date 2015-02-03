@@ -4,7 +4,9 @@
     using System.Configuration;
     using System.ServiceProcess;
 
+    using Iridium.Server.PacketHandlers.FromClient;
     using Iridium.Server.Protocol;
+    using Iridium.Utils.Data;
 
     using LinqToDB.Data;
     using LinqToDB.DataProvider.MySql;
@@ -68,6 +70,8 @@
 
         private void RunConsole(string[] args)
         {
+            new GameAlgorithmPacketHandler(this.masterServer, new PacketsFromClient.GameAlgorithm(1, 1, "return (int)Math.Sqrt(4);")).Run();
+            //new Testing().Run();
             Console.SetWindowSize(150, 40);
             this.Start();
             Logger.Trace("Press any key to stop program");

@@ -35,6 +35,7 @@ namespace Iridium.Server
             {
                 public const string Host = "host";
                 public const string Port = "port";
+                public const string FilePath = "filePath";
             }
             
             [ConfigurationProperty(Key.Host, IsRequired = true)]
@@ -50,6 +51,13 @@ namespace Iridium.Server
             {
                 get { return (int)this[Key.Port]; }
                 set { this[Key.Port] = value; }
+            }
+
+            [ConfigurationProperty(Key.FilePath, IsRequired = true)]
+            public string FilePath
+            {
+                get { return (string)this[Key.FilePath]; }
+                set { this[Key.FilePath] = value; }
             }
         }
 

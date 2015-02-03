@@ -12,6 +12,13 @@ namespace Tech.CodeGeneration
                                 IEnumerable<CodeParameter> parameters,
                                 string assemblyDirectory);
 
+        string CompileAssemblyFile(string sourceCode, string mainMethodName,
+                                IEnumerable<string> usingNamespaces,
+                                Type returnType,
+                                IEnumerable<string> referencedAssemblies,
+                                IEnumerable<CodeParameter> parameters,
+                                string assemblyDirectory);
+
         Delegate CompileDelegate(string sourceCode,
                                 IEnumerable<string> usingNamespaces,
                                 Type returnType,

@@ -32,8 +32,22 @@ namespace Tech.CodeGeneration.Compilers
             var codeFooter = string.Format(CultureInfo.InvariantCulture, 
                 CODE_FOOTER_FORMAT, returnType.FullName);
 
+            Console.WriteLine();
+            Console.WriteLine(string.Format(CultureInfo.InvariantCulture,
+                "{0}{1}{2}{3}", usings, codeHeader, sourceCode, codeFooter));
+            Console.WriteLine();
+
             return string.Format(CultureInfo.InvariantCulture,
                 "{0}{1}{2}{3}", usings, codeHeader, sourceCode, codeFooter);
+        }
+
+        protected override string FormatAssemblySourceCode(string sourceCode,
+                                                           string mainMethodName,
+                                                           IEnumerable<string> usingNamespaces,
+                                                           Type returnType,
+                                                           IEnumerable<CodeParameter> parameters)
+        {
+            throw new NotImplementedException();
         }
 
 

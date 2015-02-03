@@ -63,11 +63,26 @@ namespace Tech.CodeGeneration
             IEnumerable<string> referencedAssemblies,
             params CodeParameter[] parameterInfos)
         {
-            var asmLocation = language.CompileAssemblyFile(sourceCode,
+            var asmLocation = language.CompileAssemblyFile(sourceCode, 
                 usingNamespaces, typeof(TResult), referencedAssemblies, parameterInfos,
                 sandbox.ApplicationBase);
 
             return new SandboxedCode<TResult>(sandbox.CreateCodeProxy(asmLocation));
+        }
+
+        public static IGeneratedCode<TResult> CreateCode<TResult>(Sandbox sandbox,
+            ICompiler language, 
+            string sourceCode,
+            string mainMethodName,
+            IEnumerable<string> usingNamespaces,
+            IEnumerable<string> referencedAssemblies,
+            params CodeParameter[] parameterInfos)
+        {
+            var asmLocation = language.CompileAssemblyFile(sourceCode, mainMethodName,
+                usingNamespaces, typeof(TResult), referencedAssemblies, parameterInfos,
+                sandbox.ApplicationBase);
+
+            return new SandboxedCode<TResult>(mainMethodName, sandbox.CreateCodeProxy(asmLocation, mainMethodName));
         }
 
 

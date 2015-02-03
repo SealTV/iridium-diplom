@@ -68,6 +68,45 @@
             this.Y = y;
             this.X = x;
         }
+
+        public static void AddPoint(Point a, Point b)
+        {
+            a.X += b.X;
+            a.Y += b.Y;
+        }
+
+        public static Point Multi(Point p, float f)
+        {
+            return new Point
+            {
+                X = p.X * f,
+                Y = p.Y * f
+            };
+        }
+
+        public static Point NormalizeVector(Point vector)
+        {
+            var len = VectorLen(vector);
+            return new Point
+            {
+                X = vector.X / len,
+                Y = vector.Y / len
+            };
+        }
+
+        public static float VectorLen(Point vector)
+        {
+            return (float)Math.Sqrt(vector.X * vector.X + vector.Y * vector.Y);
+        }
+
+        public static Point GetVector(Point a, Point b)
+        {
+            return new Point
+            {
+                X = b.X - a.X,
+                Y = b.Y - a.Y
+            };
+        }
     }
 
     public enum LoginResults

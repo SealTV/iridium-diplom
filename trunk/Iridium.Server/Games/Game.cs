@@ -11,7 +11,7 @@
 
         public bool RunCode(string intput, string codeSource, out string[] results)
         {
-            using (var sandbox = new Sandbox())
+            using (var sandbox = new Sandbox(IridiumMasterServer.Configuration.ServerProperties.FilePath))
                 try
                 {
                     List<string> enemyList;
@@ -22,6 +22,7 @@
                 catch (Exception e)
                 {
                     Logger.Error(e);
+                    Logger.Error(e.Message);
                 }
 
             results = new string[0];

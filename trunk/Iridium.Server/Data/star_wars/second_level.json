@@ -1,19 +1,29 @@
 ﻿{
 	name: "Star Wars. Level 1",
 	game_id: 1,
-	level_id: 1,
+	level_id: 2,
 	input: {
 		enemies: [{
-			id: 1,
+			id: 0,
 			position: {
-				x: 10,
-				y: 15
+				x: 15,
+				y: 10
 			},
 			name: "first",
+			speed: 2,
+			health: 1
+		},
+		{
+			id: 1,
+			position: {
+				x: 15,
+				y: 0
+			},
+			name: "second",
 			speed: 2,
 			health: 1
 		}]
 	},
 	blocks: ["bool",
 	"foreach"]
-}	
+}

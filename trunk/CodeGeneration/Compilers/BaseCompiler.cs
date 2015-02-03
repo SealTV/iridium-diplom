@@ -7,17 +7,38 @@ using Tech.CodeGeneration.Internals;
 
 namespace Tech.CodeGeneration.Compilers
 {
+    using System.IO;
+
     public abstract class BaseCompiler<TCodeDomProvider> 
         where TCodeDomProvider : CodeDomProvider, new()
     {
-        public string CompileAssemblyFile(string sourceCode, 
-            IEnumerable<string>        usingNamespaces,
-            Type                       returnType,
-            IEnumerable<string>        referencedAssemblies,
+        public string CompileAssemblyFile(string sourceCode,
+            IEnumerable<string> usingNamespaces,
+            Type returnType,
+            IEnumerable<string> referencedAssemblies,
             IEnumerable<CodeParameter> parameters,
-            string                     assemblyDirectory)
+            string assemblyDirectory)
         {
-            var assemblySourceCode = FormatAssemblySourceCode(sourceCode, 
+            var assemblySourceCode = FormatAssemblySourceCode(sourceCode,
+                usingNamespaces, returnType, parameters);
+
+            referencedAssemblies = AddParameterAssemblies(referencedAssemblies, parameters);
+
+            using (var compiler = new TCodeDomProvider())
+            {
+                return CompileAssemblyFile(assemblySourceCode,
+                    referencedAssemblies, assemblyDirectory, compiler);
+            }
+        }
+
+        public string CompileAssemblyFile(string sourceCode, string mainMethodName,
+            IEnumerable<string> usingNamespaces,
+            Type returnType,
+            IEnumerable<string> referencedAssemblies,
+            IEnumerable<CodeParameter> parameters,
+            string assemblyDirectory)
+        {
+            var assemblySourceCode = FormatAssemblySourceCode(sourceCode, mainMethodName,
                 usingNamespaces, returnType, parameters);
 
             referencedAssemblies = AddParameterAssemblies(referencedAssemblies, parameters);
@@ -31,12 +52,12 @@ namespace Tech.CodeGeneration.Compilers
 
 
         public Delegate CompileDelegate(string sourceCode,
-            IEnumerable<string> usingNamespaces, 
+            IEnumerable<string> usingNamespaces,
             Type returnType,
             IEnumerable<string> referencedAssemblies,
             IEnumerable<CodeParameter> parameters)
         {
-            var assemblyCode = FormatAssemblySourceCode(sourceCode, 
+            var assemblyCode = FormatAssemblySourceCode(sourceCode,
                 usingNamespaces, returnType, parameters);
 
             referencedAssemblies = AddParameterAssemblies(referencedAssemblies, parameters);
@@ -49,6 +70,28 @@ namespace Tech.CodeGeneration.Compilers
                         referencedAssemblies, c, null));
 
                 return DynamicAssembly.CreateDelegate(dynamicAssembly);
+            }
+        }
+
+        public Delegate CompileDelegate(string sourceCode, string mainMethodName, 
+           IEnumerable<string> usingNamespaces,
+           Type returnType,
+           IEnumerable<string> referencedAssemblies,
+           IEnumerable<CodeParameter> parameters)
+        {
+            var assemblyCode = FormatAssemblySourceCode(sourceCode, mainMethodName,
+                usingNamespaces, returnType, parameters);
+
+            referencedAssemblies = AddParameterAssemblies(referencedAssemblies, parameters);
+
+            using (var compiler = new TCodeDomProvider())
+            {
+                var dynamicAssembly = DynamicAssembly.CompileDynamicAssembly(
+                    assemblyCode, compiler,
+                    c => CompileAssembly(assemblyCode,
+                        referencedAssemblies, c, null));
+
+                return DynamicAssembly.CreateDelegate(dynamicAssembly, mainMethodName);
             }
         }
 
@@ -65,7 +108,20 @@ namespace Tech.CodeGeneration.Compilers
                 TempFiles = inMemmory ? null : new TempFileCollection(assemblyDirectory),
             };
             if (referencedAssemblies != null)
+            {
+//                using (var file = new FileStream("C:/ouput.txt", FileMode.CreateNew))
+//                {
+//                    using (var writer = new StreamWriter(file))
+//                    {
+//                        writer.WriteLine(referencedAssemblies.Count());
+//                        foreach (var referencedAssembly in referencedAssemblies)
+//                        {
+//                            writer.WriteLine(referencedAssembly);
+//                        }
+//                    }
+//                }
                 compileParams.ReferencedAssemblies.AddRange(referencedAssemblies.ToArray());
+            }
 
             var compileResult = compiler.CompileAssemblyFromSource(
                 compileParams, assemblySourceCode);
@@ -81,6 +137,10 @@ namespace Tech.CodeGeneration.Compilers
 
 
         protected abstract string FormatAssemblySourceCode(string sourceCode,
+            IEnumerable<string> usingNamespaces, Type returnType,
+            IEnumerable<CodeParameter> parameters);
+
+        protected abstract string FormatAssemblySourceCode(string sourceCode, string mainMethodName,
             IEnumerable<string> usingNamespaces, Type returnType,
             IEnumerable<CodeParameter> parameters);
 
