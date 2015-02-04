@@ -97,6 +97,9 @@
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Data\star_wars\fourth_level.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Data\star_wars\third_level.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

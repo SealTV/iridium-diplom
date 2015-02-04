@@ -20,7 +20,7 @@
                                                          new[] { "Iridium.Utils.dll" },
                                                          CodeParameter.Create("k", value));
             //((Code<int>)code)
-
+            var o = code.Execute(mainMethodName, value);
             enemyList = new List<string>();
             return false;
         }

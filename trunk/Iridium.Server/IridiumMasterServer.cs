@@ -4,6 +4,7 @@
     using System.Configuration;
     using System.ServiceProcess;
 
+    using Iridium.Server.Games;
     using Iridium.Server.PacketHandlers.FromClient;
     using Iridium.Server.Protocol;
     using Iridium.Utils.Data;
@@ -70,7 +71,7 @@
 
         private void RunConsole(string[] args)
         {
-            new GameAlgorithmPacketHandler(this.masterServer, new PacketsFromClient.GameAlgorithm(1, 1, "return (int)Math.Sqrt(4);")).Run();
+//            new GameAlgorithmPacketHandler(this.masterServer, new PacketsFromClient.GameAlgorithm(1, 1, "return Container.Enemies.Count;")).Run();
             //new Testing().Run();
             Console.SetWindowSize(150, 40);
             this.Start();

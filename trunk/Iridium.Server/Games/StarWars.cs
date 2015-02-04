@@ -1,6 +1,5 @@
 namespace Iridium.Server.Games
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -23,29 +22,32 @@ namespace Iridium.Server.Games
             var json = JsonConvert.DeserializeObject<JToken>(intput);
             var enemiesData = json["enemies"].ToArray();
 
-            Logger.Info(intput);
-            Logger.Info(codeSource);
+            Logger.Debug(intput);
+            Logger.Debug(codeSource);
 
             List<Enemy> enemies = GetEnemiesList(enemiesData);
             bool isAlive = true;
             enemyList = new List<string>();
-
             var code = CodeGenerator.CreateCode<int>(sandbox, CS.Compiler, codeSource,
-                                                         new[] { "Iridium.Utils", "System" },
+                                                         new[]
+                                                         {
+                                                             "Iridium.Utils", 
+                                                             "Iridium.Utils.Data",
+                                                             "System.Collections.Generic"
+                                                         },
                                                          new[]
                                                          {
                                                              string.Format("{0}\\Iridium.Utils.dll", IridiumMasterServer.Configuration.ServerProperties.FilePath),
                                                              string.Format("C:\\Windows\\microsoft.net\\framework\\v4.0.30319\\mscorlib.dll")
                                                          },
-                                                         new CodeParameter("container", typeof(EnemyContainer)));
+                                                         new CodeParameter("Container", typeof(EnemyContainer)));
             while (isAlive && enemies.Count() != 0)
             {
-                Logger.Info("enemies.Count() = {0}", enemies.Count());
-                EnemyContainer container = new EnemyContainer
+                Logger.Debug("enemies.Count() = {0}", enemies.Count());
+                EnemyContainer container = new EnemyContainer()
                 {
-                    Enemies = enemies.ToArray()
+                    Enemies = enemies.Where(_enemy => _enemy.Position.X <= 15).ToList()
                 };
-                
                 var enemyId = code.Execute(container);
                 Logger.Info(enemyId);
                 enemyList.Add(enemyId.ToString());
