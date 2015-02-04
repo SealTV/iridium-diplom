@@ -27,12 +27,12 @@
         {
             Logger.Info("Start process GameAlgorithm.");
 
-//            if (this.Client.State == SessionState.NotLogged)
-//            {
-//                Logger.Error("Client is not logged");
-//                this.Disconnect();
-//                return;
-//            }
+            if (this.Client.State == SessionState.NotLogged)
+            {
+                Logger.Error("Client is not logged");
+                this.Disconnect();
+                return;
+            }
 
             PacketsFromClient.GameAlgorithm gameAlgorithm = (PacketsFromClient.GameAlgorithm) this.Packet;
            
@@ -78,6 +78,7 @@
             }
 
             this.Client.SendPacket(new PacketsFromMaster.AlgorithmResult(gameAlgorithm.GameId, gameAlgorithm.LevelId, output, isSuccess));
+            Logger.Info("End process GameAlgorithm");
         }
 
         public void Run()

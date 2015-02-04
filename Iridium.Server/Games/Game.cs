@@ -25,7 +25,7 @@
                     Logger.Error(e.Message);
                 }
 
-            results = new string[0];
+            results = new[] { "-1" };
             return false;
         }
 

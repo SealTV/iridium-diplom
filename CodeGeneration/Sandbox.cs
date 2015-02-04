@@ -87,7 +87,7 @@ namespace Tech.CodeGeneration
                          ignoreCase: false,
                         bindingAttr: BindingFlags.Default,
                              binder: null,
-                               args: new object[] { asmLocation },
+                               args: new object[] { asmLocation, mainMethodName },
                             culture: null,
                activationAttributes: null);
             var marshaler = (CodeProxy)k;

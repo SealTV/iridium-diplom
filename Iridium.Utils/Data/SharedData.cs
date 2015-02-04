@@ -55,7 +55,7 @@
 
     public class EnemyContainer : MarshalByRefObject
     {
-        public List<Enemy> Enemies { get; set; }
+        public List<Enemy> Enemies;
     }
 
     public class Point : MarshalByRefObject
