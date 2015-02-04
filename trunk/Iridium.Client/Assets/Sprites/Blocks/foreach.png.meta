@@ -1,0 +1,212 @@
+fileFormatVersion: 2
+guid: d7a4d9a7d93fd6b4ab304504950c7fd5
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: foreach_0
+    21300002: foreach_1
+    21300004: foreach_2
+    21300006: foreach_3
+    21300008: foreach_4
+    21300010: foreach_5
+    21300012: foreach_8
+    21300014: foreach_6
+    21300016: foreach_7
+    21300018: foreach_9
+    21300020: foreach_10
+    21300022: foreach_11
+    21300024: foreach_12
+    21300026: foreach_13
+    21300028: foreach_full
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 1024
+  textureSettings:
+    filterMode: 1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 200
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: foreach_0
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 2000
+        width: 600
+        height: 400
+      alignment: 4
+      pivot: {x: 0, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: foreach_1
+      rect:
+        serializedVersion: 2
+        x: 800
+        y: 2000
+        width: 200
+        height: 200
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: foreach_2
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 2000
+        width: 200
+        height: 200
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: foreach_3
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 1800
+        width: 600
+        height: 200
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: foreach_4
+      rect:
+        serializedVersion: 2
+        x: 800
+        y: 1800
+        width: 200
+        height: 200
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: foreach_5
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 1800
+        width: 200
+        height: 200
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: foreach_8
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 1600
+        width: 200
+        height: 200
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: foreach_6
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 1600
+        width: 600
+        height: 200
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: foreach_7
+      rect:
+        serializedVersion: 2
+        x: 800
+        y: 1600
+        width: 200
+        height: 200
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: foreach_9
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 1400
+        width: 400
+        height: 200
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: foreach_10
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 1200
+        width: 400
+        height: 200
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: foreach_11
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 800
+        width: 400
+        height: 200
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: foreach_12
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 600
+        width: 400
+        height: 200
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: foreach_13
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 400
+        width: 400
+        height: 200
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: foreach_full
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 400
+        width: 1800
+        height: 1900
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 

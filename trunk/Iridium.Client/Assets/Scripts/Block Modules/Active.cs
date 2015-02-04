@@ -9,6 +9,7 @@ namespace Assets.Scripts
         public Block Parent;
 
         public abstract void Use();
+        public abstract void UnUse();
         // Use this for initialization
         void Start () {
     	

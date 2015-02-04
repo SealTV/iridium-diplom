@@ -11,14 +11,16 @@
         private bool isBlockTaken;
         private Block pressedBlock;
         private Active pressedActive;
+        private Active lastPressedActive;
         private BlockPrototip pressedPrototip;
         private Vector3 downPosition;
         private float screenRatio;
+        public MainBlock MainBlock;
 
         public Transform Scaler;
-        private const float scaleSpeed = 0.3f;
-        private const float scaleMin = 0.5f;
-        private const float scaleMax = 1f;
+        public float ScaleSpeed = 0.3f;
+        public float ScaleMin = 0.5f;
+        public float ScaleMax = 1f;
         private float scale;
         private Vector3 mousePressedPosition;
         private float minMouseShift;
@@ -56,7 +58,10 @@
                 {
                     if ((Input.mousePosition - this.mousePressedPosition).magnitude > this.minMouseShift)
                     {
+                        Block block = pressedBlock.Parent;
                         this.GetBlock();
+                        if(block!=null)
+                            block.Stretch();
                     }
                 }
                 else
@@ -99,15 +104,20 @@
                     this.TryUsingActive(hits);
                 }
             }
-            this.scale += scaleSpeed * Input.GetAxis("Mouse ScrollWheel");
-            this.scale = Math.Min(Math.Max(scaleMin, this.scale), scaleMax);
-            this.Scaler.localScale = new Vector3(this.scale, this.scale, this.scale);
+            float deltaScale = ScaleSpeed*Input.GetAxis("Mouse ScrollWheel");
+            if (deltaScale != 0)
+            {
+                this.scale +=deltaScale;
+                this.scale = Math.Min(Math.Max(ScaleMin, this.scale), ScaleMax);
+                this.Scaler.localScale = new Vector3(this.scale, this.scale, this.scale);
+            }
         }
 
         private bool TryUsingActive(RaycastHit2D[] hits)
         {
             if (!hits.Any(hit => hit.transform.gameObject == this.pressedActive.gameObject)) { return false; }
             this.pressedActive.Use();
+            this.lastPressedActive = this.pressedActive;
             return true;
         }
 
@@ -129,6 +139,7 @@
                         this.pressedBlock.transform.parent = hitTransform.transform;
                         this.pressedBlock.transform.position = hitTransform.position;
                         this.pressedBlock.ReSortingLayers(parent.CurrentLayerSorting + 2);
+                        this.pressedBlock.Parent.Stretch();
                         return true;
                     }
                 }
@@ -155,6 +166,7 @@
             this.pressedBlock = null;
             int blockHightestLayer = -5;
             int activeHightestLayer = 0;
+
             foreach (var hit in hits)
             {
                 Transform blockTransform = hit.transform;
@@ -167,7 +179,6 @@
                         this.pressedBlock = temp;
                         this.downPosition = (Input.mousePosition - this.pressedBlock.transform.position * this.screenRatio);
                     }
-                    Debug.Log(pressedBlock.name);
                 }
                 else if (blockTransform.tag == "Active")
                 {
@@ -183,6 +194,12 @@
                     this.pressedPrototip = blockTransform.GetComponent<BlockPrototip>();
                 }
             }
+            if(lastPressedActive!=null) lastPressedActive.UnUse();
+        }
+
+        public void SendCode()
+        {
+            string code = MainBlock.GetCode();
         }
     }
 }

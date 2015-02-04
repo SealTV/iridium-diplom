@@ -32,6 +32,11 @@
             this.image.sortingOrder = layer + 1;
         }
 
+        public override string GetCode()
+        {
+            return value.ToString();
+        }
+
         void Start()
         {
             this.LayerSorting = Random.Range(0, 100) * 100+10000;
@@ -49,7 +54,7 @@
             return (this.Field.BaseWidth + this.HeadWidthStretch) * this.transform.lossyScale.x;
         }
 
-        public override void Streach()
+        public override void Stretch()
         {
             if (this.Parent != null)
             {
@@ -57,12 +62,11 @@
             }
 
             this.Field.Stretch(this.HeadWidthStretch, this.HeadHeightStretch);
-
+            base.Stretch();
         }
 
         private void Update()
         {
-            this.Streach();
         }
     }
 }

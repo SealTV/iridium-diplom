@@ -5,6 +5,8 @@
     public static class GlobalData
     {
         public static PacketsFromMaster.LevelData LevelData;
+        public static int LevelId;
+        public static int GameId;
 
         static GlobalData()
         {
