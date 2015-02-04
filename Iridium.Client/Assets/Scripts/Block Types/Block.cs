@@ -1,5 +1,6 @@
 ﻿namespace Scripts.Blocks
 {
+    using System;
     using System.Collections.Generic;
     using UnityEngine;
 
@@ -9,7 +10,6 @@
         public Dictionary<string, Block> Connectors = new Dictionary<string, Block>(); 
         public abstract float GetHeight();
         public abstract float GetWidth();
-        public abstract void Streach();
         public abstract void ReSortingLayers(int layer);
 
         public void ReSortingLayers()
@@ -17,6 +17,7 @@
             this.ReSortingLayers(this.LayerSorting);
         }
 
+        public abstract string GetCode();
         public List<SpriteRenderer> Texts;
 
         public Block Parent;
@@ -28,5 +29,13 @@
 
         public int LayerSorting;
         public int CurrentLayerSorting;
+
+        public virtual void Stretch()
+        {
+            if (Parent != null)
+            {
+                Parent.Stretch();
+            }
+        }
     }
 }

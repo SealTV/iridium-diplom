@@ -17,6 +17,11 @@
             SpriteRenderer.sprite = IsTrue ? TrueSprite : FalseSprite;
         }
 
+        public override void UnUse()
+        {
+            Debug.Log("UnUse");
+        }
+
         void Start () {
 	
         }

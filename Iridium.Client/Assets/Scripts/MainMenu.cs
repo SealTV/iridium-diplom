@@ -20,14 +20,19 @@ namespace Assets.Scripts
 
         private Thread workTread;
 
-        void Start () {
+        void Start ()
+        {
+            this.ServerConnector = ServerConnector.Instance;
             this.ServerConnector.Init();
             this.ServerConnector.OnGamesLoaded += this.OnGamesLoaded;
             this.ServerConnector.OnLevelsLoaded += this.OnLevelsLoaded;
             this.ServerConnector.OnLevelDataLoaded += this.OnLevelDataLoaded;
             this.ServerConnector.OnConnectedToServer += this.OnConnectedToServer;
             this.ServerConnector.OnLoggedOnServer += this.OnLoggedOnServer;
-            this.StartCoroutine(this.ServerConnector.StartConnectServer(27001, "104.40.216.136"));
+            if (ServerConnector.SocketStatus == SocketStatus.None)
+            {
+                this.StartCoroutine(this.ServerConnector.StartConnectServer(27001, "104.40.216.136"));
+            }
             //this.ServerConnector.Connect(27001, "104.40.216.136");
             //this.ServerConnector.Connect(27001, "127.0.0.1");
         }
@@ -42,6 +47,8 @@ namespace Assets.Scripts
         {
             Debug.Log("Select level: "+ level);
             this.StartCoroutine(this.ServerConnector.StartGetLevelData(game, level));
+            GlobalData.LevelId = level;
+            GlobalData.GameId = game;
         }
 
         public void TryLogin()
@@ -52,6 +59,7 @@ namespace Assets.Scripts
 
         private void OnConnectedToServer()
         {
+            this.ServerConnector.SocketStatus = SocketStatus.Connected;
             this.LoginPanel.SetActive(true);
         }
         private void OnLoggedOnServer()
@@ -59,6 +67,8 @@ namespace Assets.Scripts
             this.LoginPanel.SetActive(false);
             this.GamesPanel.SetActive(true);
             this.StartCoroutine(this.ServerConnector.StartGetGames());
+            this.ServerConnector.SocketStatus = SocketStatus.Logged;
+
         }
         private void OnGamesLoaded(SharedData.GameData[] games)
         {
@@ -75,8 +85,6 @@ namespace Assets.Scripts
                 this.GameButtons[i].onClick.RemoveAllListeners();
                 int gameId = games[i].Id;
                 this.GameButtons[i].onClick.AddListener(() => this.SelectGame(gameId));
-
-                
             }
 
         }
@@ -86,13 +94,13 @@ namespace Assets.Scripts
             {
                 button.gameObject.SetActive(false);
             }
-            for (int i = 0; i < gameData.Levels.Length; i++)
+            for (int i = 0; i < gameData.LevelsCount; i++)
             {
                 this.LevelButtons[i].gameObject.SetActive(true);
                 this.LevelButtons[i].onClick.RemoveAllListeners();
                 int levelId = i+1;
                 this.LevelButtons[i].onClick.AddListener(() => this.SelectLevel(gameData.GameId, levelId));
-                this.LevelButtons[i].interactable = (gameData.CompletedLevels > i);
+                this.LevelButtons[i].interactable = (gameData.CompletedLevels >= i);
             }
             this.GamesPanel.SetActive(false);
             this.LevelsPanel.SetActive(true);
@@ -103,6 +111,11 @@ namespace Assets.Scripts
         }
 
 
-
+        public enum SocketStatus
+        {
+            None,
+            Connected,
+            Logged
+        }
     }
 }

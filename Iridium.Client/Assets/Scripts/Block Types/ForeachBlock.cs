@@ -1,6 +1,8 @@
 ﻿namespace Scripts.Blocks
 {
+    using System.Text;
     using UnityEngine;
+    using UnityEngine.UI;
 
     [ExecuteInEditMode]
     public class ForeachBlock : Block
@@ -8,6 +10,9 @@
         public SubBlocksField HighField;
         public SubBlocksField MiddleField;
         public SubBlocksField LowField;
+
+        public InputField Iterator;
+        public Canvas Canvas;
 
         public override void ReSortingLayers(int layer)
         {
@@ -30,9 +35,27 @@
             }
             foreach (var text in this.Texts)
             {
-                text.sortingOrder = layer+1;
+                text.sortingOrder = layer + 1;
             }
+            Canvas.sortingOrder = layer + 1;
         }
+
+        public override string GetCode()
+        {
+            var result = new StringBuilder();
+            Block block;
+            if (this.Connectors.TryGetValue("ConditionConnector", out block))
+            {
+                string.Format("foreach(var {0} in {1}){/n {2}/n}", 
+                    Iterator.text, 
+                    block.GetCode(),
+                    this.Connectors.TryGetValue("InnerConnector", out block) 
+                        ? block.GetCode() 
+                        : string.Empty);
+            }
+            return result.ToString();
+        }
+
         void Start()
         {
             this.LayerSorting = Random.Range(0, 100) * 100;
@@ -58,12 +81,12 @@
             return HeadWidthStretch;
         }
 
-        public override void Streach()
+        public override void Stretch()
         {
-            
+            Debug.Log("stretch");
             float BodyHeightStretch = 0;
 
-            HeadWidthStretch = 2;
+            //HeadWidthStretch = 2;
             Block block;
             if (this.Connectors.TryGetValue("InnerConnector", out block)) BodyHeightStretch += block.GetHeight();
             if (this.Connectors.TryGetValue("ConditionConnector", out block))
@@ -87,11 +110,12 @@
 
             this.LowField.transform.localPosition = new Vector3(0, -this.HighField.GetHeight() - this.MiddleField.GetHeight());
             this.LowField.Stretch(HeadWidthStretch-2, 0);
+
+            base.Stretch();
         }
 
         private void Update()
         { 
-            this.Streach();
         }
     }
 }

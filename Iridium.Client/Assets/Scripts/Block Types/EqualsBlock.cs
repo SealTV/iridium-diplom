@@ -25,6 +25,11 @@
             }
         }
 
+        public override string GetCode()
+        {
+            return "";
+        }
+
         void Start()
         {
             this.LayerSorting = Random.Range(0, 100) * 100;
@@ -48,7 +53,7 @@
             return 0;
         }
 
-        public override void Streach()
+        public override void Stretch()
         {
             if (this.Parent != null)
             {
@@ -56,12 +61,11 @@
             }
 
             this.Field.Stretch(this.HeadWidthStretch, this.HeadHeightStretch);
-
+            base.Stretch();
         }
 
         private void Update()
         {
-            this.Streach();
         }
     }
 }

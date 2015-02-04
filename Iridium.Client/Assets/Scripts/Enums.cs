@@ -7,7 +7,8 @@
         Value,
         Bool,
         Int,
-        Float
+        Float,
+        Collection
     }
 
     public enum RequestState

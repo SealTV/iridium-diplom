@@ -39,7 +39,7 @@ namespace Iridium.Client.PacketHandlers
             protected override void ProcessPacket()
             {
 
-                //ServerConnector.On
+                
             }
         }
 

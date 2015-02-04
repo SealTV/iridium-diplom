@@ -1,57 +1,136 @@
 ﻿namespace Scripts.Games.StarWars
 {
+    using System;
     using System.Collections.Generic;
     using Assets.Scripts;
+    using Assets.Scripts.Games;
+    using Assets.Scripts.Games.StarWars;
     using Iridium.Utils.Data;
     using SimpleJSON;
     using UnityEngine;
 
-    public class StarWarsController : MonoBehaviour
+    public class StarWarsController : BaseGameController
     {
         public GameObject EnemyPrefab;
-        public Transform PrototipsPanel;
-        public Dictionary<string,BlockPrototip> BlockPrototips; 
-        private List<GameObject> Enemies;
-        // Use this for initialization
+        public List<EnemyController> Enemies;
+        public ParticleSystem Bullet;
+        public float BulletSpeed;
+        public List<GameObject> EnemyPrefabs; 
+        private int[] destroyingIds;
+        private readonly Vector3 mainShipPosition = new Vector3(0,5);
+        private int currentDestroyingEnemy = -1;
+        private int currentStep = -1;
+
         private void Awake()
         {
-            this.Enemies = new List<GameObject>();
+            base.Awake();
+
             PacketsFromMaster.LevelData levelData = GlobalData.LevelData;
             var json = JSON.Parse(levelData.InputParameters);
-            Debug.Log(json);
-            Debug.Log(json["input"]["enemies"]);
-            var enemiesData = json["input"]["enemies"].AsArray;
-            List<Enemy> enemies = this.GetEnemiesList(enemiesData);
-            foreach (var enemy in enemies)
+            List<Enemy> enemiesFromJson = this.GetEnemiesList(json["input"]["enemies"].AsArray);
+
+            this.Enemies = new List<EnemyController>();
+            foreach (var enemyJson in enemiesFromJson)
             {
-                Debug.Log(enemy.Name);
-                this.Enemies.Add(
-                    (GameObject)Instantiate(this.EnemyPrefab, 
-                    new Vector3(enemy.StartPosition.X, enemy.StartPosition.Y),
-                    Quaternion.identity)
-                    );
+                var instance = (GameObject) Instantiate(EnemyPrefabs.Find(x => x.name == enemyJson.Name));
+                var instController = instance.GetComponent<EnemyController>();
+
+                instController.Speed = enemyJson.Speed;
+                instController.StartPosition = new Vector3(enemyJson.StartPosition.X, enemyJson.StartPosition.Y);
+                instController.Direction = (mainShipPosition - instController.StartPosition).normalized;
+                instController.Id = enemyJson.Id;
+                instController.HP = enemyJson.Health;
+
+                this.Enemies.Add(instController);
+
+                instance.transform.parent = this.GamePanel;
+                instance.transform.localPosition = new Vector3(enemyJson.StartPosition.X, enemyJson.StartPosition.Y);
+                Debug.Log("Parse");
             }
-            JSONArray Blocks = json["blocks"].AsArray;
-            float Height = 0;
-            for (int i = 0; i < Blocks.Count; i++)
-            {
-                GameObject instantiate = (GameObject) Instantiate(Resources.Load<GameObject>(Blocks[i].Value));
-                instantiate.transform.parent = this.PrototipsPanel;
-                instantiate.transform.localPosition = new Vector3(0, -Height, 0);
-                instantiate.transform.localScale = new Vector3(1,1,1);
-                Height += instantiate.GetComponent<BlockPrototip>().Height;
-            }
+
+            
         }
 
-        public void StartGame()
+        protected override void OnAlgorithmResultLoaded(PacketsFromMaster.AlgorithmResult result)
         {
-
+            this.Result = result;
+            this.BackGround.SetActive(true);
+            this.Scaler.SetActive(false);
+            this.GamePanel.gameObject.SetActive(true);
+            this.isPlaying = true;
+            this.destroyingIds = new int[result.Output.Length];
+            foreach (var enemy in Enemies)
+            {
+                enemy.gameObject.SetActive(true);
+            }
+            for (int i = 0; i < result.Output.Length; i++)
+            {
+                this.destroyingIds[i] = Convert.ToInt32(result.Output[i]);
+                Debug.Log("output: " + this.destroyingIds[i]);
+            }
+            this.PlayStep = 0;
         }
 
-        // Update is called once per frame
+        private bool CheckEnemyInDestroyingGameObject(int enemyId, float currentStep)
+        {
+            for (int i = 0; i < currentStep-1;i++)
+            {
+                if(destroyingIds[i]==enemyId) return false;
+            }
+            return true;
+        }
+
+
         private void Update()
         {
+            if (this.isPlaying)
+            {
+                this.PlayStep += (Time.deltaTime*this.Speed);
+                if (this.PlayStep > this.destroyingIds.Length)
+                {
+                    this.isPlaying = false;
+                    this.Bullet.gameObject.SetActive(false);
+                    this.BackGround.SetActive(false);
+                    this.Scaler.SetActive(true);
+                    this.GamePanel.gameObject.SetActive(false);
+                    return;
+                }
 
+                int enemyNumber = destroyingIds[(int) this.PlayStep];
+                if (currentStep + 1 < this.PlayStep)
+                {
+                    
+                    Bullet.gameObject.SetActive(enemyNumber!=-1);
+                    currentStep++;
+                }
+                if (enemyNumber != this.currentDestroyingEnemy) 
+                {
+                    if (this.currentDestroyingEnemy >= 0)
+                        Enemies[this.currentDestroyingEnemy].gameObject.SetActive(false);
+                    this.currentDestroyingEnemy = enemyNumber;
+                }
+                foreach (var enemy in this.Enemies)
+                {
+                    enemy.transform.localPosition = enemy.StartPosition + enemy.Direction * this.PlayStep * enemy.Speed;
+                }
+                if (enemyNumber >= 0)
+                {
+                    if (!Bullet.gameObject.activeSelf) return;
+
+                    this.Bullet.transform.localPosition -= (Enemies[enemyNumber].Direction.normalized*BulletSpeed*Speed);
+                    if (Bullet.transform.localPosition.x > this.Enemies[enemyNumber].transform.localPosition.x)
+                    {
+                        this.Bullet.gameObject.SetActive(false);
+                        this.Enemies[enemyNumber].HP--;
+                        if (Enemies[enemyNumber].HP <= 0) Enemies[enemyNumber].gameObject.SetActive(false);
+                        this.Bullet.transform.localPosition = mainShipPosition;
+                    }
+                    else
+                    {
+                        this.Bullet.gameObject.SetActive(true);
+                    }
+                }
+            }
         }
 
         private List<Enemy> GetEnemiesList(JSONArray enemiesData)
@@ -60,42 +139,20 @@
             for (int i = 0; i < enemiesData.Count; i++)
             {
                 var data = enemiesData[i];
+                Debug.Log(data);
                 result.Add(new Enemy
                 {
                     Id = data["id"].AsInt,
                     StartPosition = new Point(
-                        data["start_position"]["X"].AsInt,
-                        data["start_position"]["Y"].AsInt
+                        data["position"]["x"].AsInt,
+                        data["position"]["y"].AsInt
                         ),
-                    Name = data["name"].ToString(),
+                    Name = data["name"].Value,
                     Speed = data["speed"].AsInt,
                     Health = data["health"].AsInt
                 });
             }
             return result;
-        }
-        internal class Enemy
-        {
-            public int Id { get; set; }
-            public Point StartPosition { get; set; }
-            public string Name { get; set; }
-            public int Speed { get; set; }
-            public int Health { get; set; }
-
-            public Enemy()
-            {
-                this.Id = 0;
-                this.StartPosition = new Point();
-                this.Name = string.Empty;
-                this.Speed = 0;
-                this.Health = 0;
-            }
-
-            public Enemy(int id, Point position)
-            {
-                this.StartPosition = position;
-                this.Id = id;
-            }
         }
     }
 }
