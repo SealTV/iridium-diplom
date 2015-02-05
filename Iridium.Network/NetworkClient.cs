@@ -51,6 +51,7 @@
             }
             catch (Exception e)
             {
+                Console.WriteLine(e);
                 this.Connect();
             }
         }
