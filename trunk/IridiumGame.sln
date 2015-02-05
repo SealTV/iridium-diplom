@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGeneration", "CodeGener
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iridium.Network", "Iridium.Network\Iridium.Network.csproj", "{A38847D3-B1D0-40D3-B092-F3F41E815BF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFCLient", "WPFCLient\WPFCLient.csproj", "{74E61FCD-BD68-4FF1-BA2F-246449911180}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFClient", "WPFCLient\WPFClient.csproj", "{74E61FCD-BD68-4FF1-BA2F-246449911180}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

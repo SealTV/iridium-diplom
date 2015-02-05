@@ -1,5 +1,6 @@
 namespace Iridium.Server.Games
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -48,7 +49,7 @@ namespace Iridium.Server.Games
                 {
                     Enemies = enemies.Where(_enemy => _enemy.Position.X <= 15).ToList()
                 };
-                var enemyId = code.Execute(container);
+                int enemyId = code.Execute(container);
                 Logger.Info(enemyId);
                 enemyList.Add(enemyId.ToString());
                 Enemy enemy = enemies.FirstOrDefault(e => e.Id == enemyId);
