@@ -44,15 +44,19 @@ namespace Assets.Scripts.Games
                         " \n    enemy = enemy1;" +
                         " \n }" +
                         " \n }" +
-                        " \n return enemy.Id;";
+                        " \n try{" +
+                        " \n return enemy.Id;" +
+                        " \n}" +
+                        " \n catch" +
+                        " \n {return -1;}";
             Debug.Log(algorithm);
             //algorithm = "if (Container.Enemies.Count>0) " +
             //                   "return Container.Enemies[0].Id;" +
             //                   "else " +
             //                   "return -1;";
             //algorithm = " return Container.Enemies[0].Id;";
+            Debug.Log(MainBlock.GetCode());
             this.StartCoroutine(this.serverConnector.StartSendAlgoritm(GlobalData.GameId, GlobalData.LevelId, algorithm));
-
         }
     }
 

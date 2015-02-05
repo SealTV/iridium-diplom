@@ -46,7 +46,9 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\EqualsBlock.cs" />
      <Compile Include="Assets\Scripts\Block Modules\Active.cs" />
+     <Compile Include="Assets\Scripts\Block Modules\AddVariable.cs" />
      <Compile Include="Assets\Scripts\Block Modules\BoolButton.cs" />
      <Compile Include="Assets\Scripts\Block Modules\Connector.cs" />
      <Compile Include="Assets\Scripts\Block Modules\SubBlock.cs" />
@@ -57,9 +59,8 @@
      <Compile Include="Assets\Scripts\Block Types\EqualsBlock.cs" />
      <Compile Include="Assets\Scripts\Block Types\ForeachBlock.cs" />
      <Compile Include="Assets\Scripts\Block Types\MainBlock.cs" />
-     <Compile Include="Assets\Scripts\Block Types\OperationBlock.cs" />
-     <Compile Include="Assets\Scripts\Block Types\SimpleBlock.cs" />
      <Compile Include="Assets\Scripts\Block Types\ValueBlock.cs" />
+     <Compile Include="Assets\Scripts\Block Types\VariableBlock.cs" />
      <Compile Include="Assets\Scripts\BlockPrototip.cs" />
      <Compile Include="Assets\Scripts\Controller.cs" />
      <Compile Include="Assets\Scripts\Enums.cs" />
@@ -78,7 +79,6 @@
      <Compile Include="Assets\Scripts\SpriteManager.cs" />
      <Compile Include="Assets\Scripts\TestServerConnector.cs" />
      <Compile Include="Assets\Scripts\UI\PanelButton.cs" />
-     <None Include="Assets\Sprites\LevelIcons\iconAtlass.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.0/UnityEngine.UI.dll</HintPath>
  </Reference>

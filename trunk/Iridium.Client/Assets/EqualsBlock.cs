@@ -1,26 +1,27 @@
-﻿namespace Scripts.Blocks
+﻿using Scripts.Blocks;
+
+namespace Assets
 {
+    using global::Scripts;
     using UnityEngine;
 
-    [ExecuteInEditMode]
-    public class ValueBlock : Block {
+    public class EqualsBlock : Block {
 
         public SubBlocksField Field;
-        public SpriteRenderer Render;
-        public Canvas canvas;
+        public Block LeftBlock;
+        public Block RightBlock;
+        public SpriteRenderer Separator;
         public override void ReSortingLayers(int layer)
         {
             this.CurrentLayerSorting = layer;
-            //foreach (var block in this.Field.Blocks)
-            //{
-            //    block.sortingOrder = layer;
-            //}
+            foreach (var block in this.Field.Blocks)
+            {
+                block.sortingOrder = layer;
+            }
             foreach (var text in this.Texts)
             {
                 text.sortingOrder = layer + 1;
             }
-            this.canvas.sortingOrder = layer + 1;
-            this.Render.sortingOrder = layer;
         }
 
         public override string GetCode()
@@ -30,13 +31,14 @@
 
         void Start()
         {
-            this.LayerSorting = Random.Range(0, 100) * 100+10000;
+            this.LayerSorting = Random.Range(0, 100) * 100;
             this.ReSortingLayers(this.LayerSorting);
-            
+
         }
 
         public override float GetHeight()
         {
+            return 1.5f;
             Block block;
             float value = 0;
             value += this.Field.GetHeight();
@@ -48,26 +50,18 @@
 
         public override float GetWidth()
         {
-            Block block;
-            float value = 0;
-            value += this.Field.GetWidth();
-            return value;
+            return (this.Field.BaseWidth + this.HeadWidthStretch) * this.transform.lossyScale.x;
         }
 
         public override void Stretch()
         {
-            if (this.Parent != null)
-            {
-                this.transform.position = this.Parent.Connectors[this.ParentConnector].transform.position;
-            }
-
             this.Field.Stretch(this.HeadWidthStretch, this.HeadHeightStretch);
-
+            if (LeftBlock != null)
+                this.Separator.transform.localPosition = new Vector3(LeftBlock.GetWidth(), 1);
+            else
+                this.Separator.transform.localPosition = new Vector3(1, 1);
             base.Stretch();
-        }
 
-        private void Update()
-        {
         }
     }
 }

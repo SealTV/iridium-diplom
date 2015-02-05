@@ -7,6 +7,7 @@
 
         public SubBlocksField Field;
         public SpriteRenderer image;
+        public SpriteRenderer Renderer;
         private bool value;
 
         public Sprite TrueSprite;
@@ -21,15 +22,16 @@
         public override void ReSortingLayers(int layer)
         {
             this.CurrentLayerSorting = layer;
-            foreach (var block in this.Field.Blocks)
-            {
-                block.sortingOrder = layer;
-            }
+            //foreach (var block in this.Field.Blocks)
+            //{
+            //    block.sortingOrder = layer;
+            //}
             foreach (var text in this.Texts)
             {
                 text.sortingOrder = layer + 1;
             }
             this.image.sortingOrder = layer + 1;
+            this.Renderer.sortingOrder = layer;
         }
 
         public override string GetCode()

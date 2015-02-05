@@ -9,9 +9,10 @@
     public class Controller : MonoBehaviour
     {
         private bool isBlockTaken;
-        private Block pressedBlock;
-        private Active pressedActive;
-        private Active lastPressedActive;
+        private Block         pressedBlock;
+        private Active        pressedActive;
+        private Active        lastPressedActive;
+        private AddVariable   pressedAddVariable;
         private BlockPrototip pressedPrototip;
         private Vector3 downPosition;
         private float screenRatio;
@@ -41,6 +42,16 @@
             }
         }
 
+        private void EndCreateBlock(Block block)
+        {
+            block.transform.localScale = block.BaseScale*this.scale;
+            this.GetBlock(block);
+        }
+        private void GetBlock(Block block)
+        {
+            this.pressedBlock = block;
+            this.downPosition = (Input.mousePosition - block.transform.position * this.screenRatio);
+        }
         private void MouseEvent()
         {
             if (Input.GetMouseButtonDown(0))
@@ -54,36 +65,28 @@
 
             if (Input.GetMouseButton(0) && !this.isBlockTaken)
             {
-                if (this.pressedBlock != null)
+                if ((Input.mousePosition - this.mousePressedPosition).magnitude > this.minMouseShift)
                 {
-                    if ((Input.mousePosition - this.mousePressedPosition).magnitude > this.minMouseShift)
+                    if (this.pressedAddVariable != null)
                     {
-                        Block block = pressedBlock.Parent;
-                        this.GetBlock();
-                        if(block!=null)
-                            block.Stretch();
+                        this.EndCreateBlock(pressedAddVariable.GetInstanse());
+                        this.pressedAddVariable = null;
                     }
-                }
-                else
-                {
-                    if (this.pressedPrototip != null)
+                    else if (this.pressedBlock != null)
                     {
-                        if ((Input.mousePosition - this.mousePressedPosition).magnitude > this.minMouseShift)
-                        {
-                            var instantiate = (GameObject) Instantiate(this.pressedPrototip.InstantiatedPrefab);
-                            this.pressedBlock = instantiate.GetComponent<Block>();
-                            this.pressedBlock.transform.localScale = this.pressedBlock.BaseScale * scale;
-                            this.isBlockTaken = true;
-                            this.downPosition = (Input.mousePosition - this.pressedPrototip.transform.position * this.screenRatio);
-                            this.pressedPrototip = null;
-                        }
+                        this.PickUpBlock();
                     }
+                    else if (this.pressedPrototip != null)
+                    {
+                        this.EndCreateBlock(this.pressedPrototip.GetInstanse());
+                        this.pressedPrototip = null;
+                    }
+
                 }
             }
 
             if (Input.GetMouseButtonUp(0))
             {
-                
                 if (this.isBlockTaken)
                 {
                     var raycastVector = new Vector2(this.pressedBlock.InputConnector.transform.position.x,
@@ -148,22 +151,22 @@
             return false;
         }
 
-        private void GetBlock()
+        private void PickUpBlock()
         {
-            if (this.pressedBlock != null)
-            {
-                this.isBlockTaken = true;
-                if (this.pressedBlock.Parent != null)
-                    this.pressedBlock.Parent.Connectors.Remove(this.pressedBlock.ParentConnector);
-                this.pressedBlock.ReSortingLayers(20001);
-                this.pressedBlock.transform.parent = null;
-                this.pressedBlock.Parent = null;
-            }
+            this.isBlockTaken = true;
+            if (this.pressedBlock.Parent != null)
+                this.pressedBlock.Parent.Connectors.Remove(this.pressedBlock.ParentConnector);
+            this.pressedBlock.ReSortingLayers(20001);
+            this.pressedBlock.transform.parent = null;
+            var parent = this.pressedBlock.Parent;
+            this.pressedBlock.Parent = null;
+            if (parent != null) parent.Stretch();
         }
 
         private void TryFindBlock(RaycastHit2D[] hits)
         {
             this.pressedBlock = null;
+            this.pressedAddVariable = null;
             int blockHightestLayer = -5;
             int activeHightestLayer = 0;
 
@@ -172,7 +175,13 @@
                 Transform blockTransform = hit.transform;
                 if (blockTransform.tag == "Block")
                 {
-                    Block temp = blockTransform.GetComponent<SubBlock>().Parent.Parent;
+                    Block temp = blockTransform.GetComponentInParent<Block>();
+                    if (temp == null)
+                    {
+                        temp = blockTransform.GetComponent<SubBlock>().Parent.Parent;
+                        Debug.Log("Parent");
+                    }
+
                     if (temp.CurrentLayerSorting > blockHightestLayer)
                     {
                         blockHightestLayer = temp.CurrentLayerSorting;
@@ -193,6 +202,11 @@
                 {
                     this.pressedPrototip = blockTransform.GetComponent<BlockPrototip>();
                 }
+                else if (blockTransform.tag == "VariableInstanse")
+                {
+                    this.pressedAddVariable = blockTransform.GetComponent<AddVariable>();
+                }
+
             }
             if(lastPressedActive!=null) lastPressedActive.UnUse();
         }
