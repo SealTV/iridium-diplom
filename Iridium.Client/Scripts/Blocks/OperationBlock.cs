@@ -1,13 +1,14 @@
 ﻿namespace Scripts.Blocks
 {
-    using Scripts;
     using UnityEngine;
 
     [ExecuteInEditMode]
     public class OperationBlock : Block
     {
         public SubBlocksField Field;
-
+        public Block LeftBlock;
+        public Block RightBlock;
+        public SpriteRenderer Separator;
         public override void ReSortingLayers(int layer)
         {
             this.CurrentLayerSorting = layer;

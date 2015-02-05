@@ -61,7 +61,6 @@ namespace Assets.Scripts
         {
             var result = new StringBuilder();
             Block block;
-
             if(this.Connectors.TryGetValue("InnerConnector", out block))
             {
                 result.Append(block.GetCode());

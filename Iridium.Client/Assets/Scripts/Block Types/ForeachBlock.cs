@@ -14,6 +14,8 @@
         public InputField Iterator;
         public Canvas Canvas;
 
+        public SpriteRenderer AddVariable;
+
         public override void ReSortingLayers(int layer)
         {
             this.CurrentLayerSorting = layer;
@@ -38,6 +40,7 @@
                 text.sortingOrder = layer + 1;
             }
             Canvas.sortingOrder = layer + 1;
+            AddVariable.sortingOrder = layer + 1;
         }
 
         public override string GetCode()
@@ -46,12 +49,16 @@
             Block block;
             if (this.Connectors.TryGetValue("ConditionConnector", out block))
             {
-                string.Format("foreach(var {0} in {1}){/n {2}/n}", 
-                    Iterator.text, 
-                    block.GetCode(),
-                    this.Connectors.TryGetValue("InnerConnector", out block) 
-                        ? block.GetCode() 
-                        : string.Empty);
+                result.Append(
+                    string.Format("foreach(var {0} in {1})",
+                        Iterator.text,
+                        block.GetCode()));
+                result.Append("{");
+                result.Append(this.Connectors.TryGetValue("InnerConnector", out block)
+                    ? block.GetCode()
+                    : string.Empty);
+                result.Append("}");
+                
             }
             return result.ToString();
         }
@@ -83,16 +90,16 @@
 
         public override void Stretch()
         {
-            Debug.Log("stretch");
-            float BodyHeightStretch = 0;
+            AddVariable.gameObject.SetActive(Connectors.ContainsKey("ConditionConnector") && !string.IsNullOrEmpty(Iterator.text));
 
-            //HeadWidthStretch = 2;
+            float BodyHeightStretch = 0;
+            float headWidthStretch = HeadWidthStretch;
             Block block;
             if (this.Connectors.TryGetValue("InnerConnector", out block)) BodyHeightStretch += block.GetHeight();
             if (this.Connectors.TryGetValue("ConditionConnector", out block))
             {
                 HeadHeightStretch = block.GetHeight();
-                HeadWidthStretch +=block.GetWidth();
+                headWidthStretch += block.GetWidth();
             }
             else
             {
@@ -103,13 +110,13 @@
                 this.transform.position = this.Parent.Connectors[this.ParentConnector].transform.position;
             }
 
-            this.HighField.Stretch(HeadWidthStretch, HeadHeightStretch-1.5f);
+            this.HighField.Stretch(headWidthStretch, HeadHeightStretch - 1.5f);
 
             this.MiddleField.transform.localPosition = new Vector3(0, -this.HighField.GetHeight());
             this.MiddleField.Stretch(1, BodyHeightStretch-2);
 
             this.LowField.transform.localPosition = new Vector3(0, -this.HighField.GetHeight() - this.MiddleField.GetHeight());
-            this.LowField.Stretch(HeadWidthStretch-2, 0);
+            this.LowField.Stretch(headWidthStretch - 2, 0);
 
             base.Stretch();
         }

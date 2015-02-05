@@ -11,6 +11,7 @@ namespace Assets.Scripts.Games
         public Transform PrototipsPanel;
         public GameObject Scaler;
         public BaseGameController Instance;
+        public MainBlock MainBlock;
 
         void Start () {
             this.InstantiateBlocks();
@@ -22,6 +23,7 @@ namespace Assets.Scripts.Games
                     this.Instance.PrototipsPanel = this.PrototipsPanel;
                     //inst.GamePanel = this.GamePanel;
                     this.Instance.Scaler = this.Scaler;
+                    this.Instance.MainBlock = this.MainBlock;
                     break;
                 }
                 default: return;
