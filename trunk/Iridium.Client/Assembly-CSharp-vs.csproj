@@ -63,6 +63,7 @@
      <Compile Include="Assets\Scripts\Block Types\VariableBlock.cs" />
      <Compile Include="Assets\Scripts\BlockPrototip.cs" />
      <Compile Include="Assets\Scripts\Controller.cs" />
+     <Compile Include="Assets\Scripts\DownList.cs" />
      <Compile Include="Assets\Scripts\Enums.cs" />
      <Compile Include="Assets\Scripts\Games\BaseGameController.cs" />
      <Compile Include="Assets\Scripts\Games\Instantianer.cs" />
