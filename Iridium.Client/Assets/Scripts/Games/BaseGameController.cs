@@ -2,7 +2,6 @@
 
 namespace Assets.Scripts.Games
 {
-    using System.Collections.Generic;
     using Iridium.Utils.Data;
 
     public abstract class BaseGameController : MonoBehaviour
