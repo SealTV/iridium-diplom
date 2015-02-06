@@ -53,7 +53,7 @@
 
         public override float GetWidth()
         {
-            return (this.Field.BaseWidth + this.HeadWidthStretch) * this.transform.lossyScale.x;
+            return 5;
         }
 
         public override void Stretch()

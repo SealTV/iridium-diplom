@@ -37,21 +37,12 @@
 
         public override float GetHeight()
         {
-            Block block;
-            float value = 0;
-            value += this.Field.GetHeight();
-
-            if (this.Connectors.TryGetValue("OutputConnector", out block)) value += block.GetHeight();
-
-            return value;
+            return 1.5f;
         }
 
         public override float GetWidth()
         {
-            Block block;
-            float value = 0;
-            value += this.Field.GetWidth();
-            return value;
+            return 4;
         }
 
         public override void Stretch()

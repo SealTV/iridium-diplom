@@ -99,7 +99,7 @@
             if (this.Connectors.TryGetValue("ConditionConnector", out block))
             {
                 HeadHeightStretch = block.GetHeight();
-                headWidthStretch += block.GetWidth();
+                headWidthStretch += block.GetWidth()-2;
             }
             else
             {

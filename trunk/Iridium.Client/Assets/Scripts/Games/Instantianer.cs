@@ -39,6 +39,7 @@ namespace Assets.Scripts.Games
         {
             PacketsFromMaster.LevelData levelData = GlobalData.LevelData;
             var json = JSON.Parse(levelData.InputParameters);
+            Debug.Log(levelData.InputParameters);
             JSONArray blocks = json["blocks"].AsArray;
             float height = 0;
             for (int i = 0; i < blocks.Count; i++)
