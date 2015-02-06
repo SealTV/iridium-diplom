@@ -2,9 +2,12 @@
 
 namespace Assets
 {
+    using System;
     using global::Scripts;
     using UnityEngine;
+    using Random = UnityEngine.Random;
 
+    [ExecuteInEditMode]
     public class EqualsBlock : Block {
 
         public SubBlocksField Field;
@@ -38,13 +41,12 @@ namespace Assets
 
         public override float GetHeight()
         {
-            return 1.5f;
             Block block;
-            float value = 0;
-            value += this.Field.GetHeight();
-
-            if (this.Connectors.TryGetValue("OutputConnector", out block)) value += block.GetHeight();
-
+            float value = 2f;
+            if(Connectors.TryGetValue("InnerConnector", out block))
+            {
+                value += block.GetHeight();
+            }
             return value;
         }
 
@@ -55,13 +57,21 @@ namespace Assets
 
         public override void Stretch()
         {
-            this.Field.Stretch(this.HeadWidthStretch, this.HeadHeightStretch);
-            if (LeftBlock != null)
-                this.Separator.transform.localPosition = new Vector3(LeftBlock.GetWidth(), 1);
-            else
-                this.Separator.transform.localPosition = new Vector3(1, 1);
+            Connectors.TryGetValue("LeftConnector", out this.LeftBlock);
+            Connectors.TryGetValue("RightConnector", out this.RightBlock);
+            float headWidthStreatch = Math.Max(this.HeadWidthStretch,
+                (this.RightBlock == null ? 0 : this.RightBlock.GetWidth())
+                +
+                (this.LeftBlock == null ? 0 : this.LeftBlock.GetWidth()));
+            this.Field.Stretch(headWidthStreatch, this.HeadHeightStretch);
+            this.Separator.transform.localPosition = new Vector3(this.LeftBlock != null ? this.LeftBlock.GetWidth()+1:3.5f, -0.2f);
             base.Stretch();
 
+        }
+
+        public void Update()
+        {
+            this.Stretch();
         }
     }
 }
