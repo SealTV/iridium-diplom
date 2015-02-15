@@ -53,7 +53,6 @@ namespace Assets.Scripts
 
         public void TryLogin()
         {
-            Debug.Log("adasd");
             this.StartCoroutine(this.ServerConnector.StartLogin(this.LoginField.text, this.PasswordField.text));
         }
 

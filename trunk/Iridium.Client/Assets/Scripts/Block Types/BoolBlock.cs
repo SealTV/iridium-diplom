@@ -1,5 +1,7 @@
 ﻿namespace Scripts
 {
+    using Assets.Scripts;
+    using Assets.Scripts.Block_Types;
     using Blocks;
     using UnityEngine;
 
@@ -32,6 +34,15 @@
             }
             this.image.sortingOrder = layer + 1;
             this.Renderer.sortingOrder = layer;
+        }
+
+        public override void ChooseType(ConnectorType connectorType)
+        {
+            
+        }
+
+        public override void UnChooseType()
+        {
         }
 
         public override string GetCode()

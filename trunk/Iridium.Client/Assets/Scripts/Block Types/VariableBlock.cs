@@ -1,6 +1,7 @@
 ﻿namespace Assets.Scripts
 {
     using System;
+    using Block_Types;
     using global::Scripts.Blocks;
     using UnityEngine;
     using UnityEngine.UI;
@@ -10,8 +11,8 @@
         public float Height;
         public float Width;
         public SpriteRenderer Sprite;
-        public Block Value;
         public Text Text;
+        public Canvas Canvas;
 
         private string _name;
         public string Name
@@ -45,13 +46,22 @@
         public override void ReSortingLayers(int layer)
         {
             this.Sprite.sortingOrder = layer;
-            if(Value!=null)
-                this.Value.ReSortingLayers(layer+2);
+                this.Canvas.sortingOrder=layer+1;
+        }
+
+        public override void ChooseType(ConnectorType connectorType)
+        {
+            
+        }
+
+        public override void UnChooseType()
+        {
+            
         }
 
         public override string GetCode()
         {
-            return String.Format(" {0} = {1};", this.Name, this.Value.GetCode());
+            return " "+this.Text.text;
         }
     }
 }

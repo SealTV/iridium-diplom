@@ -3,6 +3,8 @@
     using System;
     using System.Linq;
     using Assets.Scripts;
+    using Assets.Scripts.Block_Modules;
+    using Assets.Scripts.Block_Types;
     using Blocks;
     using UnityEngine;
 
@@ -12,7 +14,7 @@
         private Block         pressedBlock;
         private Active        pressedActive;
         private Active        lastPressedActive;
-        private AddVariable   pressedAddVariable;
+        private VariableInstantiater   pressedAddVariable;
         private BlockPrototip pressedPrototip;
         private Vector3 downPosition;
         private float screenRatio;
@@ -69,7 +71,7 @@
                 {
                     if (this.pressedAddVariable != null)
                     {
-                        this.EndCreateBlock(pressedAddVariable.GetInstanse());
+                        this.EndCreateBlock(this.pressedAddVariable.GetInstanse());
                         this.pressedAddVariable = null;
                     }
                     else if (this.pressedBlock != null)
@@ -107,7 +109,7 @@
                     this.TryUsingActive(hits);
                 }
             }
-            float deltaScale = ScaleSpeed*Input.GetAxis("Mouse ScrollWheel");
+            float deltaScale = this.ScaleSpeed*Input.GetAxis("Mouse ScrollWheel");
             if (deltaScale != 0)
             {
                 this.scale +=deltaScale;
@@ -129,12 +131,18 @@
             foreach (var hit in hits)
             {
                 Transform hitTransform = hit.transform;
+                if (hitTransform.tag == "Bin")
+                {
+                    Destroy(this.pressedBlock.gameObject);
+                    this.pressedBlock = null;
+                    return true;
+                }
                 if (hitTransform.name.Contains("Connector"))
                 {
                     var connector = hitTransform.GetComponent<Connector>();
                     Block parent = connector.Parent;
                     if (!parent.Connectors.ContainsKey(hitTransform.name) &&
-                        connector.ConnectorType == this.pressedBlock.InputConnector.ConnectorType)
+                        (connector.ConnectorType == this.pressedBlock.InputConnector.ConnectorType || connector.ConnectorType==ConnectorType.Value))
                     {
                         parent.Connectors[hitTransform.name] = this.pressedBlock;
                         this.pressedBlock.Parent = parent;
@@ -143,6 +151,10 @@
                         this.pressedBlock.transform.position = hitTransform.position;
                         this.pressedBlock.ReSortingLayers(parent.CurrentLayerSorting + 2);
                         this.pressedBlock.Parent.Stretch();
+                        if (connector.ConnectorType == ConnectorType.Value)
+                        {
+                            connector.Parent.ChooseType(this.pressedBlock.InputConnector.ConnectorType);
+                        }
                         return true;
                     }
                 }
@@ -160,7 +172,11 @@
             this.pressedBlock.transform.parent = null;
             var parent = this.pressedBlock.Parent;
             this.pressedBlock.Parent = null;
-            if (parent != null) parent.Stretch();
+            if (parent != null)
+            {
+                parent.Stretch();
+                parent.UnChooseType();
+            }
         }
 
         private void TryFindBlock(RaycastHit2D[] hits)
@@ -190,10 +206,11 @@
                     }
                 }
                 else if (blockTransform.tag == "Active")
-                {
+                { 
                     Active temp = blockTransform.GetComponent<Active>();
                     if (temp.Parent.CurrentLayerSorting > activeHightestLayer)
                     {
+                        Debug.Log("Active");
                         activeHightestLayer = temp.Parent.CurrentLayerSorting;
                         this.pressedActive = temp;
                     }
@@ -204,11 +221,15 @@
                 }
                 else if (blockTransform.tag == "VariableInstanse")
                 {
-                    this.pressedAddVariable = blockTransform.GetComponent<AddVariable>();
+                    this.pressedAddVariable = blockTransform.GetComponent<VariableInstantiater>();
                 }
 
             }
-            if(lastPressedActive!=null) lastPressedActive.UnUse();
+            if (lastPressedActive != null)
+            {
+                lastPressedActive.UnUse();
+                lastPressedActive = null;
+            }
         }
 
         public void SendCode()

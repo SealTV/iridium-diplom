@@ -1,8 +1,7 @@
-﻿namespace Scripts.Blocks
+﻿namespace Assets.Scripts.Block_Types
 {
-    using System;
     using System.Collections.Generic;
-    using Assets.Scripts;
+    using global::Scripts;
     using UnityEngine;
 
     public abstract class Block: MonoBehaviour
@@ -18,6 +17,8 @@
             this.ReSortingLayers(this.LayerSorting);
         }
 
+        public abstract void ChooseType(ConnectorType connectorType);
+        public abstract void UnChooseType();
         public abstract string GetCode();
         public List<SpriteRenderer> Texts;
 
@@ -33,10 +34,12 @@
 
         public virtual void Stretch()
         {
-            if (Parent != null)
+            if (this.Parent != null)
             {
-                Parent.Stretch();
+                this.Parent.Stretch();
             }
         }
+
+        
     }
 }

@@ -1,15 +1,17 @@
-﻿using System.Text;
-using Scripts;
-using Scripts.Blocks;
-using UnityEngine;
-
-namespace Assets.Scripts
+﻿namespace Assets.Scripts.Block_Types
 {
+    using System.Text;
+    using global::Scripts;
+    using global::Scripts.Blocks;
+    using UnityEngine;
+
     public class MainBlock : Block {
 
         public SubBlocksField HighField;
         public SubBlocksField MiddleField;
         public SubBlocksField LowField;
+
+        public GetInputParameters InputParameters;
 
         // Use this for initialization
         void Start () {
@@ -55,6 +57,16 @@ namespace Assets.Scripts
 
         public override void ReSortingLayers(int layer)
         {
+        }
+
+        public override void ChooseType(ConnectorType connectorType)
+        {
+            
+        }
+
+        public override void UnChooseType()
+        {
+            
         }
 
         public override string GetCode()

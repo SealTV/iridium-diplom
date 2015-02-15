@@ -8,7 +8,9 @@
         Bool,
         Int,
         Float,
-        Collection
+        Collection,
+        List,
+        Enemy
     }
 
     public enum RequestState

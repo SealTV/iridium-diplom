@@ -111,8 +111,6 @@
             {
                 yield return null;
             }
-            Debug.Log(gameData.CompletedLevels);
-            Debug.Log(gameData.LevelsCount);
             this.OnLevelsLoaded(this.gameData);
         }
 
