@@ -1,6 +1,8 @@
 ﻿namespace Scripts.Blocks
 {
     using System.Text;
+    using Assets.Scripts;
+    using Assets.Scripts.Block_Types;
     using UnityEngine;
     using UnityEngine.UI;
 
@@ -15,6 +17,7 @@
         public Canvas Canvas;
 
         public SpriteRenderer AddVariable;
+        public AddVariable AddVariableScript;
 
         public override void ReSortingLayers(int layer)
         {
@@ -39,8 +42,17 @@
             {
                 text.sortingOrder = layer + 1;
             }
-            Canvas.sortingOrder = layer + 1;
-            AddVariable.sortingOrder = layer + 1;
+            this.Canvas.sortingOrder = layer + 1;
+            this.AddVariable.sortingOrder = layer + 1;
+        }
+
+        public override void ChooseType(ConnectorType connectorType)
+        {
+            
+        }
+
+        public override void UnChooseType()
+        {
         }
 
         public override string GetCode()
@@ -119,10 +131,6 @@
             this.LowField.Stretch(headWidthStretch - 2, 0);
 
             base.Stretch();
-        }
-
-        private void Update()
-        { 
         }
     }
 }

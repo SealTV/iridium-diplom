@@ -25,6 +25,7 @@
         {
             base.Awake();
 
+            VariableTypes.Add(Resources.Load<Sprite>("Enemy"));
             PacketsFromMaster.LevelData levelData = GlobalData.LevelData;
             var json = JSON.Parse(levelData.InputParameters);
             List<Enemy> enemiesFromJson = this.GetEnemiesList(json["input"]["enemies"].AsArray);
@@ -32,12 +33,12 @@
             this.Enemies = new List<EnemyController>();
             foreach (var enemyJson in enemiesFromJson)
             {
-                var instance = (GameObject) Instantiate(EnemyPrefabs.Find(x => x.name == enemyJson.Name));
+                var instance = (GameObject) Instantiate(this.EnemyPrefabs.Find(x => x.name == enemyJson.Name));
                 var instController = instance.GetComponent<EnemyController>();
 
                 instController.Speed = enemyJson.Speed;
                 instController.StartPosition = new Vector3(enemyJson.StartPosition.X, enemyJson.StartPosition.Y);
-                instController.Direction = (mainShipPosition - instController.StartPosition).normalized;
+                instController.Direction = (this.mainShipPosition - instController.StartPosition).normalized;
                 instController.Id = enemyJson.Id;
                 instController.HP = enemyJson.Health;
 
@@ -45,10 +46,8 @@
 
                 instance.transform.parent = this.GamePanel;
                 instance.transform.localPosition = new Vector3(enemyJson.StartPosition.X, enemyJson.StartPosition.Y);
-                Debug.Log("Parse");
             }
 
-            
         }
 
         protected override void OnAlgorithmResultLoaded(PacketsFromMaster.AlgorithmResult result)
@@ -59,7 +58,7 @@
             this.GamePanel.gameObject.SetActive(true);
             this.isPlaying = true;
             this.destroyingIds = new int[result.Output.Length];
-            foreach (var enemy in Enemies)
+            foreach (var enemy in this.Enemies)
             {
                 enemy.gameObject.SetActive(true);
             }
@@ -71,14 +70,6 @@
             this.PlayStep = 0;
         }
 
-        private bool CheckEnemyInDestroyingGameObject(int enemyId, float currentStep)
-        {
-            for (int i = 0; i < currentStep-1;i++)
-            {
-                if(destroyingIds[i]==enemyId) return false;
-            }
-            return true;
-        }
 
 
         private void Update()

@@ -19,7 +19,7 @@
 	<DebugType>full</DebugType>
 	<Optimize>false</Optimize>
 	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_4_6_0;UNITY_4_6;UNITY_STANDALONE_WIN;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_UNITYEVENTS;ENABLE_NEW_HIERARCHY ;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_MONO;ENABLE_TERRAIN;ENABLE_SUBSTANCE;ENABLE_GENERICS;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_4_6_FEATURES;INCLUDE_WP_BLUE_SUPPORT;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN</DefineConstants>
+	<DefineConstants>DEBUG;TRACE;UNITY_4_6_1;UNITY_4_6;UNITY_STANDALONE_WIN;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_UNITYEVENTS;ENABLE_NEW_HIERARCHY ;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_MONO;ENABLE_TERRAIN;ENABLE_SUBSTANCE;ENABLE_GENERICS;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_4_6_FEATURES;INCLUDE_WP_BLUE_SUPPORT;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN;UNITY_TEAM_LICENSE;UNITY_PRO_LICENSE</DefineConstants>
 	<ErrorReport>prompt</ErrorReport>
 	<WarningLevel>4</WarningLevel>
 	<NoWarn>0169</NoWarn>
@@ -46,13 +46,22 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\ChooseButton.cs" />
      <Compile Include="Assets\EqualsBlock.cs" />
+     <Compile Include="Assets\FunctionBlock.cs" />
+     <Compile Include="Assets\FunctionPrototip.cs" />
+     <Compile Include="Assets\GetInputParameters.cs" />
+     <Compile Include="Assets\GetVariable.cs" />
+     <Compile Include="Assets\InstanceBlock.cs" />
+     <Compile Include="Assets\ProcedureBlock.cs" />
+     <Compile Include="Assets\ProcedurePrototip.cs" />
      <Compile Include="Assets\Scripts\Block Modules\Active.cs" />
      <Compile Include="Assets\Scripts\Block Modules\AddVariable.cs" />
      <Compile Include="Assets\Scripts\Block Modules\BoolButton.cs" />
      <Compile Include="Assets\Scripts\Block Modules\Connector.cs" />
      <Compile Include="Assets\Scripts\Block Modules\SubBlock.cs" />
      <Compile Include="Assets\Scripts\Block Modules\SubBlocksField.cs" />
+     <Compile Include="Assets\Scripts\Block Modules\VariableInstantiater.cs" />
      <Compile Include="Assets\Scripts\Block Types\Block.cs" />
      <Compile Include="Assets\Scripts\Block Types\BoolBlock.cs" />
      <Compile Include="Assets\Scripts\Block Types\CollectionBlock.cs" />
@@ -81,10 +90,10 @@
      <Compile Include="Assets\Scripts\TestServerConnector.cs" />
      <Compile Include="Assets\Scripts\UI\PanelButton.cs" />
  <Reference Include="UnityEngine.UI">
- <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.0/UnityEngine.UI.dll</HintPath>
+ <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.1/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="Iridium.Utils">
- <HintPath>Z:/SVNProjects/Diplom/Iridium.Client/Assets/Plugins/Iridium.Utils.dll</HintPath>
+ <HintPath>C:/Users/BaltX/Projects/Iridium/Iridium.Client/Assets/Plugins/Iridium.Utils.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>

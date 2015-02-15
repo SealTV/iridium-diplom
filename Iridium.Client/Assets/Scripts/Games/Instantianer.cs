@@ -2,6 +2,7 @@
 
 namespace Assets.Scripts.Games
 {
+    using Block_Types;
     using Iridium.Utils.Data;
     using SimpleJSON;
 
@@ -21,13 +22,14 @@ namespace Assets.Scripts.Games
                 {
                     this.Instance = ((GameObject)Instantiate(this.StarWarsController)).GetComponent<BaseGameController>();
                     this.Instance.PrototipsPanel = this.PrototipsPanel;
-                    //inst.GamePanel = this.GamePanel;
                     this.Instance.Scaler = this.Scaler;
                     this.Instance.MainBlock = this.MainBlock;
+                    this.MainBlock.InputParameters.VariablePrototip = this.Instance.InputParameters;
                     break;
                 }
                 default: return;
             }
+  
         }
 
         public void SendCode()
@@ -41,6 +43,8 @@ namespace Assets.Scripts.Games
             var json = JSON.Parse(levelData.InputParameters);
             Debug.Log(levelData.InputParameters);
             JSONArray blocks = json["blocks"].AsArray;
+            blocks.Add("instance");
+            blocks.Add("distance");
             float height = 0;
             for (int i = 0; i < blocks.Count; i++)
             {

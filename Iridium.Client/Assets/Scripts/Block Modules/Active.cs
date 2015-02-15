@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
+    using Block_Types;
+
     public abstract class Active : MonoBehaviour
     {
 

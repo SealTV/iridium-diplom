@@ -1,5 +1,7 @@
 ﻿namespace Scripts.Blocks
 {
+    using Assets.Scripts;
+    using Assets.Scripts.Block_Types;
     using UnityEngine;
 
     [ExecuteInEditMode]
@@ -11,16 +13,22 @@
         public override void ReSortingLayers(int layer)
         {
             this.CurrentLayerSorting = layer;
-            //foreach (var block in this.Field.Blocks)
-            //{
-            //    block.sortingOrder = layer;
-            //}
+
             foreach (var text in this.Texts)
             {
                 text.sortingOrder = layer + 1;
             }
             this.canvas.sortingOrder = layer + 1;
             this.Render.sortingOrder = layer;
+        }
+
+        public override void ChooseType(ConnectorType connectorType)
+        {
+            
+        }
+
+        public override void UnChooseType()
+        {
         }
 
         public override string GetCode()

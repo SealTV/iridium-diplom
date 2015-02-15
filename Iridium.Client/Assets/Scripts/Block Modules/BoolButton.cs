@@ -1,4 +1,4 @@
-﻿namespace Assets.Scripts
+﻿namespace Assets.Scripts.Block_Modules
 {
     using UnityEngine;
 
@@ -13,22 +13,13 @@
         public override void Use()
         {
             Debug.Log("Use");
-            IsTrue = !IsTrue;
-            SpriteRenderer.sprite = IsTrue ? TrueSprite : FalseSprite;
+            this.IsTrue = !this.IsTrue;
+            this.SpriteRenderer.sprite = this.IsTrue ? this.TrueSprite : this.FalseSprite;
         }
 
         public override void UnUse()
         {
             Debug.Log("UnUse");
-        }
-
-        void Start () {
-	
-        }
-	
-        // Update is called once per frame
-        void Update () {
-	
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿namespace Scripts.Blocks
 {
+    using Assets.Scripts;
+    using Assets.Scripts.Block_Types;
     using Scripts;
     using UnityEngine;
 
@@ -23,6 +25,16 @@
             {
                 text.sortingOrder = layer + 1;
             }
+        }
+
+        public override void ChooseType(ConnectorType connectorType)
+        {
+            
+        }
+
+        public override void UnChooseType()
+        {
+            
         }
 
         public override string GetCode()

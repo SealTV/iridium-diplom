@@ -2,11 +2,13 @@
 
 namespace Assets.Scripts.Games
 {
+    using System.Collections.Generic;
+    using Block_Types;
     using Iridium.Utils.Data;
 
     public abstract class BaseGameController : MonoBehaviour
     {
-
+        public static BaseGameController Instance;
         public Transform PrototipsPanel;
         public GameObject BackGround;
         public Transform GamePanel;
@@ -19,9 +21,20 @@ namespace Assets.Scripts.Games
         protected bool isPlaying;
         public float PlayStep;
         public float Speed;
-        // Use this for initialization
+        public List<Sprite> VariableTypes; 
+
+        public GameObject InputParameters;
         protected void Awake()
         {
+            Instance = this;
+            VariableTypes = new List<Sprite>
+                            {
+                                                Resources.Load<Sprite>("Int"),
+                                                Resources.Load<Sprite>("Float"),
+                                                Resources.Load<Sprite>("String"),
+                                                Resources.Load<Sprite>("Bool")
+                            };
+            Debug.Log(VariableTypes.Count);
             this.serverConnector = ServerConnector.Instance;
             this.serverConnector.OnAlgorithmResultLoaded += this.OnAlgorithmResultLoaded;
         }
@@ -33,7 +46,7 @@ namespace Assets.Scripts.Games
         {
             Enemy en = new Enemy();
             string algorithm; //= MainBlock.GetCode();
-            algorithm = BaseAlgorithm +
+            algorithm = this.BaseAlgorithm +
                         " \n var minDistance = 100f;" +
                         " \n Enemy enemy = null;" +
                         " \n foreach(var enemy1 in Enemies){" +
@@ -45,7 +58,7 @@ namespace Assets.Scripts.Games
                         " \n }" +
                         " \n try{" +
                         " \n return enemy.Id;" +
-                        " \n}" +
+                        " \n }" +
                         " \n catch" +
                         " \n {return -1;}";
             Debug.Log(algorithm);
@@ -54,9 +67,9 @@ namespace Assets.Scripts.Games
             //                   "else " +
             //                   "return -1;";
             //algorithm = " return Container.Enemies[0].Id;";
-            Debug.Log(MainBlock.GetCode());
-            this.StartCoroutine(this.serverConnector.StartSendAlgoritm(GlobalData.GameId, GlobalData.LevelId, algorithm));
+
+            this.StartCoroutine(this.serverConnector.StartSendAlgoritm(GlobalData.GameId, GlobalData.LevelId, this.MainBlock.GetCode())); 
+            Debug.Log(this.MainBlock.GetCode());
         }
     }
-
 }
