@@ -29,6 +29,7 @@ namespace Assets.Scripts
             this.ServerConnector.OnLevelDataLoaded += this.OnLevelDataLoaded;
             this.ServerConnector.OnConnectedToServer += this.OnConnectedToServer;
             this.ServerConnector.OnLoggedOnServer += this.OnLoggedOnServer;
+
             if (ServerConnector.SocketStatus == SocketStatus.None)
             {
                 this.StartCoroutine(this.ServerConnector.StartConnectServer(27001, "104.40.216.136"));

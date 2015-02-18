@@ -110,8 +110,9 @@
                 }
             }
             float deltaScale = this.ScaleSpeed*Input.GetAxis("Mouse ScrollWheel");
-            if (deltaScale != 0)
+            if (Math.Abs(deltaScale) > 0.09)
             {
+                Debug.Log(deltaScale);
                 this.scale +=deltaScale;
                 this.scale = Math.Min(Math.Max(ScaleMin, this.scale), ScaleMax);
                 this.Scaler.localScale = new Vector3(this.scale, this.scale, this.scale);

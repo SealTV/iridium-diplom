@@ -1,4 +1,6 @@
-﻿using Scripts.Blocks;
+﻿using UnityEngine;
+using System.Collections;
+
 
 namespace Assets
 {
@@ -10,13 +12,15 @@ namespace Assets
     using Random = UnityEngine.Random;
 
     [ExecuteInEditMode]
-    public class EqualsBlock : Block {
+    public class BoolOperationBlock : Block
+    {
 
         public SubBlocksField Field;
         public Block LeftBlock;
         public Block RightBlock;
         public SpriteRenderer Separator;
         public Connector LeftConnector, RightConnector;
+
         public override void ReSortingLayers(int layer)
         {
             this.CurrentLayerSorting = layer;
@@ -41,7 +45,7 @@ namespace Assets
 
         public override void UnChooseType()
         {
-            if (!this.Connectors.ContainsKey("LeftConnector") && 
+            if (!this.Connectors.ContainsKey("LeftConnector") &&
                 !this.Connectors.ContainsKey("RightConnector"))
             {
                 this.LeftConnector.ConnectorType = ConnectorType.Value;
@@ -54,39 +58,35 @@ namespace Assets
             throw new System.NotImplementedException();
         }
 
-        void Start()
+        private void Start()
         {
-            this.LayerSorting = Random.Range(0, 100) * 100;
+            this.LayerSorting = Random.Range(0, 100)*100;
             this.ReSortingLayers(this.LayerSorting);
 
         }
 
         public override float GetHeight()
         {
-            Block block;
-            float value = 2f;
-            if (this.Connectors.TryGetValue("OutputConnector", out block))
-            {
-                value += block.GetHeight();
-            }
+            float value = Math.Max(LeftBlock ? LeftBlock.GetHeight() : 2f, RightBlock ? RightBlock.GetHeight() : 2f);
             return value;
         }
 
         public override float GetWidth()
         {
-            return (this.Field.BaseWidth + this.HeadWidthStretch) * this.transform.lossyScale.x;
+            return (this.Field.BaseWidth + this.HeadWidthStretch)*this.transform.lossyScale.x;
         }
 
         public override void Stretch()
         {
             this.Connectors.TryGetValue("LeftConnector", out this.LeftBlock);
             this.Connectors.TryGetValue("RightConnector", out this.RightBlock);
+            this.HeadHeightStretch = Math.Max(LeftBlock ? LeftBlock.GetHeight() : 0, RightBlock ? RightBlock.GetHeight() : 0);
             float headWidthStreatch = Math.Max(this.HeadWidthStretch,
-                (this.RightBlock == null ? 0 : this.RightBlock.GetWidth())
+                (this.RightBlock == null ? 2 : this.RightBlock.GetWidth())
                 +
-                (this.LeftBlock == null ? 0 : this.LeftBlock.GetWidth()));
+                (this.LeftBlock == null ? 2 : this.LeftBlock.GetWidth()));
             this.Field.Stretch(headWidthStreatch, this.HeadHeightStretch);
-            this.Separator.transform.localPosition = new Vector3(this.LeftBlock != null ? this.LeftBlock.GetWidth()+1:3.5f, -0.2f);
+            this.Separator.transform.localPosition = new Vector3(this.LeftBlock != null ? this.LeftBlock.GetWidth() + 1 : 7f, -0.2f);
             base.Stretch();
 
         }

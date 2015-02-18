@@ -10,7 +10,8 @@
         Float,
         Collection,
         List,
-        Enemy
+        Enemy,
+        String
     }
 
     public enum RequestState
