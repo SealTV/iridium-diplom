@@ -21,7 +21,8 @@ namespace Assets.Scripts.Games
         protected bool isPlaying;
         public float PlayStep;
         public float Speed;
-        public List<Sprite> VariableTypes; 
+        public List<Sprite> VariableTypes;
+        public List<Sprite> BoolOperationTypes; 
 
         public GameObject InputParameters;
         protected void Awake()
@@ -35,6 +36,14 @@ namespace Assets.Scripts.Games
                                                 Resources.Load<Sprite>("Bool")
                             };
             Debug.Log(VariableTypes.Count);
+            BoolOperationTypes = new List<Sprite>
+                            {
+                                                Resources.Load<Sprite>("More"),
+                                                Resources.Load<Sprite>("Less"),
+                                                Resources.Load<Sprite>("Equals"),
+                                                Resources.Load<Sprite>("UnEquals")
+                            };
+            Debug.Log(BoolOperationTypes.Count);
             this.serverConnector = ServerConnector.Instance;
             this.serverConnector.OnAlgorithmResultLoaded += this.OnAlgorithmResultLoaded;
         }

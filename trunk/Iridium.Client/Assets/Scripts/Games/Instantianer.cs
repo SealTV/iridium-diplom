@@ -43,8 +43,8 @@ namespace Assets.Scripts.Games
             var json = JSON.Parse(levelData.InputParameters);
             Debug.Log(levelData.InputParameters);
             JSONArray blocks = json["blocks"].AsArray;
-            blocks.Add("instance");
-            blocks.Add("distance");
+            blocks.Add("if");
+            blocks.Add("boolOperations");
             float height = 0;
             for (int i = 0; i < blocks.Count; i++)
             {

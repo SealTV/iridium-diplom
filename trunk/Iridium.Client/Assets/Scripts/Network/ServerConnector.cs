@@ -54,6 +54,7 @@
 
         public void Awake()
         {
+            
             if (Instance == null)
             {
                 Instance = this;
