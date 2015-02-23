@@ -50,7 +50,7 @@
 
         public override float GetWidth()
         {
-            return 4;
+            return 5;
         }
 
         public override void Stretch()

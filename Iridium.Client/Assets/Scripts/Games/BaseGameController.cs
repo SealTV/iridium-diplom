@@ -35,7 +35,6 @@ namespace Assets.Scripts.Games
                                                 Resources.Load<Sprite>("String"),
                                                 Resources.Load<Sprite>("Bool")
                             };
-            Debug.Log(VariableTypes.Count);
             BoolOperationTypes = new List<Sprite>
                             {
                                                 Resources.Load<Sprite>("More"),
@@ -43,7 +42,6 @@ namespace Assets.Scripts.Games
                                                 Resources.Load<Sprite>("Equals"),
                                                 Resources.Load<Sprite>("UnEquals")
                             };
-            Debug.Log(BoolOperationTypes.Count);
             this.serverConnector = ServerConnector.Instance;
             this.serverConnector.OnAlgorithmResultLoaded += this.OnAlgorithmResultLoaded;
         }
@@ -53,32 +51,9 @@ namespace Assets.Scripts.Games
 
         public void SendGame()
         {
-            Enemy en = new Enemy();
-            string algorithm; //= MainBlock.GetCode();
-            algorithm = this.BaseAlgorithm +
-                        " \n var minDistance = 100f;" +
-                        " \n Enemy enemy = null;" +
-                        " \n foreach(var enemy1 in Enemies){" +
-                        " \n if(enemy1.GetDistance(new Point(0,5))<minDistance)" +
-                        " \n {" +
-                        " \n    minDistance = enemy1.GetDistance(new Point(0,5));" +
-                        " \n    enemy = enemy1;" +
-                        " \n }" +
-                        " \n }" +
-                        " \n try{" +
-                        " \n return enemy.Id;" +
-                        " \n }" +
-                        " \n catch" +
-                        " \n {return -1;}";
+            string algorithm = this.BaseAlgorithm + MainBlock.GetCode();
+            this.StartCoroutine(this.serverConnector.StartSendAlgoritm(GlobalData.GameId, GlobalData.LevelId, algorithm)); 
             Debug.Log(algorithm);
-            //algorithm = "if (Container.Enemies.Count>0) " +
-            //                   "return Container.Enemies[0].Id;" +
-            //                   "else " +
-            //                   "return -1;";
-            //algorithm = " return Container.Enemies[0].Id;";
-
-            this.StartCoroutine(this.serverConnector.StartSendAlgoritm(GlobalData.GameId, GlobalData.LevelId, this.MainBlock.GetCode())); 
-            Debug.Log(this.MainBlock.GetCode());
         }
     }
 }

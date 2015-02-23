@@ -24,10 +24,6 @@
         public override void ReSortingLayers(int layer)
         {
             this.CurrentLayerSorting = layer;
-            //foreach (var block in this.Field.Blocks)
-            //{
-            //    block.sortingOrder = layer;
-            //}
             foreach (var text in this.Texts)
             {
                 text.sortingOrder = layer + 1;
@@ -47,7 +43,7 @@
 
         public override string GetCode()
         {
-            return value.ToString();
+            return this.value.ToString().ToLower();
         }
 
         void Start()

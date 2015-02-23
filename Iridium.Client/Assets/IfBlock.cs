@@ -6,6 +6,8 @@ using UnityEngine;
 
 namespace Assets
 {
+    using System;
+
     [ExecuteInEditMode]
     public class IfBlock : Block
     {
@@ -55,13 +57,16 @@ namespace Assets
 
         public override string GetCode()
         {
-            var result = new StringBuilder();
-            return result.ToString();
+            Block block;
+            return String.Format("if({0})", (this.Connectors.TryGetValue("ConditionConnector", out block) ? block.GetCode() : string.Empty)) +
+                "{\n"+
+                (this.Connectors.TryGetValue("InnerConnector", out block) ? block.GetCode() : string.Empty)+"\n}"+
+                (this.Connectors.TryGetValue("OutputConnector", out block) ? block.GetCode() : string.Empty);
         }
 
         private void Start()
         {
-            this.LayerSorting = Random.Range(0, 100)*100;
+            this.LayerSorting = UnityEngine.Random.Range(0, 100)*100;
             this.ReSortingLayers(this.LayerSorting);
         }
 

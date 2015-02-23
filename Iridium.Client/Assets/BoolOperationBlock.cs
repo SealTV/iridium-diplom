@@ -5,6 +5,8 @@ using System.Collections;
 namespace Assets
 {
     using System;
+    using System.Collections.Generic;
+    using System.Threading;
     using global::Scripts;
     using Scripts;
     using Scripts.Block_Types;
@@ -20,11 +22,20 @@ namespace Assets
         public Block RightBlock;
         public SpriteRenderer Separator;
         public Connector LeftConnector, RightConnector;
+        Dictionary<string, string> dic = new Dictionary<string, string>
+                                         {
+                                                             {"Equals","=="},
+                                                             {"Less","<"},
+                                                             {"More",">"},
+                                                             {"UnEquals","!="}
+                                         }; 
+        private float width;
+        private float height;
 
         public override void ReSortingLayers(int layer)
         {
             this.CurrentLayerSorting = layer;
-            Separator.sortingOrder = layer + 1;
+            this.Separator.sortingOrder = layer + 1;
             foreach (var block in this.Field.Blocks)
             {
                 block.sortingOrder = layer;
@@ -33,14 +44,14 @@ namespace Assets
             {
                 text.sortingOrder = layer + 1;
             }
-            if (LeftBlock != null) LeftBlock.ReSortingLayers(layer + 2);
-            if (RightBlock != null) RightBlock.ReSortingLayers(layer + 2);
+            if (this.LeftBlock != null) this.LeftBlock.ReSortingLayers(layer + 2);
+            if (this.RightBlock != null) this.RightBlock.ReSortingLayers(layer + 2);
         }
 
         public override void ChooseType(ConnectorType connectorType)
         {
-            LeftConnector.ConnectorType = connectorType;
-            RightConnector.ConnectorType = connectorType;
+            this.LeftConnector.ConnectorType = connectorType;
+            this.RightConnector.ConnectorType = connectorType;
         }
 
         public override void UnChooseType()
@@ -55,40 +66,51 @@ namespace Assets
 
         public override string GetCode()
         {
-            throw new System.NotImplementedException();
+            return String.Format("({0} {1} {2})", 
+                                this.LeftBlock.GetCode(), 
+                                this.dic[this.Separator.sprite.name],
+                                this.RightBlock.GetCode());
         }
 
         private void Start()
         {
             this.LayerSorting = Random.Range(0, 100)*100;
             this.ReSortingLayers(this.LayerSorting);
+            this.width = this.HeadWidthStretch;
+            this.height = this.HeadHeightStretch;
+
 
         }
 
         public override float GetHeight()
         {
-            float value = Math.Max(LeftBlock ? LeftBlock.GetHeight() : 2f, RightBlock ? RightBlock.GetHeight() : 2f);
-            return value;
+            float value = Math.Max(this.LeftBlock ? this.LeftBlock.GetHeight() : 2f, this.RightBlock ? this.RightBlock.GetHeight() : 2f);
+            return this.height*1.5f;
         }
 
         public override float GetWidth()
         {
-            return (this.Field.BaseWidth + this.HeadWidthStretch)*this.transform.lossyScale.x;
+            //return (this.Field.BaseWidth + this.HeadWidthStretch)*this.transform.lossyScale.x;
+            return this.width/1.5f;
         }
 
         public override void Stretch()
         {
             this.Connectors.TryGetValue("LeftConnector", out this.LeftBlock);
             this.Connectors.TryGetValue("RightConnector", out this.RightBlock);
-            this.HeadHeightStretch = Math.Max(LeftBlock ? LeftBlock.GetHeight() : 0, RightBlock ? RightBlock.GetHeight() : 0);
-            float headWidthStreatch = Math.Max(this.HeadWidthStretch,
-                (this.RightBlock == null ? 2 : this.RightBlock.GetWidth())
+            this.width = Math.Max(this.HeadWidthStretch,
+                ((this.RightBlock == null ? 0 : this.RightBlock.GetWidth())
                 +
-                (this.LeftBlock == null ? 2 : this.LeftBlock.GetWidth()));
-            this.Field.Stretch(headWidthStreatch, this.HeadHeightStretch);
-            this.Separator.transform.localPosition = new Vector3(this.LeftBlock != null ? this.LeftBlock.GetWidth() + 1 : 7f, -0.2f);
-            base.Stretch();
+                (this.LeftBlock == null ? 0 : this.LeftBlock.GetWidth())) * 2+5);
 
+            this.height = Math.Max(this.HeadHeightStretch,
+                Math.Max(
+                    this.RightBlock == null ? 0 : this.RightBlock.GetHeight(),
+                    this.LeftBlock == null ? 0 : this.LeftBlock.GetHeight())/2+1);
+
+            this.Field.Stretch(this.width, this.height);
+            this.Separator.transform.localPosition = new Vector3(this.LeftBlock != null ? this.LeftBlock.GetWidth()*2 + 3 : 8f, -0.2f);
+            base.Stretch();
         }
 
         public void Update()

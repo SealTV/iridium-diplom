@@ -72,6 +72,10 @@
                 result.Append("}");
                 
             }
+            if (this.Connectors.TryGetValue("OutputConnector", out block))
+            {
+                result.Append("\n"+block.GetCode());
+            }
             return result.ToString();
         }
 

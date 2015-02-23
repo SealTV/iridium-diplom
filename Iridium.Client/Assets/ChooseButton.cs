@@ -37,22 +37,22 @@ namespace Assets
             this.SpriteRenderer.sprite = this.Sprites[this.currentSprite];
             switch (this.SpriteRenderer.sprite.name)
             {
-                case "Int":
+                case "int":
                     this.InstanceBlock.VariableValue.gameObject.SetActive(true);
                     this.InstanceBlock.BoolButton.gameObject.SetActive(false);
                     this.InstanceBlock.VariableValue.contentType = InputField.ContentType.IntegerNumber;
                     break;
-                case "String":
+                case "string":
                     this.InstanceBlock.VariableValue.gameObject.SetActive(true);
                     this.InstanceBlock.BoolButton.gameObject.SetActive(false);
                     this.InstanceBlock.VariableValue.contentType = InputField.ContentType.Alphanumeric;
                     break;
-                case "Float":
+                case "float":
                     this.InstanceBlock.VariableValue.gameObject.SetActive(true);
                     this.InstanceBlock.BoolButton.gameObject.SetActive(false);
                     this.InstanceBlock.VariableValue.contentType = InputField.ContentType.DecimalNumber;
                     break;
-                case "Bool":
+                case "bool":
                     this.InstanceBlock.VariableValue.gameObject.SetActive(false);
                     this.InstanceBlock.BoolButton.gameObject.SetActive(true);
                     break;
