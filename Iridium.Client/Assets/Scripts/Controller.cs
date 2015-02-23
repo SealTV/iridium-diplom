@@ -211,7 +211,6 @@
                     Active temp = blockTransform.GetComponent<Active>();
                     if (temp.Parent.CurrentLayerSorting > activeHightestLayer)
                     {
-                        Debug.Log("Active");
                         activeHightestLayer = temp.Parent.CurrentLayerSorting;
                         this.pressedActive = temp;
                     }

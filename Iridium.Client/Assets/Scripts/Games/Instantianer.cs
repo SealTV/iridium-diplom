@@ -43,9 +43,6 @@ namespace Assets.Scripts.Games
             var json = JSON.Parse(levelData.InputParameters);
             Debug.Log(levelData.InputParameters);
             JSONArray blocks = json["blocks"].AsArray;
-            blocks.Add("if");
-            blocks.Add("boolOperations");
-            blocks.Add("destroy");
             float height = 0;
             for (int i = 0; i < blocks.Count; i++)
             {

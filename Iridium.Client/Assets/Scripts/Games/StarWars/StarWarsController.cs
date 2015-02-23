@@ -25,7 +25,7 @@
         {
             base.Awake();
 
-            VariableTypes.Add(Resources.Load<Sprite>("Enemy"));
+            this.VariableTypes.Add(Resources.Load<Sprite>("Enemy"));
             PacketsFromMaster.LevelData levelData = GlobalData.LevelData;
             var json = JSON.Parse(levelData.InputParameters);
             List<Enemy> enemiesFromJson = this.GetEnemiesList(json["input"]["enemies"].AsArray);
@@ -56,10 +56,11 @@
             this.BackGround.SetActive(true);
             this.Scaler.SetActive(false);
             this.GamePanel.gameObject.SetActive(true);
-            this.isPlaying = true;
+            
             this.destroyingIds = new int[result.Output.Length];
             foreach (var enemy in this.Enemies)
             {
+                Debug.Log(enemy.name);
                 enemy.gameObject.SetActive(true);
             }
             for (int i = 0; i < result.Output.Length; i++)
@@ -68,6 +69,15 @@
                 Debug.Log("output: " + this.destroyingIds[i]);
             }
             this.PlayStep = 0;
+            this.isPlaying = true;
+            this.currentStep = 0;
+            this.Bullet.gameObject.SetActive(destroyingIds[0]!=-1);
+            this.Bullet.transform.localPosition = mainShipPosition;
+            foreach (var enemy in this.Enemies)
+            {
+                enemy.transform.localPosition = enemy.StartPosition;
+            }
+            this.currentDestroyingEnemy = -1;
         }
 
 
@@ -86,11 +96,10 @@
                     this.GamePanel.gameObject.SetActive(false);
                     return;
                 }
-
+                
                 int enemyNumber = destroyingIds[(int) this.PlayStep];
                 if (currentStep + 1 < this.PlayStep)
                 {
-                    
                     Bullet.gameObject.SetActive(enemyNumber!=-1);
                     currentStep++;
                 }
