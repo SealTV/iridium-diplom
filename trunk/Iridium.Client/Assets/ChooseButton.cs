@@ -30,12 +30,11 @@ namespace Assets
         // Use this for initialization
         public override void Use()
         {
-            Debug.Log("Use");
-            
+            Debug.Log(this.SpriteRenderer.sprite.name);
             this.InstanceBlock.VariableValue.text = "";
             if (++this.currentSprite == this.Sprites.Count) this.currentSprite = 0;
             this.SpriteRenderer.sprite = this.Sprites[this.currentSprite];
-            switch (this.SpriteRenderer.sprite.name)
+            switch (this.SpriteRenderer.sprite.name.ToLower())
             {
                 case "int":
                     this.InstanceBlock.VariableValue.gameObject.SetActive(true);
@@ -61,12 +60,12 @@ namespace Assets
                     this.InstanceBlock.BoolButton.gameObject.SetActive(false);
                     break;
             }
+            Debug.Log(this.SpriteRenderer.sprite.name);
             InstanceBlock.Stretch();
         }
 
         public override void UnUse()
         {
-            Debug.Log("UnUse");
         }
     }
 }
