@@ -14,7 +14,7 @@ public class ProcedurePrototip : BlockPrototip {
     public override Block GetInstanse()
     {
         var instance = (GameObject)Instantiate(InstantiatedPrefab);
-        var inst = instance.GetComponent<FunctionBlock>();
+        var inst = instance.GetComponent<ProcedureBlock>();
 
         inst.Code = this.Code;
         inst.ParameterConnector.ConnectorType = this.ConnectorType;

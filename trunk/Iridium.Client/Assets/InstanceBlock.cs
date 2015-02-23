@@ -3,6 +3,7 @@
 namespace Assets
 {
     using System;
+    using System.Text;
     using global::Scripts;
     using Scripts;
     using Scripts.Block_Modules;
@@ -31,7 +32,10 @@ namespace Assets
 
         public ConnectorType GetConnectorType()
         {
-            return (ConnectorType)Enum.Parse(typeof(ConnectorType), this.ChooseButton.GetSpriteName());
+            string a = this.ChooseButton.GetSpriteName();
+            string d = a[0].ToString().ToUpper();
+            Debug.Log(d + a.Substring(1));
+            return (ConnectorType)Enum.Parse(typeof(ConnectorType), d + a.Substring(1));
         }
         public override float GetHeight()
         {
@@ -98,7 +102,18 @@ namespace Assets
 
         public override string GetCode()
         {
-            throw new System.NotImplementedException();
+            Block block;
+            string value;
+            if (this.VariableValue.IsActive())
+            {
+                if (this.ChooseButton.SpriteRenderer.sprite.name == "String") value = String.Format("\"{0}\"", this.VariableValue.text);
+                else value = this.VariableValue.text;
+            }
+            else if (this.BoolButton.gameObject.activeSelf)
+                value = BoolButton.SpriteRenderer.sprite.name.ToLower();
+            else value = "null";
+            return String.Format("{0} {1} = {2}; \n", this.ChooseButton.SpriteRenderer.sprite.name, this.VariableName.text, value)+
+                    (this.Connectors.TryGetValue("OutputConnector", out block)? block.GetCode(): string.Empty);
         }
     }
 }

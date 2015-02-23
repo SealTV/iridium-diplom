@@ -10,11 +10,10 @@ namespace Assets
     public class FunctionBlock : Block {
 
         public string Code;
-        public Block Parameter;
         public Connector ParameterConnector;
         public SpriteRenderer Renderer;
         public SubBlocksField Field;
-
+        private float height;
 
         public override float GetHeight()
         {
@@ -28,6 +27,7 @@ namespace Assets
 
         public override void ReSortingLayers(int layer)
         {
+            this.CurrentLayerSorting = layer;
             foreach (var connector in this.Connectors)
             {
                 connector.Value.ReSortingLayers(layer + 1);
@@ -36,10 +36,9 @@ namespace Assets
             {
                 block.sortingOrder = layer;
             }
-
-            if(Parameter!=null)
-                Parameter.ReSortingLayers(layer + 2);
-            Renderer.sortingOrder = layer + 1;
+            Block block2;
+            if(this.Connectors.TryGetValue("ParameterConnector", out block2)) block2.ReSortingLayers(layer + 2);
+            this.Renderer.sortingOrder = layer + 1;
         }
 
         public override void ChooseType(ConnectorType connectorType)
@@ -56,7 +55,8 @@ namespace Assets
         {
             try
             {
-                return string.Format(this.Code, this.Parameter);
+                Block block;
+                return string.Format(this.Code, this.Connectors.TryGetValue("ParameterConnector", out block) ? block.GetCode() : string.Empty);
             }
             catch (Exception)
             {

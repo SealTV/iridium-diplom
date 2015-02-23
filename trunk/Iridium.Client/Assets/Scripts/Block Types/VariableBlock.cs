@@ -1,8 +1,5 @@
-﻿namespace Assets.Scripts
+﻿namespace Assets.Scripts.Block_Types
 {
-    using System;
-    using Block_Types;
-    using global::Scripts.Blocks;
     using UnityEngine;
     using UnityEngine.UI;
 
@@ -24,14 +21,6 @@
                 this.Text.text = this._name;
             }
         }
-        
-
-
-
-        // Update is called once per frame
-        private void Update(){
-
-        }
 
         public override float GetHeight()
         {
@@ -45,8 +34,9 @@
 
         public override void ReSortingLayers(int layer)
         {
+            this.CurrentLayerSorting = layer;
             this.Sprite.sortingOrder = layer;
-                this.Canvas.sortingOrder=layer+1;
+            this.Canvas.sortingOrder = layer + 1;
         }
 
         public override void ChooseType(ConnectorType connectorType)

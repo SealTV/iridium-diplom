@@ -45,6 +45,7 @@ namespace Assets.Scripts.Games
             JSONArray blocks = json["blocks"].AsArray;
             blocks.Add("if");
             blocks.Add("boolOperations");
+            blocks.Add("destroy");
             float height = 0;
             for (int i = 0; i < blocks.Count; i++)
             {

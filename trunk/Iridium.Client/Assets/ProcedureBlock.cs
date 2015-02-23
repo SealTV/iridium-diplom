@@ -11,7 +11,6 @@ namespace Assets
     {
 
         public string Code;
-        public Block Parameter;
         public Connector ParameterConnector;
         public SpriteRenderer Renderer;
         public SubBlocksField Field;
@@ -27,7 +26,8 @@ namespace Assets
 
         public override float GetHeight()
         {
-            return 2;
+            Block block;
+            return 2+(Connectors.TryGetValue("OutputConnector", out block)?block.GetHeight():0);
         }
 
         public override float GetWidth()
@@ -37,6 +37,8 @@ namespace Assets
 
         public override void ReSortingLayers(int layer)
         {
+            Debug.Log(layer);
+            CurrentLayerSorting = layer;
             foreach (var connector in this.Connectors)
             {
                 connector.Value.ReSortingLayers(layer + 1);
@@ -45,8 +47,6 @@ namespace Assets
             {
                 block.sortingOrder = layer;
             }
-
-            Parent.ReSortingLayers(layer+2);
             Renderer.sortingOrder = layer + 1;
         }
 
@@ -64,10 +64,12 @@ namespace Assets
         {
             try
             {
-                return string.Format(this.Code, this.Parameter);
+                Block block;
+                return string.Format(this.Code, this.Connectors.TryGetValue("ParameterConnector", out block) ? block.GetCode() : string.Empty);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Debug.Log(e);
                 return "";
             }
         }
