@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iridium.Server", "Iridium.Server\Iridium.Server.csproj", "{E468FB39-DD55-490B-87AC-E8C651F82C10}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iridium.Utils", "Iridium.Utils\Iridium.Utils.csproj", "{23B844BD-9137-46E6-B683-8060F3E28924}"
@@ -10,8 +12,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGeneration", "CodeGeneration\CodeGeneration.csproj", "{A05E9F7C-08FF-415B-BB6C-7B886D5FA3D7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iridium.Network", "Iridium.Network\Iridium.Network.csproj", "{A38847D3-B1D0-40D3-B092-F3F41E815BF3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFClient", "WPFCLient\WPFClient.csproj", "{74E61FCD-BD68-4FF1-BA2F-246449911180}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,10 +39,6 @@ Global
 		{A38847D3-B1D0-40D3-B092-F3F41E815BF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A38847D3-B1D0-40D3-B092-F3F41E815BF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A38847D3-B1D0-40D3-B092-F3F41E815BF3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{74E61FCD-BD68-4FF1-BA2F-246449911180}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{74E61FCD-BD68-4FF1-BA2F-246449911180}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{74E61FCD-BD68-4FF1-BA2F-246449911180}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{74E61FCD-BD68-4FF1-BA2F-246449911180}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
